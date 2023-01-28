@@ -3,10 +3,12 @@ const authRoute = require("./routes/authRoute");
 const { default: mongoose } = require("mongoose");
 const categoryRoute = require("./routes/categoryRoute");
 const cartRoute = require("./routes/cartRoute");
+const sliderRoute = require("./routes/sliderRoute");
 const productRoute = require("./routes/productRoute");
 const userRoute = require("./routes/userRoute");
 const dotenv = require("dotenv").config();
 const app = express();
+const fs = require('fs');
 const bcrypt = require('bcrypt');
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
@@ -51,9 +53,11 @@ app.use("/api/category", categoryRoute);
 app.use("/api/product", productRoute);
 app.use("/api/user", userRoute);
 app.use("/api/cart", cartRoute);
+app.use("/api/slider", sliderRoute);
 
 
 app.use((err, req, res, next) => {
+
     const status = err.status || 500;
     const message = err.message || "Something went wrong!";
     return res.status(status).json({

@@ -17,7 +17,7 @@ router.post('/add_product', upload.single("image"), addProduct);
 router.get('/:productUrl', singleProduct);
 
 //Update a product
-router.patch('/:id', updateProduct);
+router.patch('/:id',upload.single("image"), updateProduct);
 
 //Delete product
 router.delete('/:productId', deleteProduct)

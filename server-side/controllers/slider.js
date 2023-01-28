@@ -1,35 +1,35 @@
-const Category = require("../models/Category");
 const createError = require("../error");
 const cloudinary = require("cloudinary").v2;
 const fs = require("fs");
+const Slider = require("../models/Slider");
 
-const categorylist = async (req, res, next) => {
+const sliderlist = async (req, res, next) => {
     try{
-        const categories = await Category.find();
-
-        res.status(200).json(categories);
-
+        const slider = await Slider.find();
+        res.status(200).json(slider);
     } catch (err){
         next(err);
     }
 }
 
-const createCategory = async (req, res, next) =>{
+const createSlider = async (req, res, next) =>{
     try {
-        const { name } = req.body;
+        const { name, link } = req.body;
+
+        console.log(req.body)
     
         const regex = /[^a-zA-Z0-9 ]/g;
     
-        let categoryUrl = name
+        let sliderUrl = name
           .toLowerCase()
           .replaceAll(regex, "")
           .replaceAll(" ", "-")
           .trim();
     
         //Check duplicate product name
-        let dupCategoryName = await Category.findOne({ categoryUrl });
+        let dupSliderName = await Slider.findOne({ sliderUrl });
     
-        if (dupCategoryName){
+        if (dupSliderName){
             if(req.file){
                 fs.unlink(req.file.path, (err)=>{
                     next(err);
@@ -44,21 +44,22 @@ const createCategory = async (req, res, next) =>{
         if (req.file) {
           // Save image to cloudinary
           uploadedFile = await cloudinary.uploader.upload(req.file.path, {
-            folder: "hallo_food/category_image",
+            folder: "hallo_food/slider_image",
             resource_type: "image",
           });
         }
     
-        const category = new Category({
+        const slider = new Slider({
           ...req.body,
-          categoryUrl,
+          link,
+          sliderUrl,
           img: {
             url: uploadedFile.secure_url,
             publicid: uploadedFile.public_id,
           },
         });
     
-        await category.save();
+        await slider.save();
         
         if(req.file){
             fs.unlink(req.file.path, (err)=>{
@@ -66,7 +67,7 @@ const createCategory = async (req, res, next) =>{
             });
         }
     
-        res.status(200).send("Product added succesfully!");
+        res.status(200).send("Slider added succesfully!");
 
       } catch (err) {
         next(err);
@@ -76,10 +77,10 @@ const createCategory = async (req, res, next) =>{
 
 
 //Update a catergory
-const updateCategory = async (req, res, next) => {
+const updateSlider = async (req, res, next) => {
 
     try{
-        const {name, img} = req.body;
+        const {name, img, link} = req.body;
   
         if(!name){
             if(req.file){
@@ -93,15 +94,15 @@ const updateCategory = async (req, res, next) => {
   
         const regex = /[^a-zA-Z0-9 ]/g;
   
-        let categoryUrl = name
+        let sliderUrl = name
         .toLowerCase()
         .replaceAll(regex, "")
         .replaceAll(" ", "-")
         .trim();
   
-        const dupCategoryName = await Category.findOne({ _id: { $ne: id}, categoryUrl})
+        const dupSliderName = await Slider.findOne({ _id: { $ne: id}, sliderUrl})
   
-        if(dupCategoryName) {
+        if(dupSliderName) {
             if(req.file){
               fs.unlink(req.file.path, (err)=>{
                 next(err)
@@ -123,7 +124,7 @@ const updateCategory = async (req, res, next) => {
   
             // Save image to cloudinary
             uploadedFile = await cloudinary.uploader.upload(req.file.path,{
-                folder : "hallo_food/category_image",
+                folder : "hallo_food/slider_image",
                 resource_type: "image"
             });
   
@@ -134,12 +135,12 @@ const updateCategory = async (req, res, next) => {
             }
         }
         
-        await Category.findByIdAndUpdate(
+        await Slider.findByIdAndUpdate(
             id,
             {
                 $set: {
                     name,
-                    categoryUrl,
+                    link,
                     img : {
                         url : uploadedFile.secure_url,
                         publicid : uploadedFile.public_id
@@ -148,7 +149,7 @@ const updateCategory = async (req, res, next) => {
             }
         )
   
-        res.status(200).send("Product updated successfully!")
+        res.status(200).send("Slider updated successfully!")
 
     } catch (err){
         if(req.file){
@@ -162,69 +163,50 @@ const updateCategory = async (req, res, next) => {
 
 
 //Delete a product
-const deleteCategory = async (req, res, next) => {
+const deleteSlider = async (req, res, next) => {
     try {
-      const category = await Category.findById(req.params.id);
+      const slider = await Slider.findById(req.params.id);
 
       
-      if (!category) {
-        next(createError(404,"Category not found!!!"));
+      if (!slider) {
+        next(createError(404,"Slider not found!!!"));
       }
-     
-      if(category.products[0]){
-         next(createError(403, "Products are exist in category. Please remove the products first!"))
-      };
   
-      const categoryId = category._id;
+      const sliderId = slider._id;
   
-      const publicid = category.img.publicid;
+      const publicid = slider.img.publicid;
   
       await cloudinary.uploader.destroy(publicid);
   
-      await Category.deleteOne({ _id: categoryId });
+      await Slider.deleteOne({ _id: sliderId });
   
-      res.status(200).send("Product deleted succesfully!");
+      res.status(200).send("Slider deleted succesfully!");
     } catch (err) {
       next(err);
     }
   };
 
 
-
-//Get product according to category
-const getCatProduct = async (req, res, next) => {
-    try{
-
-        const category = await Category.findOne({categoryUrl : req.params.categoryUrl}).populate('products');
-
-        res.status(200).json(category.products);
-
-
-    } catch (err){
-        next(err)
+//get single slider
+const singleSlider = async (req, res, next) => {
+    try {
+      const slider = await Slider.findOne({
+        _id : req.params.id
+      })
+  
+      if (!slider) return res.status(404).send("Slider not found!");
+  
+      res.status(200).send(slider);
+    } catch (err) {
+      next(err);
     }
-}
-
-//get a single category
-const singleCategory = async (req, res, next) => {
-  try {
-    const category = await Category.findOne({
-      categoryUrl: req.params.productUrl,
-    }).populate(products);
-
-    if (!category) return res.status(404).send("Category not found!");
-
-    res.status(200).send(category);
-  } catch (err) {
-    next(err);
-  }
-};
+  };
 
 
 module.exports = {
-    categorylist,
-    createCategory,
-    updateCategory,
-    getCatProduct,
-    deleteCategory
+    sliderlist,
+    createSlider,
+    updateSlider,
+    deleteSlider,
+    singleSlider
 }

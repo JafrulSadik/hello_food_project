@@ -1,24 +1,18 @@
 const mongoose = require("mongoose");
 
-const categorySchema = mongoose.Schema({
+const sliderSchema = mongoose.Schema({
     name: {
         type: String,
         unique: true,
         required: true,
     },
-    categoryUrl: {
+    sliderUrl: {
         type: String,
         unique: true,
         required: true
     },
-    products: [
-        {
-            type: mongoose.Types.ObjectId,
-            ref: "products"
-        }
-    ],
-    description: {
-        type: String,
+    link: {
+        type: String
     },
     img: {
         type: Object,
@@ -28,4 +22,4 @@ const categorySchema = mongoose.Schema({
 
 
 
-module.exports = mongoose.model('Categories', categorySchema)
+module.exports = mongoose.model('Slider', sliderSchema)

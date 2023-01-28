@@ -35,7 +35,28 @@ const singleUser = async (req, res, next) => {
     }
 }
 
+
+const deleteUser = async (req, res, next) => {
+    try{
+
+        const user = await User.findOne({_id : req.params.id});
+
+        
+        if(!user){
+            return next(createError(404, "User not found!"))
+        }
+        
+        await User.deleteOne({_id : req.params.id})
+
+        res.status(200).send("User deleted succesfully!");
+        
+    } catch (err){
+        next(err)
+    }
+}
+
 module.exports = {
     allUsers,
-    singleUser
+    singleUser,
+    deleteUser
 }
