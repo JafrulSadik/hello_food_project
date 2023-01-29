@@ -10,9 +10,11 @@ import { API } from "../../requestMethod";
 import AdminHeader from "../components/AdminHeader";
 
 const UpdateProduct = () => {
-  const [prooductImage, setProductImage] = useState("");
+  const [productImage, setProductImage] = useState("");
   const [imagePreview, setImagePreview] = useState(null);
   const [catgories, setCatgories] = useState([]);
+  const [selectCat, setSelectCat] = useState("")
+  const [description, setDescription] = useState("");
   //   const dispatch = useDispatch();
   //   const navigate = useNavigate();
   const { productUrl } = useParams();
@@ -26,16 +28,13 @@ const UpdateProduct = () => {
     quantity: "",
     price: "",
   });
-  //   const [productName, setProductName] = useState("");
-  const [description, setDescription] = useState("");
-
-  //   console.log(product);
 
   useEffect(() => {
     const productData = async () => {
       try {
         const res = await API.get(`/product/${productUrl}`);
         setProduct(res.data);
+        setSelectCat(res.data._category?._id)
       } catch (error) {}
     };
     productData();
@@ -47,10 +46,8 @@ const UpdateProduct = () => {
       try {
         const response = await API.get("/category");
         setCatgories(response.data);
-        setProduct({
-          _category: response.data[0]._id,
-        });
       } catch (error) {}
+
     };
     fetchData();
     // dispatch(getSingleProduct(productUrl));
@@ -80,10 +77,13 @@ const UpdateProduct = () => {
     formData.append("quantity", Number(product?.quantity));
     formData.append("price", Number(product?.price));
     formData.append("description", description);
-    formData.append("image", prooductImage);
+    formData.append("image", productImage);
     console.log(...formData);
     // dispatch(createNewProduct({ formData, navigate }));
   };
+
+
+
 
   return (
     <>
@@ -128,16 +128,28 @@ const UpdateProduct = () => {
               value={product?.name}
               onChange={(e) => handleInputChange(e)}
             />
+            
+            
+
+
             <label>Product Category : </label>
-            <select name="category" onChange={(e) => handleInputChange(e)}>
-              {catgories.map((category) => {
-                return (
-                  <option key={category._id} value={category._id}>
-                    {category.name}
-                  </option>
-                );
-              })}
-            </select>
+
+            {
+              product._category &&   
+                        <select name="category" onChange={(e) => handleInputChange(e)} defaultValue={selectCat}>
+                          { catgories.map((category) => {
+                            return (
+                              <option key={category._id}  value={category._id}>
+                                {category.name}
+                              </option>
+                            );
+                          })}
+                        </select>
+            }
+              
+
+
+
             <label htmlFor="">Product Price :</label>
             <input
               type="text"

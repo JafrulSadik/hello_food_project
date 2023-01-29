@@ -24,7 +24,7 @@ const signup = async (req, res, next) =>{
         res.status(200).send(others);
 
     } catch (err){
-        next(err);
+        return next(err);
     }
 }
 
@@ -51,7 +51,7 @@ const login = async (req, res, next) => {
         .json(others);
 
     } catch (err){
-        next(err);
+        return next(err);
     }
 }
 
@@ -64,7 +64,7 @@ const logout = async (req, res, next) => {
         .status(200)
         .json("Logout successfully.");   
     } catch (error) {
-        next(error)
+        return next(error)
     }   
 }
 

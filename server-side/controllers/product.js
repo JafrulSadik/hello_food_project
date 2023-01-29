@@ -12,7 +12,7 @@ const allProducts = async (req, res, next) => {
 
     res.status(200).json(products);
   } catch (err) {
-    next(err);
+    return next(err);
   }
 };
 
@@ -37,7 +37,7 @@ const addProduct = async (req, res, next) => {
       if(req.file){
           fs.unlink(req.file.path, (err)=>{});
       }
-      next(createError(409, "Duplicate product name found!!!"));
+      return next(createError(409, "Duplicate product name found!!!"));
     }
       
 
@@ -65,7 +65,7 @@ const addProduct = async (req, res, next) => {
 
     await Category.updateOne(
       {
-        _id: req.body._category,
+        _id: req.body.category,
       },
       {
         $push: {
@@ -76,7 +76,7 @@ const addProduct = async (req, res, next) => {
     
     if(req.file){
       fs.unlink(req.file.path, (err)=>{
-        next(err)
+        return next(err)
       });
     }
     
@@ -86,7 +86,7 @@ const addProduct = async (req, res, next) => {
     if(req.file){
         fs.unlink(req.file.path, (err)=>{});
     }
-    next(err);
+    return next(err);
   }
 };
 
@@ -101,7 +101,7 @@ const singleProduct = async (req, res, next) => {
 
     res.status(200).send(product);
   } catch (err) {
-    next(err);
+    return next(err);
   }
 };
 
@@ -113,7 +113,7 @@ const updateProduct = async (req, res, next) => {
       if(!name || !category || quantity == "" || !price || !description || productCode){
           if(req.file){
             fs.unlink(req.file.path, (err)=>{
-              next(err)
+              return next(err)
             })
           }
           return createError(404, "Something went wrong !!!");
@@ -133,7 +133,7 @@ const updateProduct = async (req, res, next) => {
       if(dupProductName) {
           if(req.file){
             fs.unlink(req.file.path, (err)=>{
-              next(err)
+              return next(err)
             })
           }
           return next(createError(409, "Duplicate name found! Please change the name."));
@@ -144,7 +144,7 @@ const updateProduct = async (req, res, next) => {
       if(dupProductCode){
           if(req.file){
             fs.unlink(req.file.path, (err)=>{
-              next(err)
+              return next(err)
             })
           }
           return next(createError(409, "Duplicate code found! Please change the product code."))
@@ -168,7 +168,7 @@ const updateProduct = async (req, res, next) => {
 
           if(req.file){
             fs.unlink(req.file.path, (err)=>{
-              next(err)
+              return next(err)
             })
           }
       }
@@ -196,10 +196,10 @@ const updateProduct = async (req, res, next) => {
   } catch (err){
       if(req.file){
         fs.unlink(req.file.path, (err)=>{
-          next(err)
+          return next(err)
         })
       }
-      next(err)
+      return next(err)
   }
 }
 
@@ -221,7 +221,7 @@ const deleteProduct = async (req, res, next) => {
 
     res.status(200).send("Product deleted succesfully!");
   } catch (err) {
-    next(err);
+    return next(err);
   }
 };
 

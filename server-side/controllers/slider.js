@@ -8,7 +8,7 @@ const sliderlist = async (req, res, next) => {
         const slider = await Slider.find();
         res.status(200).json(slider);
     } catch (err){
-        next(err);
+      return next(err);
     }
 }
 
@@ -32,7 +32,7 @@ const createSlider = async (req, res, next) =>{
         if (dupSliderName){
             if(req.file){
                 fs.unlink(req.file.path, (err)=>{
-                    next(err);
+                  return next(err);
                 });
             }
           return next(createError(409, "Duplicate name found! Please change the name."));
@@ -63,14 +63,14 @@ const createSlider = async (req, res, next) =>{
         
         if(req.file){
             fs.unlink(req.file.path, (err)=>{
-                next(err)
+              return next(err)
             });
         }
     
         res.status(200).send("Slider added succesfully!");
 
       } catch (err) {
-        next(err);
+        return next(err);
       }
 }
 
@@ -85,7 +85,7 @@ const updateSlider = async (req, res, next) => {
         if(!name){
             if(req.file){
               fs.unlink(req.file.path, (err)=>{
-                next(err)
+                return next(err)
               })
             }
             return createError(404, "Something went wrong !!!");
@@ -105,7 +105,7 @@ const updateSlider = async (req, res, next) => {
         if(dupSliderName) {
             if(req.file){
               fs.unlink(req.file.path, (err)=>{
-                next(err)
+                return next(err)
               })
             }
             return next(createError(409, "Duplicate name found! Please change the name."));
@@ -154,10 +154,10 @@ const updateSlider = async (req, res, next) => {
     } catch (err){
         if(req.file){
           fs.unlink(req.file.path, (err)=>{
-            next(err)
+            return next(err)
           })
         }
-        next(err)
+        return next(err)
     }
   }
 
@@ -169,7 +169,7 @@ const deleteSlider = async (req, res, next) => {
 
       
       if (!slider) {
-        next(createError(404,"Slider not found!!!"));
+        return next(createError(404,"Slider not found!!!"));
       }
   
       const sliderId = slider._id;
@@ -182,7 +182,7 @@ const deleteSlider = async (req, res, next) => {
   
       res.status(200).send("Slider deleted succesfully!");
     } catch (err) {
-      next(err);
+      return next(err);
     }
   };
 
@@ -198,7 +198,7 @@ const singleSlider = async (req, res, next) => {
   
       res.status(200).send(slider);
     } catch (err) {
-      next(err);
+      return next(err);
     }
   };
 

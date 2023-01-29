@@ -10,7 +10,7 @@ const categorylist = async (req, res, next) => {
         res.status(200).json(categories);
 
     } catch (err){
-        next(err);
+      return next(err);
     }
 }
 
@@ -32,7 +32,7 @@ const createCategory = async (req, res, next) =>{
         if (dupCategoryName){
             if(req.file){
                 fs.unlink(req.file.path, (err)=>{
-                    next(err);
+                  return  next(err);
                 });
             }
           return next(createError(409, "Duplicate name found! Please change the name."));
@@ -62,14 +62,14 @@ const createCategory = async (req, res, next) =>{
         
         if(req.file){
             fs.unlink(req.file.path, (err)=>{
-                next(err)
+              return  next(err)
             });
         }
     
         res.status(200).send("Product added succesfully!");
 
       } catch (err) {
-        next(err);
+        return next(err);
       }
 }
 
@@ -84,7 +84,7 @@ const updateCategory = async (req, res, next) => {
         if(!name){
             if(req.file){
               fs.unlink(req.file.path, (err)=>{
-                next(err)
+                return next(err)
               })
             }
             return createError(404, "Something went wrong !!!");
@@ -104,7 +104,7 @@ const updateCategory = async (req, res, next) => {
         if(dupCategoryName) {
             if(req.file){
               fs.unlink(req.file.path, (err)=>{
-                next(err)
+                return next(err)
               })
             }
             return next(createError(409, "Duplicate name found! Please change the name."));
@@ -129,7 +129,7 @@ const updateCategory = async (req, res, next) => {
   
             if(req.file){
               fs.unlink(req.file.path, (err)=>{
-                next(err)
+                return next(err)
               })
             }
         }
@@ -153,10 +153,10 @@ const updateCategory = async (req, res, next) => {
     } catch (err){
         if(req.file){
           fs.unlink(req.file.path, (err)=>{
-            next(err)
+            return next(err)
           })
         }
-        next(err)
+        return next(err)
     }
   }
 
@@ -168,11 +168,11 @@ const deleteCategory = async (req, res, next) => {
 
       
       if (!category) {
-        next(createError(404,"Category not found!!!"));
+        return next(createError(404,"Category not found!!!"));
       }
      
       if(category.products[0]){
-         next(createError(403, "Products are exist in category. Please remove the products first!"))
+        return next(createError(403, "Products are exist in category. Please remove the products first!"))
       };
   
       const categoryId = category._id;
@@ -185,7 +185,7 @@ const deleteCategory = async (req, res, next) => {
   
       res.status(200).send("Product deleted succesfully!");
     } catch (err) {
-      next(err);
+      return next(err);
     }
   };
 
@@ -201,7 +201,7 @@ const getCatProduct = async (req, res, next) => {
 
 
     } catch (err){
-        next(err)
+      return next(err)
     }
 }
 
@@ -216,7 +216,7 @@ const singleCategory = async (req, res, next) => {
 
     res.status(200).send(category);
   } catch (err) {
-    next(err);
+    return next(err);
   }
 };
 
