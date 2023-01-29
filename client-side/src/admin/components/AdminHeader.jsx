@@ -1,9 +1,22 @@
 import { Button } from "@mui/material";
 import React from "react";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import Spinner from "../../components/Spinner";
+import { logout } from "../../redux/features/auth/authSlice";
 
 const AdminHeader = () => {
+  const dispatch = useDispatch();
+  const { pending } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
+
+  const handleLogout = (e) => {
+    e.preventDefault();
+    dispatch(logout());
+    navigate("/login");
+  };
+
   return (
     <HeaderContainer>
       <div className="left">
@@ -15,11 +28,13 @@ const AdminHeader = () => {
             variant="contained"
             color="error"
             style={{ textTransform: "none" }}
+            onClick={handleLogout}
           >
             Logout
           </Button>
         </Link>
       </div>
+      {pending && <Spinner />}
     </HeaderContainer>
   );
 };

@@ -108,17 +108,19 @@ const singleProduct = async (req, res, next) => {
 //Update a product
 const updateProduct = async (req, res, next) => {
   try{
-      const {name, category, img,  quantity, price, description, productCode, id} = req.body;
+      const {name, category, publicid, imgUrl,  quantity, price, description, productCode, id} = req.body;
 
-      if(!name || !category || quantity == "" || !price || !description || productCode){
+
+      if(!name || !category|| !price || !productCode){
           if(req.file){
             fs.unlink(req.file.path, (err)=>{
               return next(err)
             })
           }
-          return createError(404, "Something went wrong !!!");
+          return next(createError(404, "Something went wrong !!!"));
       }
 
+       
 
       const regex = /[^a-zA-Z0-9 ]/g;
 
@@ -152,26 +154,53 @@ const updateProduct = async (req, res, next) => {
 
       // handle image upload
       let uploadedFile ={
-          url : img.url,
-          public_id : img.publicid
+          url : imgUrl,
+          public_id : publicid
       };
 
       if(req.file){
           // Delete previous one first
-          await cloudinary.uploader.destroy(img.publicid);
+          await cloudinary.uploader.destroy(publicid);
 
           // Save image to cloudinary
-          uploadedFile = await cloudinary.uploader.upload(req.file.path,{
+          uploadData = await cloudinary.uploader.upload(req.file.path,{
               folder : "hallo_food/product_image",
               resource_type: "image"
           });
 
-          if(req.file){
-            fs.unlink(req.file.path, (err)=>{
-              return next(err)
-            })
+          uploadedFile ={
+            url : uploadData.secure_url,
+            publicid : uploadData.public_id
           }
       }
+
+      // pull first
+      const product = await Product.findById({_id: id});
+
+      await Category.updateOne(
+        {
+          _id: product._category.toString(),
+        },
+        {
+          $pull : {
+              products: id
+          }
+        }
+      )
+
+      // set new category
+      await Category.updateOne(
+        {
+          _id: req.body.category,
+        },
+        {
+          $addToSet: {
+            products: id,
+          },
+        }
+      );
+
+        
       
       await Product.findByIdAndUpdate(
           id,
@@ -179,18 +208,24 @@ const updateProduct = async (req, res, next) => {
               $set: {
                   name,
                   productUrl,
-                  category,
+                  _category : category,
                   quantity,
                   price,
                   description,
                   productCode,
-                  img : {
-                      url : uploadedFile.secure_url,
-                      publicid : uploadedFile.public_id
-                  }
+                  img : uploadedFile,
               }
           }
       )
+
+
+      
+      if(req.file){
+        fs.unlink(req.file.path, (err)=>{
+          return next(err)
+        })
+      }
+      
 
       res.status(200).send("Product updated successfully!")
   } catch (err){
@@ -210,8 +245,18 @@ const deleteProduct = async (req, res, next) => {
     if (!product) {
       return res.status(404).send("product not found");
     }
-
     const productId = product._id;
+
+    await Category.updateOne(
+      {
+        _id: product._category.toString(),
+      },
+      {
+        $pull : {
+            products: productId
+        }
+      }
+    )
 
     const publicid = product.img.publicid;
 

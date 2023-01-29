@@ -15,8 +15,8 @@ const Sidebar = ({ children }) => {
     "products",
     "users",
     "orders",
-    "category",
-    "slider",
+    "categories",
+    "sliders",
   ].indexOf(location);
 
   useEffect(() => {

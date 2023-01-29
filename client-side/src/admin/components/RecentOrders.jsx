@@ -4,53 +4,7 @@ import React from "react";
 import styled from "styled-components";
 import { recentOrdersColumns } from "./MUI_Column";
 
-const rows = [
-  {
-    id: 1,
-    orderNo: 1,
-    productName: "Himalayan Natural Pink Salt Rock Salt 1 kg",
-    category: "Grocery",
-    quantity: 1,
-    price: 320,
-    status: "Delivered",
-  },
-  {
-    id: 2,
-    orderNo: 1,
-    productName: "Himalayan Natural Pink Salt Rock Salt 1 kg",
-    category: "Grocery",
-    quantity: 1,
-    price: 320,
-    status: "Delivered",
-  },
-  {
-    id: 3,
-    orderNo: 1,
-    productName: "Himalayan Natural Pink Salt Rock Salt 1 kg",
-    category: "Grocery",
-    quantity: 1,
-    price: 320,
-    status: "Delivered",
-  },
-  {
-    id: 4,
-    orderNo: 1,
-    productName: "Himalayan Natural Pink Salt Rock Salt 1 kg",
-    category: "Grocery",
-    quantity: 1,
-    price: 320,
-    status: "Delivered",
-  },
-  {
-    id: 5,
-    orderNo: 1,
-    productName: "Himalayan Natural Pink Salt Rock Salt 1 kg",
-    category: "Grocery",
-    quantity: 1,
-    price: 320,
-    status: "Delivered",
-  },
-];
+const rows = [];
 
 const RecentOrders = () => {
   return (

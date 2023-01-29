@@ -9,22 +9,24 @@ import styled from "styled-components";
 import swal from "sweetalert";
 import Spinner from "../../components/Spinner";
 import {
-  deleteProduct,
-  getAllProducts,
-} from "../../redux/features/product/productSlice";
+  deleteSlider,
+  getAllSliders,
+} from "../../redux/features/slider/sliderSlice";
 import AdminHeader from "../components/AdminHeader";
-import { AdminProductsColumn } from "../components/MUI_Column";
+import { SlidersColumn } from "../components/MUI_Column";
 
-const AdminProducts = () => {
+const Sliders = () => {
   const dispatch = useDispatch();
-  const { products, loading } = useSelector((state) => state.product);
+  const { sliders, loading } = useSelector((state) => state.slider);
+
+  //Get All Categories
   useEffect(() => {
-    dispatch(getAllProducts());
+    dispatch(getAllSliders());
     // eslint-disable-next-line
   }, []);
 
-  const handleDelete = (props) => {
-    dispatch(deleteProduct(props));
+  const handleDelete = (sliderId) => {
+    dispatch(deleteSlider(sliderId));
   };
 
   const confirmDelete = (id) => {
@@ -40,18 +42,12 @@ const AdminProducts = () => {
     });
   };
 
-  const rows = products?.map((product, index) => {
+  const rows = sliders?.map((slider, index) => {
     return {
-      id: product?._id,
+      id: slider?._id,
       slNo: index + 1,
-      productImage: product.img?.url,
-      productImageId: product.img?.publicid,
-      productName: product.name,
-      productUrl: product.productUrl,
-      productCode: product.productCode,
-      category: product._category?.name,
-      quantity: product.quantity,
-      price: product.price,
+      categoryImage: slider.img?.url,
+      categoryName: slider.name,
       delete: confirmDelete,
     };
   });
@@ -60,14 +56,14 @@ const AdminProducts = () => {
     <>
       <AdminHeader />
       <Container>
-        <div className="add-product">
-          <Link to="/admin/products/create" className="add-product-link">
+        <div className="add-slider">
+          <Link to="/admin/sliders/create" className="add-slider-link">
             <Button
               variant="contained"
               style={{ textTransform: "none", backgroundColor: "#18a753" }}
             >
               <GoPlus />
-              Add Product
+              Add Slider
             </Button>
           </Link>
         </div>
@@ -84,7 +80,7 @@ const AdminProducts = () => {
           >
             <DataGrid
               rows={rows}
-              columns={AdminProductsColumn}
+              columns={SlidersColumn}
               pageSize={20}
               rowsPerPageOptions={[20]}
               disableSelectionOnClick
@@ -106,56 +102,44 @@ const AdminProducts = () => {
 
 const Container = styled.div`
   margin: 20px;
-  .add-product {
+  .add-slider {
     text-align: right;
   }
-  .add-product-link {
+  .add-slider-link {
     text-decoration: none;
   }
   .box {
     margin-top: 20px;
   }
-  .product {
+  .sliderName {
     text-decoration: none;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-left: 10px;
+    margin-left: 15px;
     color: inherit;
   }
-  .product > img {
+  .sliderName > img {
     width: 50px;
     height: 40px;
   }
-  .product > p {
-    font-size: 14px;
-    margin-left: 5px;
-  }
-  .inStock {
-    color: green;
-  }
-  .outOfStock {
-    color: red;
-  }
-  .action {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .view {
-    color: #2196f3;
-    margin-right: 6px;
-    font-size: 24px;
+  .sliderName > p {
+    font-size: 18px;
+    margin-left: 20px;
   }
   .edit {
     color: green;
-    margin-right: 6px;
-    font-size: 20px;
+    margin-right: 10px;
+    line-height: 0;
+    font-size: 24px;
+    text-decoration: none;
   }
   .delete {
     color: red;
-    font-size: 20px;
+    font-size: 24px;
+    line-height: 0;
+    text-decoration: none;
   }
 `;
 
-export default AdminProducts;
+export default Sliders;

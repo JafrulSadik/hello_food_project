@@ -4,15 +4,32 @@ import { DataGrid } from "@mui/x-data-grid";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+import swal from "sweetalert";
 import Spinner from "../../components/Spinner";
-import { getAllUsers } from "../../redux/features/auth/userSlice";
+import { deleteUser, getAllUsers } from "../../redux/features/auth/userSlice";
 import AdminHeader from "../components/AdminHeader";
 import { usersColumns } from "../components/MUI_Column";
 
 const Users = () => {
   const dispatch = useDispatch();
-  // eslint-disable-next-line
   const { pending, users } = useSelector((state) => state.user);
+
+  const handleDelete = (userId) => {
+    dispatch(deleteUser(userId));
+  };
+
+  const confirmDelete = (id) => {
+    swal({
+      text: "Are you sure want to delete this product?",
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        handleDelete(id);
+      } else {
+      }
+    });
+  };
 
   const row = users.map((user, index) => {
     // console.log(user);
@@ -22,6 +39,7 @@ const Users = () => {
       name: user.name,
       email: user.email,
       status: user.status,
+      delete: confirmDelete
     };
   });
 

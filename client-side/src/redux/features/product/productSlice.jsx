@@ -43,12 +43,30 @@ export const createNewProduct = createAsyncThunk(
   }
 );
 
+// Update Product
+
+export const updateProduct = createAsyncThunk(
+  "products/updateProduct",
+  async ({ formData, navigate, _id }, { rejectWithValue }) => {
+    try {
+      const response = await API.patch(`/product/${_id}`, formData);
+      toast.success("Product Updated Successfully");
+      navigate("/admin/products");
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 // Delete Product
 export const deleteProduct = createAsyncThunk(
   "products/deleteProduct",
   async (productId, { rejectWithValue }) => {
     try {
       await API.delete(`/product/${productId}`);
+      toast.success("Product Deleted Successfully");
       return productId;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -109,6 +127,16 @@ export const productSlice = createSlice({
         state.error = true;
         state.pending = false;
       })
+      // Update Product
+      .addCase(updateProduct.pending, (state) => {
+        state.pending = true;
+      })
+      .addCase(updateProduct.fulfilled, (state) => {
+        state.pending = false;
+      })
+      .addCase(updateProduct.rejected, (state) => {
+        state.error = true;
+      })
       //Delete Product
       .addCase(deleteProduct.pending, (state) => {
         state.loading = true;
@@ -119,7 +147,7 @@ export const productSlice = createSlice({
         state.products.splice(
           state.products.findIndex((item) => item._id === action.payload),
           1
-        );  
+        );
       })
       .addCase(deleteProduct.rejected, (state) => {
         state.error = true;

@@ -31,10 +31,13 @@ export const AdminProductsColumn = [
     flex: 8,
     renderCell: (params) => {
       return (
-        <div className="product">
+        <Link
+          className="product"
+          to={`/admin/product/${params.row.productUrl}`}
+        >
           <img src={params.row.productImage} alt="" />
           <p>{params.row.productName}</p>
-        </div>
+        </Link>
       );
     },
   },
@@ -160,7 +163,7 @@ export const usersColumns = [
     align: "center",
     minWidth: 80,
     headerClassName: "super-app-theme--header",
-    flex: 0.5,
+    flex: 1,
   },
   {
     field: "name",
@@ -170,7 +173,7 @@ export const usersColumns = [
     minWidth: 150,
     sortable: true,
     headerClassName: "super-app-theme--header",
-    flex: 4,
+    flex: 5,
   },
   {
     field: "email",
@@ -198,13 +201,15 @@ export const usersColumns = [
     sortable: true,
     headerAlign: "center",
     align: "center",
-    flex: 3,
+    flex: 2,
     headerClassName: "super-app-theme--header",
     minWidth: 80,
     renderCell: (params) => {
+      const userId = params.row.id;
+      const handleDelete = params.row.delete;
       return (
         <>
-          <Button
+          {/* <Button
             style={{
               marginRight: "2px",
               textTransform: "none",
@@ -215,12 +220,13 @@ export const usersColumns = [
             size="small"
           >
             Block
-          </Button>
+          </Button> */}
           <Button
             style={{ textTransform: "none" }}
             variant="contained"
             color="error"
             size="small"
+            onClick={() => handleDelete(userId)}
           >
             Delete
           </Button>
@@ -248,7 +254,7 @@ export const recentOrdersColumns = [
     headerAlign: "center",
     align: "center",
     minWidth: 70,
-    flex: 1,
+    flex: 2,
     sortable: true,
     headerClassName: "super-app-theme--header",
   },
@@ -303,5 +309,242 @@ export const recentOrdersColumns = [
     flex: 1.5,
     minWidth: 100,
     headerClassName: "super-app-theme--header",
+  },
+];
+
+// Orders
+
+export const ordersColumns = [
+  {
+    field: "id",
+    headerName: "Sl No",
+    headerAlign: "center",
+    align: "center",
+    minWidth: 70,
+    flex: 0.5,
+    headerClassName: "super-app-theme--header",
+  },
+  {
+    field: "orderNo",
+    headerName: "Order No.",
+    headerAlign: "center",
+    align: "center",
+    minWidth: 70,
+    flex: 2,
+    sortable: true,
+    headerClassName: "super-app-theme--header",
+  },
+  {
+    field: "productName",
+    headerName: "Product Name",
+    headerAlign: "center",
+    // align: "center",
+    minWidth: 250,
+    flex: 4,
+    sortable: true,
+    headerClassName: "super-app-theme--header",
+  },
+  {
+    field: "category",
+    headerName: "Category",
+    headerAlign: "center",
+    align: "center",
+    minWidth: 150,
+    flex: 2,
+    sortable: true,
+    headerClassName: "super-app-theme--header",
+  },
+  {
+    field: "quantity",
+    headerName: "Quantity",
+    sortable: true,
+    headerAlign: "center",
+    align: "center",
+    type: "number",
+    minWidth: 80,
+    flex: 1,
+    headerClassName: "super-app-theme--header",
+  },
+  {
+    field: "price",
+    headerName: "Price",
+    sortable: true,
+    headerAlign: "center",
+    align: "center",
+    type: "number",
+    flex: 1.5,
+    minWidth: 120,
+    headerClassName: "super-app-theme--header",
+  },
+  {
+    field: "status",
+    headerName: "Status",
+    headerAlign: "center",
+    align: "center",
+    sortable: true,
+    flex: 1.5,
+    minWidth: 100,
+    headerClassName: "super-app-theme--header",
+  },
+];
+
+// Categories
+
+export const AdminCategoriesColumn = [
+  {
+    field: "id",
+    headerName: "ID",
+    hide: "true",
+  },
+  {
+    field: "slNo",
+    headerName: "Sl No",
+    headerAlign: "center",
+    align: "center",
+    minWidth: 70,
+    headerClassName: "super-app-theme--header",
+    flex: 1,
+  },
+  {
+    field: "categoryName",
+    headerName: "Category Name",
+    headerAlign: "center",
+    // align: "center",
+    minWidth: 150,
+    sortable: true,
+    headerClassName: "super-app-theme--header",
+    flex: 8,
+    renderCell: (params) => {
+      return (
+        <div className="categoryColumn">
+          <img src={params.row.categoryImage} alt="" />
+          <p>{params.row.categoryName}</p>
+        </div>
+      );
+    },
+  },
+  {
+    field: "action",
+    headerName: "Action",
+    sortable: true,
+    headerAlign: "center",
+    align: "center",
+    flex: 2,
+    headerClassName: "super-app-theme--header",
+    minWidth: 100,
+    renderCell: (params) => {
+      const categoryId = params.row.id;
+      const confirmDelete = params.row.delete;
+      return (
+        <div>
+          <Link className="edit" to={`/admin/category/update/${categoryId}`}>
+            <Button
+              style={{
+                textTransform: "none",
+                backgroundColor: "teal",
+              }}
+              variant="contained"
+              // color="secondary"
+              size="small"
+            >
+              Edit
+            </Button>
+          </Link>
+          <Link className="delete">
+            <Button
+              style={{ textTransform: "none" }}
+              onClick={() => confirmDelete(categoryId)}
+              variant="contained"
+              color="error"
+              size="small"
+            >
+              Delete
+            </Button>
+          </Link>
+        </div>
+      );
+    },
+  },
+];
+
+// Sliders
+
+export const SlidersColumn = [
+  {
+    field: "id",
+    headerName: "ID",
+    hide: "true",
+  },
+  {
+    field: "slNo",
+    headerName: "Sl No",
+    headerAlign: "center",
+    align: "center",
+    minWidth: 70,
+    headerClassName: "super-app-theme--header",
+    flex: 1,
+  },
+  {
+    field: "productName",
+    headerName: "Slider Name",
+    headerAlign: "center",
+    // align: "center",
+    minWidth: 200,
+    sortable: true,
+    headerClassName: "super-app-theme--header",
+    flex: 8,
+    renderCell: (params) => {
+      return (
+        <Link
+          className="sliderName"
+          to={`/admin/product/${params.row.productUrl}`}
+        >
+          <img src={params.row.categoryImage} alt="" />
+          <p>{params.row.categoryName}</p>
+        </Link>
+      );
+    },
+  },
+  {
+    field: "action",
+    headerName: "Action",
+    sortable: true,
+    headerAlign: "center",
+    align: "center",
+    flex: 3,
+    headerClassName: "super-app-theme--header",
+    minWidth: 100,
+    renderCell: (params) => {
+      const sliderId = params.row.id;
+      const confirmDelete = params.row.delete;
+      return (
+        <div>
+          <Link className="edit" to={`/admin/slider/update/${sliderId}`}>
+            <Button
+              style={{
+                textTransform: "none",
+                backgroundColor: "teal",
+              }}
+              variant="contained"
+              // color="secondary"
+              size="small"
+            >
+              Edit
+            </Button>
+          </Link>
+          <Link className="delete">
+            <Button
+              style={{ textTransform: "none" }}
+              onClick={() => confirmDelete(sliderId)}
+              variant="contained"
+              color="error"
+              size="small"
+            >
+              Delete
+            </Button>
+          </Link>
+        </div>
+      );
+    },
   },
 ];

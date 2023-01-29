@@ -15,8 +15,6 @@ const sliderlist = async (req, res, next) => {
 const createSlider = async (req, res, next) =>{
     try {
         const { name, link } = req.body;
-
-        console.log(req.body)
     
         const regex = /[^a-zA-Z0-9 ]/g;
     
@@ -80,7 +78,7 @@ const createSlider = async (req, res, next) =>{
 const updateSlider = async (req, res, next) => {
 
     try{
-        const {name, img, link} = req.body;
+        const {name, publicid, imgUrl, link} = req.body;
   
         if(!name){
             if(req.file){
@@ -114,19 +112,24 @@ const updateSlider = async (req, res, next) => {
   
         // handle image upload
         let uploadedFile ={
-            url : img.url,
-            public_id : img.publicid
+            url : imgUrl,
+            public_id : publicid
         };
   
         if(req.file){
             // Delete previous one first
-            await cloudinary.uploader.destroy(img.publicid);
+            await cloudinary.uploader.destroy(publicid);
   
             // Save image to cloudinary
-            uploadedFile = await cloudinary.uploader.upload(req.file.path,{
+            uploadData = await cloudinary.uploader.upload(req.file.path,{
                 folder : "hallo_food/slider_image",
                 resource_type: "image"
             });
+
+            uploadedFile ={
+              url : uploadData.imgUrl,
+              publicid : uploadData.publicid
+          };
   
             if(req.file){
               fs.unlink(req.file.path, (err)=>{
@@ -141,10 +144,7 @@ const updateSlider = async (req, res, next) => {
                 $set: {
                     name,
                     link,
-                    img : {
-                        url : uploadedFile.secure_url,
-                        publicid : uploadedFile.public_id
-                    }
+                    img : uploadedFile
                 }
             }
         )

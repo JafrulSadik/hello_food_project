@@ -5,14 +5,18 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import styled from "styled-components";
 import Sidebar from "./admin/components/Sidebar";
+import AddCategory from "./admin/pages/AddCategory";
 import AddProduct from "./admin/pages/AddProduct";
+import AddSlider from "./admin/pages/AddSlider";
 import AdminCategory from "./admin/pages/AdminCategory";
 import AdminProductDetail from "./admin/pages/AdminProductDetail";
 import AdminProducts from "./admin/pages/AdminProducts";
 import Dashboard from "./admin/pages/Dashboard";
 import Orders from "./admin/pages/Orders";
-import Slider from "./admin/pages/Slider";
+import Sliders from "./admin/pages/Sliders";
+import UpdateCategory from "./admin/pages/UpdateCategory";
 import UpdateProduct from "./admin/pages/UpdateProduct";
+import UpdateSlider from "./admin/pages/UpdateSlider";
 import Users from "./admin/pages/Users";
 import Account from "./pages/Account";
 import Cart from "./pages/Cart";
@@ -64,8 +68,15 @@ const App = () => {
           <Route path="/admin/products" element={<AdminProducts />} />
           <Route path="/admin/orders" element={<Orders />} />
           <Route path="/admin/users" element={<Users />} />
-          <Route path="/admin/category" element={<AdminCategory />} />
-          <Route path="/admin/slider" element={<Slider />} />
+          <Route path="/admin/categories" element={<AdminCategory />} />
+          <Route path="/admin/category/create" element={<AddCategory />} />
+          <Route
+            path="/admin/category/update/:id"
+            element={<UpdateCategory />}
+          />
+          <Route path="/admin/sliders" element={<Sliders />} />
+          <Route path="/admin/sliders/create" element={<AddSlider />} />
+          <Route path="/admin/slider/update/:id" element={<UpdateSlider />} />
           <Route path="/admin/products/create" element={<AddProduct />} />
           <Route
             path="/admin/product/update/:productUrl"

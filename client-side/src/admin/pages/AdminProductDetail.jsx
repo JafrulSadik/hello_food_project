@@ -20,7 +20,7 @@ const AdminProductDetail = () => {
 
   useEffect(() => {
     dispatch(getSingleProduct(productUrl));
-    //eslint-disable-next-line
+    // eslint-disable-next-line
   }, []);
 
   // console.log(product._id);

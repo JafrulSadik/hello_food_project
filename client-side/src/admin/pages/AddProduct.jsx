@@ -39,7 +39,7 @@ const AddProduct = () => {
       } catch (error) {}
     };
     fetchData();
-    //eslint-disable-next-line
+    // eslint-disable-next-line
   }, []);
 
   const handleInputChange = (e) => {

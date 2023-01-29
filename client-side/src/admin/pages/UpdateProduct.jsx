@@ -2,10 +2,11 @@ import { Button } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Spinner from "../../components/Spinner";
+import { updateProduct } from "../../redux/features/product/productSlice";
 import { API } from "../../requestMethod";
 import AdminHeader from "../components/AdminHeader";
 
@@ -13,10 +14,10 @@ const UpdateProduct = () => {
   const [productImage, setProductImage] = useState("");
   const [imagePreview, setImagePreview] = useState(null);
   const [catgories, setCatgories] = useState([]);
-  const [selectCat, setSelectCat] = useState("")
+  const [selectCat, setSelectCat] = useState("");
   const [description, setDescription] = useState("");
-  //   const dispatch = useDispatch();
-  //   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { productUrl } = useParams();
   const { loading } = useSelector((state) => state.product);
   const productEdit = useSelector((state) => state.product?.product);
@@ -27,6 +28,7 @@ const UpdateProduct = () => {
     _category: "",
     quantity: "",
     price: "",
+    imgUrl: "",
   });
 
   useEffect(() => {
@@ -34,7 +36,7 @@ const UpdateProduct = () => {
       try {
         const res = await API.get(`/product/${productUrl}`);
         setProduct(res.data);
-        setSelectCat(res.data._category?._id)
+        setSelectCat(res.data._category?._id);
       } catch (error) {}
     };
     productData();
@@ -47,7 +49,6 @@ const UpdateProduct = () => {
         const response = await API.get("/category");
         setCatgories(response.data);
       } catch (error) {}
-
     };
     fetchData();
     // dispatch(getSingleProduct(productUrl));
@@ -63,27 +64,33 @@ const UpdateProduct = () => {
     setProduct({ ...product, [name]: value });
   };
 
+  const handleSelectCat = (e) => {
+    setSelectCat(e.target.value)
+  }
+
   const handleImageChange = (e) => {
     setProductImage(e.target.files[0]);
     setImagePreview(URL.createObjectURL(e.target.files[0]));
   };
 
-  const updateProduct = (e) => {
+  const saveUpdateProduct = (e) => {
     e.preventDefault();
+    const { publicid, url } = product.img;
+    const { _id } = product;
     const formData = new FormData();
     formData.append("productCode", product?.productCode);
     formData.append("name", product?.name);
-    formData.append("category", product?._category);
+    formData.append("id", product?._id);
+    formData.append("category", selectCat);
     formData.append("quantity", Number(product?.quantity));
     formData.append("price", Number(product?.price));
-    formData.append("description", description);
+    formData.append("description", description ? description : "");
     formData.append("image", productImage);
+    formData.append("publicid", publicid);
+    formData.append("imgUrl", url);
     console.log(...formData);
-    // dispatch(createNewProduct({ formData, navigate }));
+    dispatch(updateProduct({ formData, navigate, _id }));
   };
-
-
-
 
   return (
     <>
@@ -91,7 +98,7 @@ const UpdateProduct = () => {
       <Container>
         <h3>Update Product of {productEdit?.name} </h3>
         <div className="box">
-          <form onSubmit={(e) => updateProduct(e)}>
+          <form onSubmit={(e) => saveUpdateProduct(e)}>
             <div className="imgDiv">
               <label>Product Image</label>
               <small>Supported Formats : jpg, jpeg, png</small>
@@ -106,7 +113,7 @@ const UpdateProduct = () => {
                 </div>
               ) : (
                 <div className="image-preview">
-                  <img src={productEdit?.img?.url} alt="img" />
+                  <img src={product?.img?.url} alt="img" />
                 </div>
               )}
             </div>
@@ -128,27 +135,24 @@ const UpdateProduct = () => {
               value={product?.name}
               onChange={(e) => handleInputChange(e)}
             />
-            
-            
-
 
             <label>Product Category : </label>
 
-            {
-              product._category &&   
-                        <select name="category" onChange={(e) => handleInputChange(e)} defaultValue={selectCat}>
-                          { catgories.map((category) => {
-                            return (
-                              <option key={category._id}  value={category._id}>
-                                {category.name}
-                              </option>
-                            );
-                          })}
-                        </select>
-            }
-              
-
-
+            {product._category && (
+              <select
+                name="category"
+                onChange={(e) => handleSelectCat(e)}
+                defaultValue={selectCat}
+              >
+                {catgories.map((category) => {
+                  return (
+                    <option key={category._id} value={category._id}>
+                      {category.name}
+                    </option>
+                  );
+                })}
+              </select>
+            )}
 
             <label htmlFor="">Product Price :</label>
             <input

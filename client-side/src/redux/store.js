@@ -1,12 +1,16 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import authSlice from "./features/auth/authSlice";
 import userSlice from "./features/auth/userSlice";
+import categorySlice from "./features/category/categorySlice";
 import productSlice from "./features/product/productSlice";
+import sliderSlice from "./features/slider/sliderSlice";
 
 const rootReducer = combineReducers({
   auth: authSlice,
   user: userSlice,
   product: productSlice,
+  category: categorySlice,
+  slider: sliderSlice,
 });
 
 export default configureStore({ reducer: rootReducer });

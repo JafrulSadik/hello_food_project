@@ -79,7 +79,7 @@ const createCategory = async (req, res, next) =>{
 const updateCategory = async (req, res, next) => {
 
     try{
-        const {name, img} = req.body;
+        const {name, imgUrl, publicid} = req.body;
   
         if(!name){
             if(req.file){
@@ -113,25 +113,24 @@ const updateCategory = async (req, res, next) => {
   
         // handle image upload
         let uploadedFile ={
-            url : img.url,
-            public_id : img.publicid
+            url : imgUrl,
+            public_id : publicid
         };
   
         if(req.file){
             // Delete previous one first
-            await cloudinary.uploader.destroy(img.publicid);
+            await cloudinary.uploader.destroy(publicid);
   
             // Save image to cloudinary
-            uploadedFile = await cloudinary.uploader.upload(req.file.path,{
+            uploadData = await cloudinary.uploader.upload(req.file.path,{
                 folder : "hallo_food/category_image",
                 resource_type: "image"
             });
-  
-            if(req.file){
-              fs.unlink(req.file.path, (err)=>{
-                return next(err)
-              })
-            }
+
+            uploadedFile ={
+              url : uploadData.public_id,
+              public_id : uploadData.url
+          };
         }
         
         await Category.findByIdAndUpdate(
@@ -140,10 +139,7 @@ const updateCategory = async (req, res, next) => {
                 $set: {
                     name,
                     categoryUrl,
-                    img : {
-                        url : uploadedFile.secure_url,
-                        publicid : uploadedFile.public_id
-                    }
+                    img: uploadedFile
                 }
             }
         )
