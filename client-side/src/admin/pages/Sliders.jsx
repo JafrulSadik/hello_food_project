@@ -46,8 +46,8 @@ const Sliders = () => {
     return {
       id: slider?._id,
       slNo: index + 1,
-      categoryImage: slider.img?.url,
-      categoryName: slider.name,
+      sliderImage: slider.img?.url,
+      sliderName: slider.name,
       delete: confirmDelete,
     };
   });

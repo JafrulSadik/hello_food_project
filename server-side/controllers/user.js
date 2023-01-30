@@ -13,7 +13,7 @@ const allUsers = async (req, res, next) =>{
         res.status(200).send(users)
 
     } catch (err){
-        next(err);
+        return next(err);
     }
 }
 
@@ -31,7 +31,7 @@ const singleUser = async (req, res, next) => {
         res.status(200).send(others);
         
     } catch (err){
-        next(err)
+        return next(err)
     }
 }
 
@@ -51,7 +51,7 @@ const deleteUser = async (req, res, next) => {
         res.status(200).send("User deleted succesfully!");
         
     } catch (err){
-        next(err)
+        return next(err)
     }
 }
 

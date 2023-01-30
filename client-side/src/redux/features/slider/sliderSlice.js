@@ -28,6 +28,22 @@ export const getAllSliders = createAsyncThunk(
   }
 );
 
+// Update Slider
+
+export const updateSlider = createAsyncThunk(
+  "products/updateSlider",
+  async ({ formData, navigate, id }, { rejectWithValue }) => {
+    try {
+      const response = await API.patch(`/slider/${id}`, formData);
+      toast.success("Slider Updated Successfully");
+      navigate("/admin/sliders");
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 // Delete Slider
 
 export const deleteSlider = createAsyncThunk(
@@ -77,6 +93,21 @@ export const sliderSlice = createSlice({
         state.error = true;
         state.loading = false;
       })
+
+      // Update Slider
+      .addCase(updateSlider.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateSlider.fulfilled, (state) => {
+        state.loading = false;
+        state.error = false;
+      })
+      .addCase(updateSlider.rejected, (state, action) => {
+        state.loading = false;
+        state.error = true;
+        state.message = action.payload;
+      })
+
       //Delete Slider
       .addCase(deleteSlider.pending, (state) => {
         state.loading = true;

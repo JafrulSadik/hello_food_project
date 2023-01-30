@@ -32,6 +32,22 @@ export const createCategroy = createAsyncThunk(
   }
 );
 
+// Update A Category
+
+export const updateCategory = createAsyncThunk(
+  "products/updateCategory",
+  async ({ formData, navigate, categoryUrl }, { rejectWithValue }) => {
+    try {
+      const response = await API.patch(`/category/${categoryUrl}`, formData);
+      toast.success("Category Updated Successfully");
+      navigate("/admin/categories");
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 // Delete A Category
 
 export const deleteCategory = createAsyncThunk(
@@ -85,6 +101,22 @@ export const categorySlice = createSlice({
         state.error = true;
         state.message = action.payload;
       })
+
+      // Update Category
+
+      .addCase(updateCategory.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateCategory.fulfilled, (state) => {
+        state.loading = false;
+        state.error = false;
+      })
+      .addCase(updateCategory.rejected, (state, action) => {
+        state.loading = false;
+        state.error = true;
+        state.message = action.payload;
+      })
+
       // Delete A Category
       .addCase(deleteCategory.pending, (state) => {
         state.loading = true;

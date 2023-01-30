@@ -1,37 +1,53 @@
 import { Button } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "react-quill/dist/quill.snow.css";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Spinner from "../../components/Spinner";
+import { updateSlider } from "../../redux/features/slider/sliderSlice";
+import { API } from "../../requestMethod";
 import AdminHeader from "../components/AdminHeader";
 
 const UpdateSlider = () => {
-  const [categoryName, setCategoryName] = useState("");
-  const [categoryImage, setCategoryImage] = useState("");
+  const { id } = useParams();
+  const [slider, setSlider] = useState({});
+  const [sliderName, setSliderName] = useState("");
+  const [sliderImage, setSliderImage] = useState("");
   const [imagePreview, setImagePreview] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { loading, error, message } = useSelector((state) => state.product);
+  const { loading, error } = useSelector((state) => state.slider);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await API.get(`/slider/${id}`);
+        console.log(response.data);
+        setSlider(response.data);
+        setSliderName(response.data.name);
+        setSliderImage(response.data?.img?.url);
+      } catch (error) {}
+    };
+    fetchData();
+    //eslint-disable-next-line
+  }, []);
 
   const handleImageChange = (e) => {
-    setCategoryImage(e.target.files[0]);
+    setSliderImage(e.target.files[0]);
     setImagePreview(URL.createObjectURL(e.target.files[0]));
   };
 
-  //   const saveProduct = (e) => {
-  //     e.preventDefault();
-  //     const formData = new FormData();
-  //     formData.append("productCode", product.productCode);
-  //     formData.append("name", product.name);
-  //     formData.append("category", product.category);
-  //     formData.append("quantity", Number(product.quantity));
-  //     formData.append("price", Number(product.price));
-  //     formData.append("description", description);
-  //     formData.append("image", prooductImage);
-  //     dispatch(createNewProduct({ formData, navigate }));
-  //   };
+  const handleUpdate = (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("name", sliderName);
+    formData.append("publicid", slider.img?.publicid);
+    formData.append("imgUrl", slider.img?.url);
+    formData.append("image", sliderImage);
+    formData.append("id", id);
+    dispatch(updateSlider({ formData, navigate, id }));
+  };
 
   return (
     <>
@@ -39,34 +55,38 @@ const UpdateSlider = () => {
       <Container>
         <h3>Update Slider</h3>
         <div className="box">
-          <form className="form">
+          <form className="form" onSubmit={(e) => handleUpdate(e)}>
             <div className="imgDiv">
               <label>Slider Image</label>
               <small>Supported Formats : jpg, jpeg, png</small>
               <input
                 type="file"
                 name="image"
-                required
                 onChange={(e) => handleImageChange(e)}
               />
-              {imagePreview != null && (
+              {imagePreview != null ? (
                 <div className="image-preview">
                   <img src={imagePreview} alt="img" />
                 </div>
+              ) : (
+                <div className="image-preview">
+                  <img src={sliderImage} alt="img" />
+                </div>
               )}
             </div>
-            <div className="categoryName">
+            <div className="sliderName">
               <label>Slider Name : </label>
             </div>
             <input
               type="text"
               name="name"
+              value={sliderName}
               required
-              placeholder="Category Name"
-              onChange={(e) => setCategoryName(e.target.value)}
+              placeholder="Slider Name"
+              onChange={(e) => setSliderName(e.target.value)}
             />
             <div className="buttonDiv">
-              {error && <p>{message}</p>}
+              {error && <p>Error</p>}
               <Button
                 type="submit"
                 variant="contained"
@@ -158,7 +178,7 @@ const Container = styled.div`
     border-radius: 3px;
     outline: none;
   }
-  .categoryName {
+  .sliderName {
     width: 90%;
     margin: 10px;
     font-weight: 600;

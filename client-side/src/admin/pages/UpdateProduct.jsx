@@ -20,7 +20,6 @@ const UpdateProduct = () => {
   const navigate = useNavigate();
   const { productUrl } = useParams();
   const { loading } = useSelector((state) => state.product);
-  const productEdit = useSelector((state) => state.product?.product);
 
   const [product, setProduct] = useState({
     productCode: "",
@@ -36,6 +35,7 @@ const UpdateProduct = () => {
       try {
         const res = await API.get(`/product/${productUrl}`);
         setProduct(res.data);
+        setDescription(res.data?.description);
         setSelectCat(res.data._category?._id);
       } catch (error) {}
     };
@@ -51,17 +51,20 @@ const UpdateProduct = () => {
       } catch (error) {}
     };
     fetchData();
-    // dispatch(getSingleProduct(productUrl));
     //eslint-disable-next-line
   }, []);
 
   useEffect(() => {
-    setDescription(productEdit?.description);
-  }, [productEdit]);
+    //eslint-disable-next-line
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setProduct({ ...product, [name]: value });
+  };
+
+  const handleSelectCat = (e) => {
+    setSelectCat(e.target.value);
   };
 
   const handleImageChange = (e) => {
@@ -77,19 +80,13 @@ const UpdateProduct = () => {
     formData.append("productCode", product?.productCode);
     formData.append("name", product?.name);
     formData.append("id", product?._id);
-    if (product?._category) {
-      formData.append("category", product?._category?._id);
-    } else {
-      formData.append("category", selectCat);
-    }
+    formData.append("category", selectCat);
     formData.append("quantity", Number(product?.quantity));
     formData.append("price", Number(product?.price));
-    formData.append("description", description);
+    formData.append("description", description ? description : "");
     formData.append("image", productImage);
     formData.append("publicid", publicid);
-    formData.append("url", url);
-    // console.log(...formData);
-    // console.log(...formData);
+    formData.append("imgUrl", url);
     dispatch(updateProduct({ formData, navigate, _id }));
   };
 
@@ -97,7 +94,7 @@ const UpdateProduct = () => {
     <>
       <AdminHeader />
       <Container>
-        <h3>Update Product of {productEdit?.name} </h3>
+        <h3>Update Product </h3>
         <div className="box">
           <form onSubmit={(e) => saveUpdateProduct(e)}>
             <div className="imgDiv">
@@ -142,7 +139,7 @@ const UpdateProduct = () => {
             {product._category && (
               <select
                 name="category"
-                onChange={(e) => handleInputChange(e)}
+                onChange={(e) => handleSelectCat(e)}
                 defaultValue={selectCat}
               >
                 {catgories.map((category) => {
@@ -173,6 +170,7 @@ const UpdateProduct = () => {
               placeholder="Product Quantity"
               onChange={(e) => handleInputChange(e)}
             />
+
             <label htmlFor="">Product Description : </label>
             <ReactQuill
               theme="snow"
@@ -182,6 +180,7 @@ const UpdateProduct = () => {
               modules={UpdateProduct.modules}
               formats={UpdateProduct.formats}
             />
+
             <div className="buttonDiv">
               {/* {error && <p>{message}</p>} */}
               <Button

@@ -71,7 +71,7 @@ const App = () => {
           <Route path="/admin/categories" element={<AdminCategory />} />
           <Route path="/admin/category/create" element={<AddCategory />} />
           <Route
-            path="/admin/category/update/:id"
+            path="/admin/category/update/:categoryUrl"
             element={<UpdateCategory />}
           />
           <Route path="/admin/sliders" element={<Sliders />} />

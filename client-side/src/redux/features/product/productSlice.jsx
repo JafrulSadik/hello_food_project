@@ -52,7 +52,6 @@ export const updateProduct = createAsyncThunk(
       const response = await API.patch(`/product/${_id}`, formData);
       toast.success("Product Updated Successfully");
       navigate("/admin/products");
-      console.log(response.data);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -129,10 +128,10 @@ export const productSlice = createSlice({
       })
       // Update Product
       .addCase(updateProduct.pending, (state) => {
-        state.pending = true;
+        state.loading = true;
       })
       .addCase(updateProduct.fulfilled, (state) => {
-        state.pending = false;
+        state.loading = false;
       })
       .addCase(updateProduct.rejected, (state) => {
         state.error = true;

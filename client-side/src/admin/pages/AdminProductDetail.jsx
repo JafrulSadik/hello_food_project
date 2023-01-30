@@ -2,7 +2,7 @@ import { Button } from "@mui/material";
 import DOMPurify from "dompurify";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import swal from "sweetalert";
 import Spinner from "../../components/Spinner";
@@ -95,12 +95,17 @@ const AdminProductDetail = () => {
             <small>Created on : {product?.createdAt}</small>
             <small>Updated on : {product?.updatedAt}</small>
             <div className="buttonDiv">
-              <Button
-                variant="contained"
-                style={{ textTransform: "none", backgroundColor: "#18a753" }}
+              <Link
+                className="edit-link"
+                to={`/admin/product/update/${productUrl}`}
               >
-                Edit
-              </Button>
+                <Button
+                  variant="contained"
+                  style={{ textTransform: "none", backgroundColor: "#18a753" }}
+                >
+                  Edit
+                </Button>
+              </Link>
               <Button
                 onClick={confirmDelete}
                 variant="contained"
@@ -175,6 +180,10 @@ const Container = styled.div`
   }
   .description {
     padding-left: 30px;
+  }
+
+  .edit-link {
+    text-decoration: none;
   }
   .buttonDiv {
     display: flex;

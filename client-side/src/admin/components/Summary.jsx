@@ -40,18 +40,10 @@ const Summary = () => {
     // eslint-disable-next-line
   }, []);
 
-  const totalStockValue = () => {
-    const array = [];
-    products.map((item) => {
-      const { price, quantity } = item;
-      const productValue = price * quantity;
-      return array.push(productValue);
-    });
-    const totalValue = array.reduce((a, b) => {
-      return a + b;
-    }, 0);
-    return totalValue;
-  };
+  const tatalStockValue = products.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0
+  );
 
   const outOfStock = () => {
     const array = [];
@@ -85,7 +77,7 @@ const Summary = () => {
             <AiFillDollarCircle />
           </div>
           <div className="text-div">
-            Total Stock Value <span>{totalStockValue()}</span>
+            Total Stock Value <span>{tatalStockValue}</span>
           </div>
         </InfoBox>
         <InfoBox color="#689F38">

@@ -15,7 +15,7 @@ const allProducts = async (req, res, next) => {
 
     res.status(200).json(products);
   } catch (err) {
-    next(err);
+    return next(err);
   }
 };
 
@@ -40,7 +40,7 @@ const addProduct = async (req, res, next) => {
       if (req.file) {
         fs.unlink(req.file.path, (err) => {});
       }
-      next(createError(409, "Duplicate product name found!!!"));
+      return next(createError(409, "Duplicate product name found!!!"));
     }
 
     // handle image upload
@@ -78,7 +78,7 @@ const addProduct = async (req, res, next) => {
 
     if (req.file) {
       fs.unlink(req.file.path, (err) => {
-        next(err);
+        return next(err);
       });
     }
 
@@ -87,7 +87,7 @@ const addProduct = async (req, res, next) => {
     if (req.file) {
       fs.unlink(req.file.path, (err) => {});
     }
-    next(err);
+    return next(err);
   }
 };
 
@@ -102,7 +102,7 @@ const singleProduct = async (req, res, next) => {
 
     res.status(200).send(product);
   } catch (err) {
-    next(err);
+    return next(err);
   }
 };
 
@@ -112,29 +112,22 @@ const updateProduct = async (req, res, next) => {
     const {
       name,
       category,
+      publicid,
+      imgUrl,
       quantity,
       price,
       description,
       productCode,
       id,
-      publicid,
-      url,
     } = req.body;
 
-    if (
-      !name ||
-      !category ||
-      quantity == "" ||
-      !price ||
-      !description ||
-      productCode
-    ) {
+    if (!name || !category || !price || !productCode) {
       if (req.file) {
         fs.unlink(req.file.path, (err) => {
-          next(err);
+          return next(err);
         });
       }
-      return createError(404, "Something went wrong !!!");
+      return next(createError(404, "Something went wrong !!!"));
     }
 
     const regex = /[^a-zA-Z0-9 ]/g;
@@ -153,7 +146,7 @@ const updateProduct = async (req, res, next) => {
     if (dupProductName) {
       if (req.file) {
         fs.unlink(req.file.path, (err) => {
-          next(err);
+          return next(err);
         });
       }
       return next(
@@ -169,7 +162,7 @@ const updateProduct = async (req, res, next) => {
     if (dupProductCode) {
       if (req.file) {
         fs.unlink(req.file.path, (err) => {
-          next(err);
+          return next(err);
         });
       }
       return next(
@@ -182,8 +175,8 @@ const updateProduct = async (req, res, next) => {
 
     // handle image upload
     let uploadedFile = {
-      url: url,
-      public_id: publicid,
+      url: imgUrl,
+      publicid: publicid,
     };
 
     if (req.file) {
@@ -191,17 +184,42 @@ const updateProduct = async (req, res, next) => {
       await cloudinary.uploader.destroy(publicid);
 
       // Save image to cloudinary
-      uploadedFile = await cloudinary.uploader.upload(req.file.path, {
+      uploadData = await cloudinary.uploader.upload(req.file.path, {
         folder: "hallo_food/product_image",
         resource_type: "image",
       });
 
-      if (req.file) {
-        fs.unlink(req.file.path, (err) => {
-          next(err);
-        });
-      }
+      uploadedFile = {
+        url: uploadData.secure_url,
+        publicid: uploadData.public_id,
+      };
     }
+
+    // pull first
+    const product = await Product.findById({ _id: id });
+
+    await Category.updateOne(
+      {
+        _id: product._category.toString(),
+      },
+      {
+        $pull: {
+          products: id,
+        },
+      }
+    );
+
+    // set new category
+    await Category.updateOne(
+      {
+        _id: req.body.category,
+      },
+      {
+        $addToSet: {
+          products: id,
+        },
+      }
+    );
 
     await Product.findByIdAndUpdate(id, {
       $set: {
@@ -212,21 +230,24 @@ const updateProduct = async (req, res, next) => {
         price,
         description,
         productCode,
-        img: {
-          url: uploadedFile.secure_url,
-          publicid: uploadedFile.public_id,
-        },
+        img: uploadedFile,
       },
     });
+
+    if (req.file) {
+      fs.unlink(req.file.path, (err) => {
+        return next(err);
+      });
+    }
 
     res.status(200).send("Product updated successfully!");
   } catch (err) {
     if (req.file) {
       fs.unlink(req.file.path, (err) => {
-        next(err);
+        return next(err);
       });
     }
-    next(err);
+    return next(err);
   }
 };
 
@@ -237,8 +258,18 @@ const deleteProduct = async (req, res, next) => {
     if (!product) {
       return res.status(404).send("product not found");
     }
-
     const productId = product._id;
+
+    await Category.updateOne(
+      {
+        _id: product._category.toString(),
+      },
+      {
+        $pull: {
+          products: productId,
+        },
+      }
+    );
 
     const publicid = product.img.publicid;
 
@@ -248,7 +279,7 @@ const deleteProduct = async (req, res, next) => {
 
     res.status(200).send("Product deleted succesfully!");
   } catch (err) {
-    next(err);
+    return next(err);
   }
 };
 

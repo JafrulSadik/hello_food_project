@@ -1,37 +1,55 @@
 import { Button } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "react-quill/dist/quill.snow.css";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Spinner from "../../components/Spinner";
+import { updateCategory } from "../../redux/features/category/categorySlice";
+import { API } from "../../requestMethod";
 import AdminHeader from "../components/AdminHeader";
 
 const UpdateCategory = () => {
+  const { categoryUrl } = useParams();
+
   const [categoryName, setCategoryName] = useState("");
-  const [categoryImage, setCategoryImage] = useState("");
+  const [category, setCategory] = useState({});
+  const [categoryImage, setCategoryImage] = useState({});
+  const [image, setImage] = useState("");
   const [imagePreview, setImagePreview] = useState(null);
+  // const [imagePreview, setImagePreview] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { loading, error, message } = useSelector((state) => state.product);
+  const { loading, error, message } = useSelector((state) => state.category);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await API.get(`/category/${categoryUrl}`);
+        setCategory(response.data);
+        setCategoryName(response.data.name);
+        setCategoryImage(response.data?.img?.url);
+      } catch (error) {}
+    };
+    fetchData();
+    //eslint-disable-next-line
+  }, []);
 
   const handleImageChange = (e) => {
-    setCategoryImage(e.target.files[0]);
+    setImage(e.target.files[0]);
     setImagePreview(URL.createObjectURL(e.target.files[0]));
   };
 
-  //   const saveProduct = (e) => {
-  //     e.preventDefault();
-  //     const formData = new FormData();
-  //     formData.append("productCode", product.productCode);
-  //     formData.append("name", product.name);
-  //     formData.append("category", product.category);
-  //     formData.append("quantity", Number(product.quantity));
-  //     formData.append("price", Number(product.price));
-  //     formData.append("description", description);
-  //     formData.append("image", prooductImage);
-  //     dispatch(createNewProduct({ formData, navigate }));
-  //   };
+  const SaveCategory = (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("name", categoryName);
+    formData.append("image", image);
+    formData.append("imgUrl", category.img.url);
+    formData.append("publicid", categoryImage.publicid);
+    formData.append("id", category._id);
+    dispatch(updateCategory({ formData, navigate, categoryUrl }));
+  };
 
   return (
     <>
@@ -39,19 +57,22 @@ const UpdateCategory = () => {
       <Container>
         <h3>Update Category</h3>
         <div className="box">
-          <form className="form">
+          <form className="form" onSubmit={(e) => SaveCategory(e)}>
             <div className="imgDiv">
               <label>Category Image</label>
               <small>Supported Formats : jpg, jpeg, png</small>
               <input
                 type="file"
                 name="image"
-                required
                 onChange={(e) => handleImageChange(e)}
               />
-              {imagePreview != null && (
+              {imagePreview != null ? (
                 <div className="image-preview">
                   <img src={imagePreview} alt="img" />
+                </div>
+              ) : (
+                <div className="image-preview">
+                  <img src={categoryImage} alt="img" />
                 </div>
               )}
             </div>
@@ -61,6 +82,7 @@ const UpdateCategory = () => {
             <input
               type="text"
               name="name"
+              value={categoryName}
               required
               placeholder="Category Name"
               onChange={(e) => setCategoryName(e.target.value)}

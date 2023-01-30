@@ -1,19 +1,24 @@
 const express = require("express");
-const { createCategory, categorylist, updateCategory, getCatProduct, deleteCategory } = require("../controllers/category");
+const {
+  createCategory,
+  categorylist,
+  updateCategory,
+  getCatProduct,
+  deleteCategory,
+  singleCategory,
+} = require("../controllers/category");
 const { upload } = require("../utils/fileUpload");
 
 const router = express.Router();
 
+router.get("/", categorylist);
 
+router.get("/:categoryUrl", singleCategory);
 
-router.get('/', categorylist);
+router.post("/create", upload.single("image"), createCategory);
 
-router.get('/:categoryUrl', getCatProduct);
+router.patch("/:id", upload.single("image"), updateCategory);
 
-router.post('/create', upload.single("image"), createCategory);
-
-router.patch('/:id', upload.single("image"), updateCategory);
-
-router.delete('/:id', deleteCategory)
+router.delete("/:id", deleteCategory);
 
 module.exports = router;

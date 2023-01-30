@@ -433,11 +433,12 @@ export const AdminCategoriesColumn = [
     headerClassName: "super-app-theme--header",
     minWidth: 100,
     renderCell: (params) => {
+      const categoryUrl = params.row.categoryUrl;
       const categoryId = params.row.id;
       const confirmDelete = params.row.delete;
       return (
         <div>
-          <Link className="edit" to={`/admin/category/update/${categoryId}`}>
+          <Link className="edit" to={`/admin/category/update/${categoryUrl}`}>
             <Button
               style={{
                 textTransform: "none",
@@ -485,7 +486,7 @@ export const SlidersColumn = [
     flex: 1,
   },
   {
-    field: "productName",
+    field: "sliderName",
     headerName: "Slider Name",
     headerAlign: "center",
     // align: "center",
@@ -495,13 +496,10 @@ export const SlidersColumn = [
     flex: 8,
     renderCell: (params) => {
       return (
-        <Link
-          className="sliderName"
-          to={`/admin/product/${params.row.productUrl}`}
-        >
-          <img src={params.row.categoryImage} alt="" />
-          <p>{params.row.categoryName}</p>
-        </Link>
+        <div className="sliderName">
+          <img src={params.row.sliderImage} alt="" />
+          <p>{params.row.sliderName}</p>
+        </div>
       );
     },
   },

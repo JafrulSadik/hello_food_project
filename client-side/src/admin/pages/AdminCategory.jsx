@@ -45,6 +45,7 @@ const AdminCategories = () => {
   const rows = categories?.map((category, index) => {
     return {
       id: category?._id,
+      categoryUrl: category?.categoryUrl,
       publicid: category?.img?.publicid,
       slNo: index + 1,
       categoryImage: category.img?.url,
