@@ -1,24 +1,39 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import Categories from "../components/Categories";
 import Footer from "../components/Footer";
 import MobileMenu from "../components/MobileMenu";
 import Navbar from "../components/Navbar";
 import ProductCard from "../components/ProductCard";
-import { AllProductItems } from "../data";
+import Spinner from "../components/Spinner";
+import { getSingleCategory } from "../redux/features/category/categorySlice";
+import { getAllProducts } from "../redux/features/product/productSlice";
 import { mobile } from "../responsive";
 
 const Prodcuts = () => {
+  const { categoryUrl } = useParams();
+  const dispatch = useDispatch();
+  const { category, loading } = useSelector((state) => state.category);
+  const { products } = useSelector((state) => state.product);
+
+  useEffect(() => {
+    dispatch(getSingleCategory(categoryUrl));
+    dispatch(getAllProducts());
+    // eslint-disable-next-line
+  }, [categoryUrl]);
+
   return (
-    <div style={{backgroundColor: '#fcf8f8'}}>
+    <div style={{ backgroundColor: "#fcf8f8" }}>
       <Navbar />
       <Categories />
       <Container>
         <div className="wrapper">
           <div className="header">
             <div className="name">
-              <span>All Products</span>
+              <span>{category ? category?.name : "All Products"}</span>
             </div>
             <div className="sort">
               <span>Sort By : </span>
@@ -30,9 +45,13 @@ const Prodcuts = () => {
             </div>
           </div>
           <div className="productsList">
-            {AllProductItems.map((item) => {
-              return <ProductCard item={item} key={item.id} />;
-            })}
+            {category
+              ? category?.products?.map((item) => {
+                  return <ProductCard item={item} key={item._id} />;
+                })
+              : products?.map((item) => {
+                  return <ProductCard item={item} key={item._id} />;
+                })}
           </div>
           <div className="pagination">
             <ul>
@@ -73,17 +92,18 @@ const Prodcuts = () => {
       </Container>
       <Footer />
       <MobileMenu />
+      {loading && <Spinner />}
     </div>
   );
 };
 
 const Container = styled.div`
-    .wrapper {
-        margin: 50px 50px;
-        ${mobile({
-            margin: 0
-        })}
-    }
+  .wrapper {
+    margin: 50px 50px;
+    ${mobile({
+      margin: 0,
+    })}
+  }
   .header {
     display: flex;
     justify-content: space-between;
@@ -101,7 +121,7 @@ const Container = styled.div`
     font-weight: 600;
     border-bottom: 2px solid green;
     ${mobile({
-        fontSize: '13px'
+      fontSize: "13px",
     })}
   }
   .sort > span {
@@ -113,8 +133,8 @@ const Container = styled.div`
     padding: 5px;
     cursor: pointer;
     ${mobile({
-        fontSize: '10px',
-        padding: '3px'
+      fontSize: "10px",
+      padding: "3px",
     })}
   }
   .productsList {
@@ -138,8 +158,8 @@ const Container = styled.div`
     margin: 40px;
     gap: 15px;
     ${mobile({
-        margin: '20px 10px',
-        gap: '5px'
+      margin: "20px 10px",
+      gap: "5px",
     })}
   }
   .pagination li {
@@ -149,7 +169,7 @@ const Container = styled.div`
     border: 1px solid lightgray;
     padding: 5px;
     &:hover {
-        border: 1px solid blue;
+      border: 1px solid blue;
     }
   }
   .pagination a {

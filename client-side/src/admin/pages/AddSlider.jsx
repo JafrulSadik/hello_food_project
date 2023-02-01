@@ -14,7 +14,7 @@ const AddCategory = () => {
   const [imagePreview, setImagePreview] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { loading, error, message } = useSelector((state) => state.product);
+  const { loading, error, message } = useSelector((state) => state.slider);
 
   const handleImageChange = (e) => {
     setSliderImage(e.target.files[0]);

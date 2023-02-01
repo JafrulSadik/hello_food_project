@@ -114,7 +114,7 @@ const NavButton = styled.button`
   }
 `;
 
-const NavLink = styled.div`
+const NavDiv = styled.div`
   width: 100%;
   height: 100%;
   flex: 2;
@@ -271,7 +271,7 @@ const Navbar = () => {
 
   return (
     <Wrapper>
-      <Logo href="/">
+      <Logo>
         <LogoLink to="/">
           <LogoImage src={logo} />
         </LogoLink>
@@ -287,7 +287,7 @@ const Navbar = () => {
         </InputDiv>
       </Form>
 
-      <NavLink>
+      <NavDiv>
         <LinkPc to="/cart">
           <Span>
             <FaShoppingCart></FaShoppingCart>
@@ -337,9 +337,9 @@ const Navbar = () => {
             <Text>Login</Text>
           </LinkLogin>
         )}
-      </NavLink>
+      </NavDiv>
       {pending && <Spinner />}
-    </Wrapper>
+    </Wrapper>  
   );
 };
 

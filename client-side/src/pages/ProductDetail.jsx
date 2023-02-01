@@ -1,35 +1,62 @@
-import React, { useState } from "react";
+import DOMPurify from "dompurify";
+import React, { useEffect, useState } from "react";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useParams } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import styled from "styled-components";
 import Footer from "../components/Footer";
 import MobileMenu from "../components/MobileMenu";
 import Navbar from "../components/Navbar";
 import ProductCard from "../components/ProductCard";
-import { GroceryItems } from "../data";
+import Spinner from "../components/Spinner";
+import { getSingleCategory } from "../redux/features/category/categorySlice";
+import { getSingleProduct } from "../redux/features/product/productSlice";
 import { mobile } from "../responsive";
-import  {toast, ToastContainer }  from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 const ProductDetail = () => {
   const [quantity, setQuantity] = useState(1);
+  const { productUrl } = useParams();
+  const { product, loading } = useSelector((state) => state.product);
+  const { category } = useSelector((state) => state.category);
+  const categoryUrl = product?._category?.categoryUrl;
+  const dispatch = useDispatch();
+
+  const similarProducts = category?.products?.filter(
+    (item) => item?._id !== product?._id
+  );
+
+  useEffect(() => {
+    dispatch(getSingleProduct(productUrl));
+    categoryUrl && dispatch(getSingleCategory(categoryUrl));
+    // eslint-disable-next-line
+  }, [productUrl, categoryUrl]);
 
   const handleQuantity = (type) => {
     if (type === "minus") {
       setQuantity(quantity > 1 ? quantity - 1 : 1);
     } else {
-      setQuantity(quantity + 1);
+      setQuantity(product?.quantity === 0 ? quantity + 0 : quantity + 1);
     }
   };
   const notify = () => {
-    toast.success('Successfully added to cart', {
-      position: 'top-right',
+    toast.success("Successfully added to cart", {
+      position: "top-right",
       autoClose: 5000,
       hideProgressBar: true,
       closeOnClick: true,
-      theme: "light"
-    })
-  }
+      theme: "light",
+    });
+  };
+
+  const stockAvailablity = () => {
+    if (product?.quantity === 0) {
+      return <span className="out-of-stock">Out Of Stock</span>;
+    } else {
+      return <span className="in-stock">In Stock</span>;
+    }
+  };
 
   return (
     <>
@@ -38,16 +65,13 @@ const ProductDetail = () => {
         <div className="wrapper">
           <section className="topSection">
             <div className="imageDiv">
-              <img
-                src="https://i.ibb.co/K6dxfyc/Himalay-pink-salt-gura.jpg"
-                alt=""
-              />
+              <img src={product?.img?.url} alt="" />
             </div>
             <div className="infoDiv">
-              <h3>Himalayan Natural Pink Salt Rock Salt 1 kg</h3>
-              <p>Availabilty : In Stock</p>
-              <h4>320 Tk</h4>
-              <p>Quantity:</p>
+              <h3>{product?.name}</h3>
+              <p className="availabilty">Availabilty : {stockAvailablity()}</p>
+              <h4>{product?.price} Tk</h4>
+              <p>Quantity: {product?.quantity}</p>
               <div className="priceChoosen">
                 <button
                   type="button"
@@ -67,17 +91,37 @@ const ProductDetail = () => {
                 <button
                   name="plus"
                   type="button"
+                  style={{
+                    cursor: product?.quantity === 0 ? "not-allowed" : "pointer",
+                  }}
                   onClick={() => handleQuantity("plus")}
                 >
                   <AiOutlinePlus />
                 </button>
               </div>
               <div className="addAndBuy">
-                <button onClick={notify} className="addToCart" type="button">
+                <button
+                  disabled={product?.quantity === 0 && "disabled"}
+                  style={{
+                    cursor: product?.quantity === 0 && "not-allowed",
+                    backgroundColor: product?.quantity === 0 && "#ee65439e",
+                  }}
+                  onClick={notify}
+                  className="addToCart"
+                  type="button"
+                >
                   Add to cart
                 </button>
-                <Link to='/order' className="link">
-                  <button className="buyNow" type="button">
+                <Link to="/order" className="link">
+                  <button
+                    disabled={product?.quantity === 0 && "disabled"}
+                    style={{
+                      cursor: product?.quantity === 0 && "not-allowed",
+                      backgroundColor: product?.quantity === 0 && "#7cce86",
+                    }}
+                    className="buyNow"
+                    type="button"
+                  >
                     Buy Now
                   </button>
                 </Link>
@@ -86,33 +130,22 @@ const ProductDetail = () => {
           </section>
           <section className="midSection">
             <h5>
-              <span>Description</span>
+              <span className="des-heading">Description</span>
             </h5>
-            <div className="descDiv">
-              <h3>Himalayan Natural Pink Salt Rock Salt 1 kg</h3>
-              <ul>
-                <li>Origin: Pakistan</li>
-                <li>Weight: 1 kg</li>
-                <li>জার প্যাক</li>
-                <li>Quality Pure</li>
-                <li>All thing buy at wholesale price</li>
-                <li>99% clients satisfaction</li>
-              </ul>
-              <p>
-                রোগ প্রতিরোধ ক্ষমতা থাকেসৈন্ধব লবণের প্রাকৃতিক উপায়েতৈরি হয় এই
-                লবণ ফলে ঠান্ডা লাগা, জ্বর, ফ্লু, অ্যালার্জির মতো বেশ কিছু রোগের
-                হাত থেকে শরীরকে বাঁচায়।দ্বিতীয়ত দেহের ওজন কমায়৷ দেহে
-                ডাইজেস্টিভ জুস উৎপন্ন করে যা খুব তাড়াতাড়ি খাবার হজম করতে
-              </p>
-            </div>
+            <div
+              className="descDiv"
+              dangerouslySetInnerHTML={{
+                __html: DOMPurify.sanitize(product?.description),
+              }}
+            ></div>
           </section>
           <section className="bottomSection">
             <h2>
               <span>You may also like</span>
             </h2>
             <div className="similarProducts">
-              {GroceryItems.map((item) => {
-                return <ProductCard item={item} key={item.id} />;
+              {similarProducts?.map((item) => {
+                return <ProductCard item={item} key={item._id} />;
               })}
             </div>
           </section>
@@ -121,6 +154,7 @@ const ProductDetail = () => {
       <MobileMenu />
       <Footer />
       <ToastContainer />
+      {loading && <Spinner />}
     </>
   );
 };
@@ -172,6 +206,12 @@ const ProductDetailContainer = styled.div`
   }
   .topSection > .infoDiv > h4 {
     font-size: 20px;
+  }
+  .infoDiv > .availabilty > .in-stock {
+    color: green;
+  }
+  .infoDiv > .availabilty > .out-of-stock {
+    color: red;
   }
   .priceChoosen {
     width: 110px;
@@ -241,14 +281,12 @@ const ProductDetailContainer = styled.div`
     font-size: 18px;
     margin: 10px;
   }
-  .midSection span {
+  .midSection > .des-heading {
     border-bottom: 2px solid green;
   }
   .midSection .descDiv {
     margin: 20px 50px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+    text-decoration: none;
     ${mobile({
       margin: "10px",
     })}

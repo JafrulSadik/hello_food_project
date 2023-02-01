@@ -1,4 +1,3 @@
-import React from "react";
 import { AiOutlineRollback, AiOutlineShopping } from "react-icons/ai";
 import { FiHelpCircle } from "react-icons/fi";
 import { HiOutlineNewspaper } from "react-icons/hi";
@@ -21,11 +20,15 @@ const Account = () => {
           <ul>
             <li>
               <AiOutlineShopping className="accountIcon" />
-              <Link to='/my-orders' className="link">My Orders</Link>
+              <Link to="/my-orders" className="link">
+                My Orders
+              </Link>
             </li>
             <li>
               <AiOutlineRollback className="accountIcon" />
-              <Link to='/my-returns' className="link">My Returns</Link>
+              <Link to="/my-returns" className="link">
+                My Returns
+              </Link>
             </li>
             <li>
               <MdOutlineManageAccounts className="accountIcon" />
@@ -33,11 +36,15 @@ const Account = () => {
             </li>
             <li>
               <HiOutlineNewspaper className="accountIcon" />
-              <Link to='/privacy-policy' className="link">Policies</Link>
+              <Link to="/privacy-policy" className="link">
+                Policies
+              </Link>
             </li>
             <li>
               <FiHelpCircle className="accountIcon" />
-              <a href="tel:01611456116" className="link">Help</a>
+              <a href="tel:01611456116" className="link">
+                Help
+              </a>
             </li>
             <li>
               <RiLogoutBoxLine className="accountIcon" />
@@ -58,8 +65,8 @@ const AccountContainer = styled.div`
     flex-direction: column;
     margin-bottom: 100px;
     ${desktop({
-      width : '60%',
-      margin : '0 auto'
+      width: "60%",
+      margin: "0 auto",
     })}
   }
   .midContainer > ul > li {

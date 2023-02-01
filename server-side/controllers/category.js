@@ -5,7 +5,7 @@ const fs = require("fs");
 
 const categorylist = async (req, res, next) => {
   try {
-    const categories = await Category.find();
+    const categories = await Category.find().populate("products");
 
     res.status(200).json(categories);
   } catch (err) {
@@ -201,7 +201,7 @@ const singleCategory = async (req, res, next) => {
   try {
     const category = await Category.findOne({
       categoryUrl: req.params.categoryUrl,
-    });
+    }).populate("products");
 
     if (!category) return res.status(404).send("Category not found!");
 

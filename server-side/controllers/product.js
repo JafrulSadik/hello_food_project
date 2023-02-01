@@ -22,8 +22,7 @@ const allProducts = async (req, res, next) => {
 //Add new product
 const addProduct = async (req, res, next) => {
   try {
-    const { name, category, quantity, price, description, productCode } =
-      req.body;
+    const { name, category } = req.body;
 
     const regex = /[^a-zA-Z0-9 ]/g;
 
@@ -96,7 +95,7 @@ const singleProduct = async (req, res, next) => {
   try {
     const product = await Product.findOne({
       productUrl: req.params.productUrl,
-    }).populate({ path: "_category", select: "name _id" });
+    }).populate({ path: "_category", select: "name _id categoryUrl" });
 
     if (!product) return res.status(404).send("Product not found!");
 
@@ -119,6 +118,7 @@ const updateProduct = async (req, res, next) => {
       description,
       productCode,
       id,
+      weight,
     } = req.body;
 
     if (!name || !category || !price || !productCode) {
@@ -231,6 +231,7 @@ const updateProduct = async (req, res, next) => {
         description,
         productCode,
         img: uploadedFile,
+        weight,
       },
     });
 

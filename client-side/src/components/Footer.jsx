@@ -62,10 +62,11 @@ const Footer = () => {
 const Container = styled.div`
   height: 100%;
   width: 100%;
-  background-color: #0d0d0d;
+  /* background-color: #0d0d0d; */
+  background-image: linear-gradient(45deg, #1a6719, #0d520f);
   color: white;
   ${mobile({
-    marginTop: '20px'
+    marginTop: "20px",
   })}
   .wrapper {
     display: flex;
@@ -73,9 +74,9 @@ const Container = styled.div`
     padding: 30px;
     justify-content: space-between;
     ${mobile({
-      'flex-direction': 'column',
-      'padding-bottom': '80px',
-      'justify-content': 'center'
+      "flex-direction": "column",
+      "padding-bottom": "80px",
+      "justify-content": "center",
     })}
   }
   .logoSec {
@@ -86,14 +87,14 @@ const Container = styled.div`
     gap: 25px;
     flex: 1;
     ${mobile({
-      'align-items': 'center'
+      "align-items": "center",
     })}
   }
   .logo {
     height: 100%;
     width: 100%;
     ${mobile({
-      'text-align': 'center'
+      "text-align": "center",
     })}
   }
   .logo img {
@@ -107,7 +108,7 @@ const Container = styled.div`
     align-items: flex-start;
     gap: 20px;
     ${mobile({
-      'align-items':'center'
+      "align-items": "center",
     })}
   }
   .followUs h4 {
@@ -128,19 +129,19 @@ const Container = styled.div`
     top: 0;
     &:hover {
       top: -2px;
-      transition: .3s;
+      transition: 0.3s;
     }
   }
   .icons .facebook {
     border-radius: 50%;
-    background-color: #3B5998;
+    background-color: #3b5998;
     color: white;
     padding: 6px 9px;
     cursor: pointer;
   }
   .icons .youtube {
     border-radius: 50%;
-    background-color: #FF0000;
+    background-color: #ff0000;
     color: white;
     padding: 6px 6px;
     cursor: pointer;
@@ -148,7 +149,7 @@ const Container = styled.div`
   .company {
     flex: 1;
     ${mobile({
-      'text-align': 'center'
+      "text-align": "center",
     })}
   }
   .company h3 {
@@ -173,7 +174,7 @@ const Container = styled.div`
   .addressSec {
     flex: 1;
     ${mobile({
-      'text-align': 'center'
+      "text-align": "center",
     })}
   }
   .addressSec h3 {

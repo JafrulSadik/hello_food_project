@@ -1,25 +1,27 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { GroceryItems } from "../data";
 import { mobile } from "../responsive";
 import ProductCard from "./ProductCard";
 
-const GroceryProducts = () => {
+const CategoryWiseProducts = ({ category }) => {
+  const { products } = category;
   return (
     <Container>
       <div className="header">
         <div className="name">
-          <span className="text">Grocery</span>
+          <span className="text">{category?.name}</span>
         </div>
-        <Link className="link" to='/categories/grocery'>
+        <Link className="link" to="/categories/grocery">
           <div className="viewAll">
-            <span>View All</span>
+            <Link className="link" to={`/categories/${category?.categoryUrl}`}>
+              View All
+            </Link>
           </div>
         </Link>
       </div>
       <div className="wrapper">
-        {GroceryItems.map((item, index) => (
+        {products.map((item, index) => (
           <ProductCard item={item} key={index} />
         ))}
       </div>
@@ -74,9 +76,19 @@ const Container = styled.div`
       color: white;
       transition: 0.3s;
     }
+
     ${mobile({
       fontSize: "14px",
     })}
+  }
+  .viewAll > .link {
+    text-decoration: none;
+    color: inherit;
+    &:hover {
+      background-color: #01936c;
+      color: white;
+      transition: 0.3s;
+    }
   }
   .wrapper {
     display: flex;
@@ -93,4 +105,4 @@ const Container = styled.div`
     })}
   }
 `;
-export default GroceryProducts;
+export default CategoryWiseProducts;

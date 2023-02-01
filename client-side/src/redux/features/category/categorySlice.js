@@ -16,6 +16,18 @@ export const getAllCategories = createAsyncThunk(
   }
 );
 
+export const getSingleCategory = createAsyncThunk(
+  "categories/getSingleCategory",
+  async (categoryUrl, { rejectWithValue }) => {
+    try {
+      const res = await API.get(`/category/${categoryUrl}`);
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(error.res.data);
+    }
+  }
+);
+
 // Create New Category
 
 export const createCategroy = createAsyncThunk(
@@ -68,6 +80,7 @@ export const deleteCategory = createAsyncThunk(
 export const categorySlice = createSlice({
   name: "category",
   initialState: {
+    category: null,
     categories: [],
     loading: false,
     error: null,
@@ -88,6 +101,19 @@ export const categorySlice = createSlice({
         state.loading = false;
         state.error = true;
       })
+      // Get Single Category
+      .addCase(getSingleCategory.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getSingleCategory.fulfilled, (state, action) => {
+        state.loading = false;
+        state.category = action.payload;
+      })
+      .addCase(getSingleCategory.rejected, (state) => {
+        state.loading = false;
+        state.error = true;
+      })
+
       // Create New Category
       .addCase(createCategroy.pending, (state) => {
         state.loading = true;

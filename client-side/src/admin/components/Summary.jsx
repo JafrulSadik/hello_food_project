@@ -40,25 +40,14 @@ const Summary = () => {
     // eslint-disable-next-line
   }, []);
 
+  // Stats
+
   const tatalStockValue = products.reduce(
     (acc, item) => acc + item.price * item.quantity,
     0
   );
 
-  const outOfStock = () => {
-    const array = [];
-    products.map((item) => {
-      const { quantity } = item;
-      return array.push(quantity);
-    });
-    let count = 0;
-    array.forEach((number) => {
-      if (number === 0 || number === "0") {
-        count += 1;
-      }
-    });
-    return count;
-  };
+  const outOfStock = products.filter((product) => product.quantity === 0);
 
   return (
     <Container>
@@ -117,7 +106,7 @@ const Summary = () => {
             <BsCartX />
           </div>
           <div className="text-div">
-            Out of Stock<span>{outOfStock()}</span>
+            Out of Stock<span>{outOfStock.length}</span>
           </div>
         </InfoBox>
         <InfoBox color="#01a3a4">

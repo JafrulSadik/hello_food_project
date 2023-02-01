@@ -81,6 +81,9 @@ const AdminProductDetail = () => {
               <b>Quantity : </b> {product?.quantity}
             </p>
             <p>
+              <b>Weight : </b> {product?.weight}
+            </p>
+            <p>
               <b>Total Value : </b> {product?.quantity * product?.price} Tk
             </p>
             <hr />
@@ -145,6 +148,8 @@ const Container = styled.div`
     align-items: center;
     /* overflow: hidden; */
   }
+  .box > h4 {
+  }
   .imgDiv {
     /* border: 1px solid gray; */
     padding: 20px 10px;
@@ -177,6 +182,7 @@ const Container = styled.div`
     padding: 3px 8px;
     border-radius: 2px;
     margin-right: 5px;
+    margin-bottom: 50px;
   }
   .description {
     padding-left: 30px;

@@ -1,37 +1,45 @@
-import React from "react";
-import { Link } from 'react-router-dom';
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { AllProductItems } from "../data";
+import { getAllProducts } from "../redux/features/product/productSlice";
 import { mobile } from "../responsive";
 import ProductCard from "./ProductCard";
 
 const AllProducts = () => {
+  const { products } = useSelector((state) => state.product);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getAllProducts());
+    // eslint-disable-next-line
+  }, []);
   return (
     <Container>
       <div className="header">
         <div className="name">
           <span className="text">All Products</span>
         </div>
-        <Link className="link" to='/categories/allProducts'>
+        <Link className="link" to="/categories/allProducts">
           <div className="viewAll">
             <span className="seeAllSpan">View All</span>
           </div>
         </Link>
       </div>
       <div className="wrapper">
-        {AllProductItems.map((item) => (
-            <ProductCard item={item} key={item.id} />
-        ))}
+        {products
+          .map((item) => <ProductCard item={item} key={item._id} />)
+          .slice(0, 10)}
       </div>
     </Container>
   );
 };
 
 const Container = styled.div`
-    margin: 50px 50px;
-    ${mobile({
-      margin: "0px 5px"
-    })}
+  margin: 50px 50px;
+  ${mobile({
+    margin: "0px 5px",
+  })}
 
   .header {
     display: flex;
@@ -40,19 +48,19 @@ const Container = styled.div`
     margin: 30px 10px;
 
     ${mobile({
-      marginTop : "0px",
-      margin: "20px 20px"
+      marginTop: "0px",
+      margin: "20px 20px",
     })}
   }
 
-  .text{
+  .text {
     font-size: 30px;
     font-weight: 700;
     color: #01936c;
     /* border-bottom: 1px solid #01936c; */
 
     ${mobile({
-      fontSize: "20px"
+      fontSize: "20px",
     })}
   }
 
@@ -73,10 +81,10 @@ const Container = styled.div`
     }
 
     ${mobile({
-      fontSize: "14px"
+      fontSize: "14px",
     })}
   }
- .link {
+  .link {
     text-decoration: none;
   }
   .wrapper {
@@ -89,8 +97,8 @@ const Container = styled.div`
     gap: 5px;
 
     ${mobile({
-      justifyContent : "space-evenly",
-      gap: "15px 0px"
+      justifyContent: "space-evenly",
+      gap: "15px 0px",
     })}
   }
 `;

@@ -16,6 +16,7 @@ const initialState = {
   category: "",
   quantity: "",
   price: "",
+  weight: "",
 };
 
 const AddProduct = () => {
@@ -62,6 +63,7 @@ const AddProduct = () => {
     formData.append("price", Number(product.price));
     formData.append("description", description);
     formData.append("image", prooductImage);
+    formData.append("weight", Number(product?.weight));
     dispatch(createNewProduct({ formData, navigate }));
   };
 
@@ -127,6 +129,14 @@ const AddProduct = () => {
               name="quantity"
               required
               placeholder="Product Quantity"
+              onChange={(e) => handleInputChange(e)}
+            />
+            <label htmlFor="">Product Weight (gm) :</label>
+            <input
+              type="text"
+              name="weight"
+              required
+              placeholder="Product Weight"
               onChange={(e) => handleInputChange(e)}
             />
             <label htmlFor="">Product Description : </label>

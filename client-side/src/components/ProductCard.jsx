@@ -4,29 +4,28 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { mobile } from "../responsive";
 
-const ProductCard = (props) => {
-  const { item } = props;
+const ProductCard = ({ item }) => {
+  const { name } = item;
+  const modifiedName =
+    name?.length > 50 ? name?.trim().substr(0, 42) + "..." : name;
   return (
     <Container>
-      <Link className="link" to={`/product/${item.id}`}>
-        <CardWrapper key={item.id}>
-          <div className="new">
-            <p>New</p>
-          </div>
+      <CardWrapper>
+        <Link className="link" to={`/product/${item.productUrl}`}>
           <div className="imageDiv">
-            <img src={item.img} alt="" />
+            <img src={item?.img?.url} alt="" />
           </div>
           <div className="textDiv">
-            <span className="title">{item.title}</span>
+            <span className="title">{modifiedName}</span>
           </div>
-          <div className="priceAndButton">
-            <span>{item.price} Tk</span>
-            <button>
-              <FaShoppingCart /> Add
-            </button>
-          </div>
-        </CardWrapper>
-      </Link>
+        </Link>
+        <div className="priceAndButton">
+          <span>{item.price} Tk</span>
+          <button>
+            <FaShoppingCart /> Add
+          </button>
+        </div>
+      </CardWrapper>
     </Container>
   );
 };
@@ -82,7 +81,7 @@ const CardWrapper = styled.div`
   }
 
   .title {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: bold;
     color: #253d4e;
 
@@ -93,19 +92,20 @@ const CardWrapper = styled.div`
   }
 
   .imageDiv {
-    height: 100%;
+    height: 220px;
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 10px 0 0 0;
+    /* padding: 10px 0 0 0; */
     /* border: 1px solid red; */
   }
 
   .imageDiv > img {
     /* border: 1px solid green; */
-    height: 160px;
-    width: 160px;
+    /* object-fit: cover; */
+    height: 200px;
+    width: 200px;
 
     &:hover {
       height: 162px;
@@ -130,7 +130,8 @@ const CardWrapper = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: 0 10px;
+    margin: 0 20px;
+    margin-top: 20px;
     /* border: 1px solid blue; */
     ${mobile({
       margin: "10px 10px 0 10px",
@@ -140,7 +141,7 @@ const CardWrapper = styled.div`
   .priceAndButton {
     display: flex;
     width: 100%;
-    margin: 20px;
+    margin: 10px 20px;
     flex-direction: row;
     justify-content: space-around;
     align-items: center;

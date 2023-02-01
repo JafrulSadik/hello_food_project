@@ -55,8 +55,8 @@ const App = () => {
         <Route path="*" element={<NotFound />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/categories/:products" element={<Prodcuts />} />
-        <Route path="/product/:id" element={<ProductDetail />} />
+        <Route path="/categories/:categoryUrl" element={<Prodcuts />} />
+        <Route path="/product/:productUrl" element={<ProductDetail />} />
         <Route path="/account" element={<Account />} />
         <Route path="/my-orders" element={<MyOrders />} />
         <Route path="/my-returns" element={<MyReturns />} />

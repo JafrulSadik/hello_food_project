@@ -28,6 +28,7 @@ const UpdateProduct = () => {
     quantity: "",
     price: "",
     imgUrl: "",
+    weight: "",
   });
 
   useEffect(() => {
@@ -87,6 +88,7 @@ const UpdateProduct = () => {
     formData.append("image", productImage);
     formData.append("publicid", publicid);
     formData.append("imgUrl", url);
+    formData.append("weight", product?.weight);
     dispatch(updateProduct({ formData, navigate, _id }));
   };
 
@@ -168,6 +170,15 @@ const UpdateProduct = () => {
               required
               value={product?.quantity}
               placeholder="Product Quantity"
+              onChange={(e) => handleInputChange(e)}
+            />
+            <label htmlFor="">Product Weight (gm) :</label>
+            <input
+              type="text"
+              name="weight"
+              required
+              value={product?.weight}
+              placeholder="Product Weight"
               onChange={(e) => handleInputChange(e)}
             />
 

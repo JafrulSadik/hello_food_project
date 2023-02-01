@@ -76,7 +76,6 @@ const createSlider = async (req, res, next) => {
 const updateSlider = async (req, res, next) => {
   try {
     const { name, publicid, imgUrl, id } = req.body;
-    console.log(name, publicid, imgUrl, id);  
 
     if (!name) {
       if (req.file) {
@@ -84,7 +83,7 @@ const updateSlider = async (req, res, next) => {
           return next(err);
         });
       }
-      return createError(404, "Something went wrong !!!");
+      return next(createError(404, "Something went wrong !!!"));
     }
 
     const regex = /[^a-zA-Z0-9 ]/g;
@@ -116,24 +115,18 @@ const updateSlider = async (req, res, next) => {
 
     if (req.file) {
       // Delete previous one first
-      await cloudinary.uploader.destroy(publicid);
+      const response = await cloudinary.uploader.destroy(publicid);
 
       // Save image to cloudinary
-      uploadData = await cloudinary.uploader.upload(req.file.path, {
+      const uploadData = await cloudinary.uploader.upload(req.file.path, {
         folder: "hallo_food/slider_image",
         resource_type: "image",
       });
 
       uploadedFile = {
-        url: uploadData.secure_url,
+        url: uploadData.url,
         publicid: uploadData.public_id,
       };
-
-      if (req.file) {
-        fs.unlink(req.file.path, (err) => {
-          next(err);
-        });
-      }
     }
 
     await Slider.findByIdAndUpdate(id, {
@@ -143,6 +136,12 @@ const updateSlider = async (req, res, next) => {
         sliderUrl,
       },
     });
+
+    if (req.file) {
+      fs.unlink(req.file.path, (err) => {
+        next(err);
+      });
+    }
 
     res.status(200).send("Slider updated successfully!");
   } catch (err) {
