@@ -103,6 +103,21 @@ const InputDiv = styled.input`
   font-size: 12px;
 `;
 
+const CartDiv = styled.div`
+  position: relative;
+  .quantityDiv {
+    background-color: #01936c;
+    color: white;
+    padding: 0 4px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 50%;
+    position: absolute;
+    top: -10px;
+    right: -11px;
+  }
+`;
+
 const MobileMenu = () => {
   const [search, setSearch] = useState();
   const { products } = useSelector((state) => state.cart);
@@ -148,12 +163,12 @@ const MobileMenu = () => {
 
           <List>
             <Icon to="/cart">
-              <FontAwesomeIcon icon={faCartShopping} />
-              <sup
-                style={{ color: "green", fontSize: "17px", fontWeight: "600" }}
-              >
-                {products?.length}
-              </sup>
+              <CartDiv className="cart-div">
+                <FontAwesomeIcon icon={faCartShopping} />
+                <div className="quantityDiv">
+                  <p>{products?.length}</p>
+                </div>
+              </CartDiv>
             </Icon>
             <Text to="/cart">Cart</Text>
           </List>

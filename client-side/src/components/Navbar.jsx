@@ -250,10 +250,26 @@ const OptionLink = styled(Link)`
   cursor: pointer;
 `;
 
+const CartDiv = styled.div`
+  position: relative;
+  .quantityDiv {
+    background-color: #01936c;
+    color: white;
+    padding: 0 4px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 50%;
+    position: absolute;
+    top: -10px;
+    right: -11px;
+  }
+`;
+
 const Navbar = () => {
   const [active, setActive] = useState({ display: "none" });
   const [searchInput, setSearchInput] = useState("");
   const { userInfo, pending } = useSelector((state) => state.auth);
+  const { products } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -298,9 +314,12 @@ const Navbar = () => {
 
       <NavDiv>
         <LinkPc to="/cart">
-          <Span>
-            <FaShoppingCart></FaShoppingCart>
-          </Span>
+          <CartDiv>
+            <FaShoppingCart style={{ fontSize: "18px" }}></FaShoppingCart>
+            <div className="quantityDiv">
+              <p>{products?.length}</p>
+            </div>
+          </CartDiv>
           <Text>Cart</Text>
         </LinkPc>
         <MyAccount onClick={(e) => handleAccountClick(e)}>
@@ -309,7 +328,7 @@ const Navbar = () => {
               <CgProfile />
             </Span>
             {}
-            <Text>{userInfo ? userInfo.name : "My Account"}</Text>
+            <Text>{userInfo ? userInfo?.name : "My Account"}</Text>
           </AccountBtn>
 
           <SubMenu style={active} onClick={(e) => handleAccountClick(e)}>
