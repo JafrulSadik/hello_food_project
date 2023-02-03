@@ -52,6 +52,7 @@ const AdminProducts = () => {
       category: product._category?.name,
       quantity: product.quantity,
       price: product.price,
+      discount: product?.discount,
       delete: confirmDelete,
     };
   });

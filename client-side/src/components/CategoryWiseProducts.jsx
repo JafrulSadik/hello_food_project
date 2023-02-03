@@ -12,13 +12,11 @@ const CategoryWiseProducts = ({ category }) => {
         <div className="name">
           <span className="text">{category?.name}</span>
         </div>
-        <Link className="link" to="/categories/grocery">
-          <div className="viewAll">
-            <Link className="link" to={`/categories/${category?.categoryUrl}`}>
-              View All
-            </Link>
-          </div>
-        </Link>
+        <div className="viewAll">
+          <Link className="link" to={`/categories/${category?.categoryUrl}`}>
+            View All
+          </Link>
+        </div>
       </div>
       <div className="wrapper">
         {products.map((item, index) => (

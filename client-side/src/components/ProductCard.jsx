@@ -1,13 +1,23 @@
-import React from "react";
 import { FaShoppingCart } from "react-icons/fa";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { non_User_Add_To_Cart } from "../redux/features/cart/cartSlice";
 import { mobile } from "../responsive";
 
 const ProductCard = ({ item }) => {
+  const dispatch = useDispatch();
   const { name } = item;
   const modifiedName =
     name?.length > 50 ? name?.trim().substr(0, 42) + "..." : name;
+
+  const handleAddToCart = (e) => {
+    e.preventDefault();
+    dispatch(non_User_Add_To_Cart(item));
+  };
+
+  const discountedAmount = item?.price - item?.discount;
+
   return (
     <Container>
       <CardWrapper>
@@ -20,8 +30,20 @@ const ProductCard = ({ item }) => {
           </div>
         </Link>
         <div className="priceAndButton">
-          <span>{item.price} Tk</span>
-          <button>
+          <div className="priceDiv">
+            <span className="discountedPrice">{item.price} Tk</span>
+            <div className="lable-discount">
+              {item?.discount && (
+                <>
+                  <span className="lablePrice">{item?.discount}</span>
+                  <span className="discount">
+                    -{Math.round((discountedAmount / item?.price) * 100)}%
+                  </span>
+                </>
+              )}
+            </div>
+          </div>
+          <button onClick={(e) => handleAddToCart(e)}>
             <FaShoppingCart /> Add
           </button>
         </div>
@@ -150,9 +172,13 @@ const CardWrapper = styled.div`
       margin: "10px",
     })}
   }
+  .priceDiv {
+    display: flex;
+    flex-direction: column;
+  }
 
-  .priceAndButton span {
-    font-size: 14px;
+  .priceDiv > .discountedPrice {
+    font-size: 16px;
     font-weight: bold;
     color: #3bb77e;
     ${mobile({
@@ -160,6 +186,19 @@ const CardWrapper = styled.div`
     })}
   }
 
+  .lable-discount > .lablePrice {
+    font-size: 11px;
+    color: gray;
+    margin-right: 5px;
+    text-decoration: line-through;
+    ${mobile({
+      fontSize: "11px",
+    })}
+  }
+  .lable-discount > .discount {
+    font-size: 11px;
+    color: gray;
+  }
   .priceAndButton button {
     display: flex;
     align-items: center;

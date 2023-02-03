@@ -6,7 +6,7 @@ import { getAllProducts } from "../redux/features/product/productSlice";
 import { mobile } from "../responsive";
 import ProductCard from "./ProductCard";
 
-const AllProducts = () => {
+const AllProductsComponent = () => {
   const { products } = useSelector((state) => state.product);
   const dispatch = useDispatch();
 
@@ -20,7 +20,7 @@ const AllProducts = () => {
         <div className="name">
           <span className="text">All Products</span>
         </div>
-        <Link className="link" to="/categories/allProducts">
+        <Link className="link" to="/products/all-products">
           <div className="viewAll">
             <span className="seeAllSpan">View All</span>
           </div>
@@ -103,4 +103,4 @@ const Container = styled.div`
   }
 `;
 
-export default AllProducts;
+export default AllProductsComponent;

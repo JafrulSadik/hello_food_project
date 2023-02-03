@@ -27,6 +27,7 @@ const UpdateProduct = () => {
     _category: "",
     quantity: "",
     price: "",
+    discount: "",
     imgUrl: "",
     weight: "",
   });
@@ -84,6 +85,7 @@ const UpdateProduct = () => {
     formData.append("category", selectCat);
     formData.append("quantity", Number(product?.quantity));
     formData.append("price", Number(product?.price));
+    formData.append("discount", Number(product?.discount));
     formData.append("description", description ? description : "");
     formData.append("image", productImage);
     formData.append("publicid", publicid);
@@ -161,6 +163,14 @@ const UpdateProduct = () => {
               required
               value={product?.price}
               placeholder="Product Price"
+              onChange={(e) => handleInputChange(e)}
+            />
+            <label htmlFor="">Discount Price :</label>
+            <input
+              type="text"
+              name="discount"
+              value={product?.discount}
+              placeholder="Discount Price"
               onChange={(e) => handleInputChange(e)}
             />
             <label htmlFor="">Product Quantity :</label>

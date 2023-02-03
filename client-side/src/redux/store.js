@@ -1,6 +1,7 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import authSlice from "./features/auth/authSlice";
 import userSlice from "./features/auth/userSlice";
+import cartSlice from "./features/cart/cartSlice";
 import categorySlice from "./features/category/categorySlice";
 import productSlice from "./features/product/productSlice";
 import sliderSlice from "./features/slider/sliderSlice";
@@ -11,39 +12,41 @@ const rootReducer = combineReducers({
   product: productSlice,
   category: categorySlice,
   slider: sliderSlice,
+  cart: cartSlice,
 });
 
 export default configureStore({ reducer: rootReducer });
 
-// import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
-// import userSlice from "./userSlice";
+// For persistor
+
 // import {
-//     persistStore,
-//     persistReducer,
-//     FLUSH,
-//     REHYDRATE,
-//     PAUSE,
-//     PERSIST,
-//     PURGE,
-//     REGISTER,
-//   } from "redux-persist";
-//   import storage from "redux-persist/lib/storage";
+//   FLUSH,
+//   PAUSE,
+//   PERSIST,
+//   persistReducer,
+//   persistStore,
+//   PURGE,
+//   REGISTER,
+//   REHYDRATE,
+// } from "redux-persist";
+// import storage from "redux-persist/lib/storage";
 
-//   const persistConfig = {
-//     key: "root",
-//     version: 1,
-//     storage,
-//   };
+// const persistConfig = {
+//   key: "root",
+//   version: 1,
+//   storage,
+// };
 
-//   const persistedReducer = persistReducer(persistConfig, userSlice)
+// const persistedReducer = persistReducer(persistConfig, cartSlice);
 
 // export const store = configureStore({
-//     reducer:  persistedReducer,
-//         middleware: (getDefaultMiddleware) => getDefaultMiddleware({
-//             serializableCheck: {
-//                 ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-//               },
-//         }),
-// })
+//   reducer: persistedReducer,
+//   middleware: (getDefaultMiddleware) =>
+//     getDefaultMiddleware({
+//       serializableCheck: {
+//         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+//       },
+//     }),
+// });
 
-// export let persistor = persistStore(store)
+// export let persistor = persistStore(store);

@@ -19,6 +19,7 @@ import UpdateProduct from "./admin/pages/UpdateProduct";
 import UpdateSlider from "./admin/pages/UpdateSlider";
 import Users from "./admin/pages/Users";
 import Account from "./pages/Account";
+import AllProducts from "./pages/AllProducts";
 import Cart from "./pages/Cart";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -30,6 +31,7 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Prodcuts from "./pages/Prodcuts";
 import ProductDetail from "./pages/ProductDetail";
 import Register from "./pages/Register";
+import SearchResult from "./pages/SearchResult";
 import { setUser } from "./redux/features/auth/authSlice";
 
 const App = () => {
@@ -51,10 +53,13 @@ const App = () => {
   return (
     <AppContainer>
       <Routes>
+        {/* User Route */}
         <Route exact path="/" element={<Home />} />
         <Route path="*" element={<NotFound />} />
+        <Route path="/search" element={<SearchResult />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/products/all-products" element={<AllProducts />} />
         <Route path="/categories/:categoryUrl" element={<Prodcuts />} />
         <Route path="/product/:productUrl" element={<ProductDetail />} />
         <Route path="/account" element={<Account />} />
@@ -63,6 +68,7 @@ const App = () => {
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/order" element={<Order />} />
+        {/* Admin Route */}
         <Route element={<AdminLayout />}>
           <Route path="/admin" element={<Dashboard />} />
           <Route path="/admin/products" element={<AdminProducts />} />

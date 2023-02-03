@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import AllProducts from "../components/AllProducts";
+import AllProductsComponent from "../components/AllProductsComponent";
 import Categories from "../components/Categories";
 import CategoryWiseProducts from "../components/CategoryWiseProducts";
 import Footer from "../components/Footer";
@@ -25,7 +25,7 @@ const Home = () => {
       <Slider />
       <MobileMenu />
       <Categories />
-      <AllProducts />
+      <AllProductsComponent />
       {categories?.map((category) => (
         <CategoryWiseProducts key={category?._id} category={category} />
       ))}

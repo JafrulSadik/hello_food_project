@@ -72,6 +72,16 @@ export const AdminProductsColumn = [
     sortable: true,
   },
   {
+    field: "discount",
+    headerName: "Discount",
+    headerAlign: "center",
+    align: "center",
+    minWidth: 90,
+    flex: 2,
+    headerClassName: "super-app-theme--header",
+    sortable: true,
+  },
+  {
     field: "quantity",
     headerName: "Quantity",
     headerAlign: "center",

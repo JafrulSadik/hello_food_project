@@ -15,7 +15,8 @@ const initialState = {
   name: "",
   category: "",
   quantity: "",
-  price: "",
+  productPrice: "",
+  discountPrice: "",
   weight: "",
 };
 
@@ -60,7 +61,8 @@ const AddProduct = () => {
     formData.append("name", product.name);
     formData.append("category", product.category);
     formData.append("quantity", Number(product.quantity));
-    formData.append("price", Number(product.price));
+    formData.append("price", Number(product.productPrice));
+    formData.append("discount", Number(product.discountPrice));
     formData.append("description", description);
     formData.append("image", prooductImage);
     formData.append("weight", Number(product?.weight));
@@ -118,9 +120,16 @@ const AddProduct = () => {
             <label htmlFor="">Product Price :</label>
             <input
               type="text"
-              name="price"
+              name="productPrice"
               required
               placeholder="Product Price"
+              onChange={(e) => handleInputChange(e)}
+            />
+            <label htmlFor="">Discount Price :</label>
+            <input
+              type="text"
+              name="discountPrice"
+              placeholder="Discount Price"
               onChange={(e) => handleInputChange(e)}
             />
             <label htmlFor="">Product Quantity :</label>

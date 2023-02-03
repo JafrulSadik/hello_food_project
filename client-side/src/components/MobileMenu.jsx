@@ -5,10 +5,12 @@ import {
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BiLeftArrowAlt } from "react-icons/bi";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { non_User_Get_Cart_Product } from "../redux/features/cart/cartSlice";
 import { tablet } from "../responsive";
 
 const Wrapper = styled.div`
@@ -103,6 +105,13 @@ const InputDiv = styled.input`
 
 const MobileMenu = () => {
   const [search, setSearch] = useState();
+  const { products } = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(non_User_Get_Cart_Product());
+    // eslint-disable-next-line
+  }, []);
 
   const handleSearch = (props) => {
     if (props) {
@@ -140,6 +149,11 @@ const MobileMenu = () => {
           <List>
             <Icon to="/cart">
               <FontAwesomeIcon icon={faCartShopping} />
+              <sup
+                style={{ color: "green", fontSize: "17px", fontWeight: "600" }}
+              >
+                {products?.length}
+              </sup>
             </Icon>
             <Text to="/cart">Cart</Text>
           </List>

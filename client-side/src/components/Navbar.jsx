@@ -3,7 +3,7 @@ import { BiSearch } from "react-icons/bi";
 import { CgLogIn, CgLogOut, CgProfile } from "react-icons/cg";
 import { FaShoppingCart } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import logo from "../images/hello_food.png";
 import { logout } from "../redux/features/auth/authSlice";
@@ -252,8 +252,10 @@ const OptionLink = styled(Link)`
 
 const Navbar = () => {
   const [active, setActive] = useState({ display: "none" });
+  const [searchInput, setSearchInput] = useState("");
   const { userInfo, pending } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleAccountClick = (e) => {
     e.preventDefault();
@@ -269,6 +271,11 @@ const Navbar = () => {
     dispatch(logout());
   };
 
+  const handleSearch = (e) => {
+    e.preventDefault();
+    navigate(`/search?text=${searchInput}`);
+  };
+
   return (
     <Wrapper>
       <Logo>
@@ -282,8 +289,10 @@ const Navbar = () => {
           <Icon>
             <BiSearch></BiSearch>
           </Icon>
-          <SearchInput></SearchInput>
-          <NavButton>Search</NavButton>
+          <SearchInput
+            onChange={(e) => setSearchInput(e.target.value)}
+          ></SearchInput>
+          <NavButton onClick={(e) => handleSearch(e)}>Search</NavButton>
         </InputDiv>
       </Form>
 
@@ -339,7 +348,7 @@ const Navbar = () => {
         )}
       </NavDiv>
       {pending && <Spinner />}
-    </Wrapper>  
+    </Wrapper>
   );
 };
 
