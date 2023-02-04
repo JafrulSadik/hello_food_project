@@ -12,11 +12,15 @@ const ProductCard = ({ item }) => {
     name?.length > 50 ? name?.trim().substr(0, 42) + "..." : name;
 
   const handleAddToCart = (e) => {
+    console.log(e.target.name);
     e.preventDefault();
-    dispatch(non_User_Add_To_Cart(item));
+    dispatch(non_User_Add_To_Cart({ ...item, cartQuantity: 1 }));
   };
 
   const discountedAmount = item?.price - item?.discount;
+  const discountedPercentage = Math.round(
+    (discountedAmount / item?.price) * 100
+  );
 
   return (
     <Container>
@@ -31,17 +35,17 @@ const ProductCard = ({ item }) => {
         </Link>
         <div className="priceAndButton">
           <div className="priceDiv">
-            <span className="discountedPrice">{item.price} Tk</span>
-            <div className="lable-discount">
-              {item?.discount && (
-                <>
-                  <span className="lablePrice">{item?.discount}</span>
-                  <span className="discount">
-                    -{Math.round((discountedAmount / item?.price) * 100)}%
-                  </span>
-                </>
-              )}
-            </div>
+            <span className="product-price">
+              {item?.discount ? item?.discount : item?.price} Tk
+            </span>
+            {item?.discount && (
+              <div className="discount-div">
+                <span className="discount-price">{item?.price}</span>
+                <span className="discount-percentage">
+                  -{discountedPercentage}%
+                </span>
+              </div>
+            )}
           </div>
           <button onClick={(e) => handleAddToCart(e)}>
             <FaShoppingCart /> Add
@@ -114,18 +118,20 @@ const CardWrapper = styled.div`
   }
 
   .imageDiv {
-    height: 220px;
+    height: 210px;
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     /* padding: 10px 0 0 0; */
     /* border: 1px solid red; */
+    ${mobile({
+      height: "160px",
+    })}
   }
 
   .imageDiv > img {
     /* border: 1px solid green; */
-    /* object-fit: cover; */
     height: 200px;
     width: 200px;
 
@@ -177,7 +183,7 @@ const CardWrapper = styled.div`
     flex-direction: column;
   }
 
-  .priceDiv > .discountedPrice {
+  .priceDiv > .product-price {
     font-size: 16px;
     font-weight: bold;
     color: #3bb77e;
@@ -186,7 +192,7 @@ const CardWrapper = styled.div`
     })}
   }
 
-  .lable-discount > .lablePrice {
+  .discount-div > .discount-price {
     font-size: 11px;
     color: gray;
     margin-right: 5px;
@@ -195,7 +201,7 @@ const CardWrapper = styled.div`
       fontSize: "11px",
     })}
   }
-  .lable-discount > .discount {
+  .discount-div > .discount-percentage {
     font-size: 11px;
     color: gray;
   }

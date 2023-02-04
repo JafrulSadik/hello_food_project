@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BiSearch } from "react-icons/bi";
 import { CgLogIn, CgLogOut, CgProfile } from "react-icons/cg";
 import { FaShoppingCart } from "react-icons/fa";
@@ -7,6 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import logo from "../images/hello_food.png";
 import { logout } from "../redux/features/auth/authSlice";
+import { non_User_Get_Cart_Product } from "../redux/features/cart/cartSlice";
 
 import { tablet } from "../responsive";
 import Spinner from "./Spinner";
@@ -272,6 +273,11 @@ const Navbar = () => {
   const { products } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    dispatch(non_User_Get_Cart_Product());
+    // eslint-disable-next-line
+  }, []);
 
   const handleAccountClick = (e) => {
     e.preventDefault();

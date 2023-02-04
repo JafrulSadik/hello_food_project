@@ -10,11 +10,10 @@ export const cartSlice = createSlice({
   },
   reducers: {
     non_User_Add_To_Cart: (state, action) => {
-      state.quantity += 1;
+      // state.quantity += 1;
       const filteredProduct = state.products.filter(
         (item) => item._id === action.payload._id
       );
-      console.log(filteredProduct);
       if (filteredProduct.length) {
         toast.info("Product Already in the Cart");
       } else {
