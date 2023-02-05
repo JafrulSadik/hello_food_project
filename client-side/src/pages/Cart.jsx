@@ -1,30 +1,37 @@
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
-import { FaShoppingCart } from "react-icons/fa";
-import { useSelector } from "react-redux";
+import { Button } from "@mui/material";
+import { useEffect } from "react";
+import { BiMinus, BiPlus } from "react-icons/bi";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Navbar from "../components/Navbar";
+import {
+  decrease_Cart,
+  get_Totals,
+  increase_Cart,
+  remove_From_Cart,
+} from "../redux/features/cart/cartSlice";
 
 const Cart = () => {
-  const [quantity, setQuantity] = useState(1);
-  const { products } = useSelector((state) => state.cart);
-  const [subtotalPrice, setSubTotalPrice] = useState(0);
-  //   const [totalPrice, setTotalPrice] = useState(0);
+  const { cartProducts, cartTotalAmount } = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
 
-  const handleCartQuantity = (e) => {
-    console.log("clicked");
-    console.log(e?.target);
-    if (e?.target?.name === "minus") {
-      console.log("clicked");
-    }
+  useEffect(() => {
+    dispatch(get_Totals());
+  }, [cartProducts, dispatch]);
+
+  const handleDecreaseCart = (product) => {
+    dispatch(decrease_Cart(product));
   };
 
-  const handleCheckbox = (product) => {
-    const singleTotal =
-      (product?.discount ? product?.discount : product?.price) * quantity;
-    setSubTotalPrice(singleTotal);
+  const handleIncreaseCart = (product) => {
+    dispatch(increase_Cart(product));
+  };
+
+  const handleRemoveCart = (product) => {
+    dispatch(remove_From_Cart(product));
   };
 
   return (
@@ -37,61 +44,67 @@ const Cart = () => {
           </Link>
           <h3>My Cart</h3>
         </div>
-        {products?.map((product) => (
-          <div className="mid">
-            <div className="check">
+        {cartProducts?.map((product) => (
+          <div className="mid" key={product?._id}>
+            {/* <div className="check">
               <input
                 type="checkbox"
                 onChange={() => handleCheckbox(product)}
                 name=""
               />
-            </div>
+            </div> */}
             <div className="cartImgDiv">
-              <img src={product?.img?.url} alt="product-img" />
+              <Link className="img-link" to={`/product/${product.productUrl}`}>
+                <img src={product?.img?.url} alt="product-img" />
+              </Link>
             </div>
             <div className="cartInfoDiv">
-              <h5>{product?.name}</h5>
+              <Link className="name-link" to={`/product/${product.productUrl}`}>
+                <h5>{product?.name}</h5>
+              </Link>
               <div className="priceandquantity">
                 <h3>
                   {product?.discount ? product?.discount : product?.price} Tk
                 </h3>
                 <div className="cartQuantity">
-                  <FaShoppingCart
+                  <span
                     className="iconMinus"
-                    name="minus"
-                    value={product?._id}
-                    onClick={(e) => handleCartQuantity(e)}
-                  />
-                  <input
-                    type="text"
-                    onChange={(e) => setQuantity(e.target.value)}
-                    value={product?.cartQuantity}
-                  />
-                  <button
-                    className="iconPlus"
-                    name="plus"
-                    onClick={(e) => handleCartQuantity(e)}
+                    onClick={() => handleDecreaseCart(product)}
                   >
-                    <FaShoppingCart />
-                  </button>
+                    <BiMinus />
+                  </span>
+                  <p>{product?.cartQuantity}</p>
+                  <span
+                    className="iconPlus"
+                    onClick={() => handleIncreaseCart(product)}
+                  >
+                    <BiPlus />
+                  </span>
                 </div>
+              </div>
+              <div className="remove-div">
+                <Button
+                  variant="contained"
+                  onClick={() => handleRemoveCart(product)}
+                  size="small"
+                >
+                  Remove
+                </Button>
               </div>
             </div>
           </div>
         ))}
         <div className="bottom">
-          <div className="checkAll">
-            <input type="checkbox" name="" />
-            <span>All</span>
-          </div>
           <div className="checkOut">
             <div className="shippingAndTotal">
               <h4>
-                Total : <span className="priceTotal">{subtotalPrice}</span>
+                Total : <span className="priceTotal">{cartTotalAmount} TK</span>
               </h4>
             </div>
-            <Link to="/order" className="link">
-              <span className="buttonCheckOut">Check Out</span>
+            <Link to="/order" className="order-link">
+              <Button variant="contained" size="small">
+                Check Out
+              </Button>
             </Link>
           </div>
         </div>
@@ -121,7 +134,7 @@ const CartContainer = styled.div`
     display: flex;
     align-items: center;
     gap: 10px;
-    margin: 10px;
+    margin: 10px 30px;
     border-bottom: 1px solid lightgray;
     padding-bottom: 10px;
   }
@@ -133,7 +146,7 @@ const CartContainer = styled.div`
     justify-content: center;
     align-items: center;
   }
-  .mid > .cartImgDiv > img {
+  .mid > .cartImgDiv > .img-link > img {
     height: 100px;
     width: 100px;
   }
@@ -141,7 +154,12 @@ const CartContainer = styled.div`
     display: flex;
     flex-direction: column;
     width: 100%;
-    gap: 5px;
+    /* gap: 5px; */
+  }
+  .name-link {
+    text-decoration: none;
+    color: inherit;
+    margin-bottom: 7px;
   }
   .mid > .cartInfoDiv > .priceandquantity {
     display: flex;
@@ -155,6 +173,9 @@ const CartContainer = styled.div`
     align-items: center;
     gap: 5px;
     margin: 0 10px;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid lightgray;
   }
   .priceandquantity > .cartQuantity > .iconMinus {
     border: none;
@@ -179,20 +200,21 @@ const CartContainer = styled.div`
     background-color: lightgray;
     outline: none;
   }
+  .remove-div > button {
+    background-color: black;
+    color: white;
+    border-radius: 5px;
+    text-transform: none;
+  }
+
   .bottom {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     margin: 20px;
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
-  }
-  .bottom .checkAll {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
   }
   .bottom > .checkOut {
     display: flex;
@@ -205,14 +227,13 @@ const CartContainer = styled.div`
     flex-direction: column;
     justify-content: center;
   }
-  .checkOut > .link {
+  .checkOut > .order-link {
     text-decoration: none;
     color: white;
   }
-  .buttonCheckOut {
-    padding: 8px 10px;
+  .order-link > Button {
+    /* padding: 8px 10px; */
     background-color: #3bb54a;
-    border-radius: 5px;
   }
 `;
 

@@ -52,14 +52,14 @@ const Prodcuts = () => {
             <div className="name">
               <span>{category?.name}</span>
             </div>
-            <div className="sort">
+            {/* <div className="sort">
               <span>Sort By : </span>
               <select>
                 <option value="">Newly Added</option>
                 <option value="">A-Z</option>
                 <option value="">Z-A</option>
               </select>
-            </div>
+            </div> */}
           </div>
           <div className="productsList">
             {currentItems?.map((item) => {
@@ -106,7 +106,7 @@ const Container = styled.div`
   }
   .header {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     margin: 10px 50px;
     padding: 20px;
@@ -117,11 +117,11 @@ const Container = styled.div`
     })}
   }
   .name > span {
-    font-size: 16px;
+    font-size: 24px;
     font-weight: 600;
-    border-bottom: 2px solid green;
+    /* border-bottom: 2px solid green; */
     ${mobile({
-      fontSize: "13px",
+      fontSize: "18px",
     })}
   }
   .sort > span {

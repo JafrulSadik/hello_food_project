@@ -119,7 +119,7 @@ const CartDiv = styled.div`
 
 const MobileMenu = () => {
   const [search, setSearch] = useState();
-  const { products } = useSelector((state) => state.cart);
+  const { cartProducts } = useSelector((state) => state.cart);
 
   const handleSearch = (props) => {
     if (props) {
@@ -159,7 +159,7 @@ const MobileMenu = () => {
               <CartDiv className="cart-div">
                 <FontAwesomeIcon icon={faCartShopping} />
                 <div className="quantityDiv">
-                  <p>{products?.length}</p>
+                  <p>{cartProducts?.length}</p>
                 </div>
               </CartDiv>
             </Icon>

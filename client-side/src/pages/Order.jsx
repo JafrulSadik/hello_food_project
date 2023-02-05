@@ -1,22 +1,25 @@
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import "react-toastify/dist/ReactToastify.css";
 import styled from "styled-components";
 import Navbar from "../components/Navbar";
-import  {toast, ToastContainer }  from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { get_Totals } from "../redux/features/cart/cartSlice";
 
 const Order = () => {
-  const notify = () => {
-    toast.success('Order Placed Successfully', {
-      position: 'top-right',
-      autoClose: 5000,
-      hideProgressBar: true,
-      closeOnClick: true,
-      theme: "colored"
-    })
-  }
+  const { cartProducts, cartTotalAmount } = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(get_Totals());
+  }, [cartProducts, dispatch]);
+  const productsWeight = cartProducts.reduce(
+    (acc, item) => acc + item.weight * item.cartQuantity,
+    0
+  );
+
   return (
     <>
       <Navbar />
@@ -29,57 +32,59 @@ const Order = () => {
         </div>
         <div className="order_MidSection">
           <div className="midTop">
-            <div className="order_product_info">
-              <div className="orderImgDiv">
-                <img
-                  src="https://i.ibb.co/K6dxfyc/Himalay-pink-salt-gura.jpg"
-                  alt=""
-                />
-              </div>
-              <div className="cartInfoDiv">
-                <h5>Himalayan Natural Pink Salt Rock Salt 1 kg</h5>
-                <div className="priceandquantity">
-                  <h3>320 Tk</h3>
-                  <div className="cartQuantity">
-                    <span>Qty : 1</span>
+            {cartProducts?.map((item) => (
+              <div className="order_product_info">
+                <div className="orderImgDiv">
+                  <img src={item?.img?.url} alt="" />
+                </div>
+                <div className="cartInfoDiv">
+                  <h5>{item?.name}</h5>
+                  <div className="priceandquantity">
+                    <h3>{item.price} Tk</h3>
+                    <div className="cartQuantity">
+                      <span>Qty : {item?.cartQuantity}</span>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            ))}
             <div className="deliveryInfo">
-                <div className="estimatedDelivery">
-                    <span className="est">Estimated Delivery</span>
-                    <span>23 Oct - 26 Oct</span>
-                </div>
-                <div className="deliveryCost">
-                    <span>120 Tk</span>
-                </div>
+              <div className="estimatedDelivery">
+                <span className="est">Estimated Delivery</span>
+                <span>2-3 working days</span>
+              </div>
+              <div className="deliveryCost">
+                <span>120 Tk</span>
+              </div>
             </div>
           </div>
           <div className="midBottom">
             <h3>Shipping Address</h3>
             <form>
-                <input type="text" placeholder="First Name" required />
-                <input type="text" placeholder="Last Name" required />
-                <input type="email" placeholder="Email" required />
-                <input type="text" placeholder="Address" required />
-                <input type="text" placeholder="City" required />
-                <input type="text" placeholder="Phone" required />
+              <input type="text" placeholder="First Name" required />
+              <input type="text" placeholder="Last Name" required />
+              <input type="email" placeholder="Email" required />
+              <input type="text" placeholder="Address" required />
+              <input type="text" placeholder="City" required />
+              <input type="text" placeholder="Phone" required />
             </form>
           </div>
         </div>
         <div className="bottomSection">
-            <div className="bottomWrapper">
-                <div className="total">
-                    <h5 className="totalAmount">Total : <span>440 Tk</span></h5>
-                </div>
-                <div className="placeButton">
-                    <button onClick={notify}>Place Order</button>
-                </div>
+          <div className="bottomWrapper">
+            <div className="total">
+              <h3>Subtotal : {cartTotalAmount}</h3>
+              <small>Delivery Charge : {}</small>
+              <h5 className="totalAmount">
+                Total : <span>{cartTotalAmount} Tk</span>
+              </h5>
             </div>
+            <div className="placeButton">
+              <button>Place Order</button>
+            </div>
+          </div>
         </div>
       </OrderContainer>
-      <ToastContainer />
     </>
   );
 };
@@ -135,11 +140,13 @@ const OrderContainer = styled.div`
   .order_product_info > .cartInfoDiv {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    width: 100%;
+    gap: 10px;
   }
   .order_product_info > .cartInfoDiv > .priceandquantity {
     display: flex;
     justify-content: space-between;
+    margin-right: 5px;
   }
   .cartInfoDiv > .priceandquantity > h3 {
     color: red;
@@ -164,7 +171,6 @@ const OrderContainer = styled.div`
     color: #1686c7;
   }
   .order_MidSection {
-
   }
   .order_MidSection > .midBottom > h3 {
     padding: 0 10px;
@@ -190,12 +196,11 @@ const OrderContainer = styled.div`
     padding: 10px 10px;
     border-radius: 5px;
     border: 1px solid gray;
-     &:focus {
-        outline: 1px solid cyan;
-    } 
+    &:focus {
+      outline: 1px solid cyan;
+    }
   }
   .bottomSection {
-    
   }
   .bottomWrapper {
     display: flex;
@@ -224,7 +229,6 @@ const OrderContainer = styled.div`
     color: white;
     border: none;
   }
-
 `;
 
 export default Order;

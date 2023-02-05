@@ -39,7 +39,6 @@ export const logout = createAsyncThunk("users/logout", async () => {
   return res.data;
 });
 
-
 export const authSlice = createSlice({
   name: "auth",
   initialState: {
@@ -91,12 +90,12 @@ export const authSlice = createSlice({
         state.userInfo = null;
         state.success = true;
         state.pending = false;
-        localStorage.clear();
+        localStorage.removeItem("profile");
       })
       .addCase(logout.rejected, (state, action) => {
         state.pending = false;
         state.error = action.payload;
-      })
+      });
   },
 });
 

@@ -23,6 +23,12 @@ const ProductDetail = () => {
   const categoryUrl = product?._category?.categoryUrl;
   const dispatch = useDispatch();
 
+  let updatePrice = product?.price;
+
+  updatePrice = 20;
+
+  console.log(updatePrice);
+
   const similarProducts = category?.products?.filter(
     (item) => item?._id !== product?._id
   );
@@ -37,7 +43,9 @@ const ProductDetail = () => {
     if (type === "minus") {
       setQuantity(quantity > 1 ? quantity - 1 : 1);
     } else {
-      setQuantity(product?.quantity === 0 ? quantity + 0 : quantity + 1);
+      setQuantity(
+        product?.quantity > quantity && quantity < 10 ? quantity + 1 : quantity
+      );
     }
   };
   const notify = () => {
@@ -71,7 +79,6 @@ const ProductDetail = () => {
               <h3>{product?.name}</h3>
               <p className="availabilty">Availabilty : {stockAvailablity()}</p>
               <h4>{product?.price} Tk</h4>
-              <p>Quantity: {product?.quantity}</p>
               <div className="priceChoosen">
                 <button
                   type="button"

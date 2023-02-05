@@ -15,6 +15,9 @@ const rootReducer = combineReducers({
   cart: cartSlice,
 });
 
+// For Hiding dev tools
+// {devTools: false}
+
 export default configureStore({ reducer: rootReducer });
 
 // For persistor

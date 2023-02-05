@@ -7,7 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import logo from "../images/hello_food.png";
 import { logout } from "../redux/features/auth/authSlice";
-import { non_User_Get_Cart_Product } from "../redux/features/cart/cartSlice";
+import { get_Cart_Products } from "../redux/features/cart/cartSlice";
 
 import { tablet } from "../responsive";
 import Spinner from "./Spinner";
@@ -270,13 +270,13 @@ const Navbar = () => {
   const [active, setActive] = useState({ display: "none" });
   const [searchInput, setSearchInput] = useState("");
   const { userInfo, pending } = useSelector((state) => state.auth);
-  const { products } = useSelector((state) => state.cart);
+  const { cartProducts } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
-    dispatch(non_User_Get_Cart_Product());
-    // eslint-disable-next-line
+    dispatch(get_Cart_Products());
+    //eslint-disable-next-line
   }, []);
 
   const handleAccountClick = (e) => {
@@ -291,6 +291,7 @@ const Navbar = () => {
   const handleLogout = (e) => {
     e.preventDefault();
     dispatch(logout());
+    navigate("/");
   };
 
   const handleSearch = (e) => {
@@ -323,7 +324,7 @@ const Navbar = () => {
           <CartDiv>
             <FaShoppingCart style={{ fontSize: "18px" }}></FaShoppingCart>
             <div className="quantityDiv">
-              <p>{products?.length}</p>
+              <p>{cartProducts?.length}</p>
             </div>
           </CartDiv>
           <Text>Cart</Text>

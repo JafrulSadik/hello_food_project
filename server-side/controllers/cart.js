@@ -13,6 +13,8 @@ const cartProduct = async (req, res, next) => {
     }
 }
 
+    
+
 const addToCart = async (req, res, next) =>{
     try{
         const data = await User.findOne({_id: req.body.id}, {"cart" : 1, "_id" : 0});

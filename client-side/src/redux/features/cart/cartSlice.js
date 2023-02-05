@@ -4,35 +4,82 @@ import { toast } from "react-toastify";
 export const cartSlice = createSlice({
   name: "cart",
   initialState: {
-    products: [],
-    quantity: 0,
-    total: 0,
+    cartProducts: [],
+    cartTotalQuantity: 0,
+    cartTotalAmount: 0,
   },
   reducers: {
-    non_User_Add_To_Cart: (state, action) => {
-      // state.quantity += 1;
-      const filteredProduct = state.products.filter(
-        (item) => item._id === action.payload._id
-      );
-      if (filteredProduct.length) {
-        toast.info("Product Already in the Cart");
+    get_Cart_Products: (state) => {
+      const localProducts = JSON.parse(localStorage.getItem("cart"));
+      state.cartProducts = localProducts ? localProducts : [];
+    },
+    add_To_Cart: (state, action) => {
+      if (action.payload.quantity === 0) {
+        toast.error("Product is out of stock");
       } else {
-        state.products.push(action.payload);
-        let cartProducts = [];
-        cartProducts = JSON.parse(localStorage.getItem("cart")) || [];
-        cartProducts.push(action.payload);
-        localStorage.setItem("cart", JSON.stringify(cartProducts));
-        state.total += action.payload.price * action.payload.quantity;
+        const existingIndex = state?.cartProducts?.findIndex(
+          (item) => item._id === action.payload._id
+        );
+        if (existingIndex >= 0) {
+          toast.info("Product Already in the Cart");
+        } else {
+          state.cartProducts.push(action.payload);
+          toast.success("Product added in the Cart");
+          localStorage.setItem("cart", JSON.stringify(state.cartProducts));
+        }
       }
     },
-    non_User_Get_Cart_Product: (state) => {
-      const localProducts = JSON.parse(localStorage.getItem("cart"));
-      state.products = localProducts ? localProducts : [];
+    decrease_Cart: (state, action) => {
+      const itemIndex = state.cartProducts.findIndex(
+        (item) => item._id === action.payload._id
+      );
+      if (state.cartProducts[itemIndex].cartQuantity > 1) {
+        state.cartProducts[itemIndex].cartQuantity -= 1;
+      } else {
+        state.cartProducts[itemIndex].cartQuantity = 1;
+      }
+      localStorage.setItem("cart", JSON.stringify(state.cartProducts));
+    },
+    increase_Cart: (state, action) => {
+      const itemIndex = state.cartProducts.findIndex(
+        (item) => item._id === action.payload._id
+      );
+      state.cartProducts[itemIndex].cartQuantity += 1;
+      localStorage.setItem("cart", JSON.stringify(state.cartProducts));
+    },
+    remove_From_Cart: (state, action) => {
+      const filteredCartProducts = state.cartProducts.filter(
+        (item) => item._id !== action.payload._id
+      );
+      state.cartProducts = filteredCartProducts;
+      localStorage.setItem("cart", JSON.stringify(state.cartProducts));
+    },
+    get_Totals: (state) => {
+      let { total, quantity } = state.cartProducts.reduce(
+        (cartTotal, cartItem) => {
+          const { price, cartQuantity } = cartItem;
+          const itemTotal = price * cartQuantity;
+
+          cartTotal.total += itemTotal;
+          cartTotal.quantity += cartQuantity;
+          return cartTotal;
+        },
+        { total: 0, quantity: 0 }
+      );
+      total = parseFloat(total.toFixed(2));
+      state.cartTotalQuantity = quantity;
+      state.cartTotalAmount = total;
     },
   },
 });
 
-export const { non_User_Add_To_Cart, non_User_Get_Cart_Product } =
-  cartSlice.actions;
+export const {
+  add_To_Cart,
+  get_Cart_Products,
+  decrease_Cart,
+  increase_Cart,
+  remove_From_Cart,
+  get_Totals,
+} = cartSlice.actions;
 
 export default cartSlice.reducer;

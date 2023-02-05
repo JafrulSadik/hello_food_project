@@ -2,7 +2,7 @@ import { FaShoppingCart } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { non_User_Add_To_Cart } from "../redux/features/cart/cartSlice";
+import { add_To_Cart } from "../redux/features/cart/cartSlice";
 import { mobile } from "../responsive";
 
 const ProductCard = ({ item }) => {
@@ -12,9 +12,8 @@ const ProductCard = ({ item }) => {
     name?.length > 50 ? name?.trim().substr(0, 42) + "..." : name;
 
   const handleAddToCart = (e) => {
-    console.log(e.target.name);
     e.preventDefault();
-    dispatch(non_User_Add_To_Cart({ ...item, cartQuantity: 1 }));
+    dispatch(add_To_Cart({ ...item, cartQuantity: 1 }));
   };
 
   const discountedAmount = item?.price - item?.discount;

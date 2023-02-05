@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { Outlet, Route, Routes } from "react-router-dom";
+import { Outlet, Route, Routes, useLocation } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import styled from "styled-components";
@@ -36,7 +36,8 @@ import { setUser } from "./redux/features/auth/authSlice";
 
 const App = () => {
   const dispatch = useDispatch();
-  // const { error } = useSelector((state) => state.product);
+  // const { userInfo } = useSelector((state) => state.auth);
+  const { pathname } = useLocation();
   const AdminLayout = ({ children }) => (
     <>
       <Sidebar>
@@ -50,6 +51,11 @@ const App = () => {
     dispatch(setUser(user));
     // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
   return (
     <AppContainer>
       <Routes>
@@ -62,37 +68,41 @@ const App = () => {
         <Route path="/products/all-products" element={<AllProducts />} />
         <Route path="/categories/:categoryUrl" element={<Prodcuts />} />
         <Route path="/product/:productUrl" element={<ProductDetail />} />
-        <Route path="/account" element={<Account />} />
+        <Route path="/account" element={user ? <Account /> : <Login />} />
         <Route path="/my-orders" element={<MyOrders />} />
         <Route path="/my-returns" element={<MyReturns />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/order" element={<Order />} />
         {/* Admin Route */}
-        <Route element={<AdminLayout />}>
-          <Route path="/admin" element={<Dashboard />} />
-          <Route path="/admin/products" element={<AdminProducts />} />
-          <Route path="/admin/orders" element={<Orders />} />
-          <Route path="/admin/users" element={<Users />} />
-          <Route path="/admin/categories" element={<AdminCategory />} />
-          <Route path="/admin/category/create" element={<AddCategory />} />
-          <Route
-            path="/admin/category/update/:categoryUrl"
-            element={<UpdateCategory />}
-          />
-          <Route path="/admin/sliders" element={<Sliders />} />
-          <Route path="/admin/sliders/create" element={<AddSlider />} />
-          <Route path="/admin/slider/update/:id" element={<UpdateSlider />} />
-          <Route path="/admin/products/create" element={<AddProduct />} />
-          <Route
-            path="/admin/product/update/:productUrl"
-            element={<UpdateProduct />}
-          />
-          <Route
-            path="/admin/product/:productUrl"
-            element={<AdminProductDetail />}
-          />
-        </Route>
+        {user?.isAdmin ? (
+          <Route element={<AdminLayout />}>
+            <Route path="/admin" element={<Dashboard />} />
+            <Route path="/admin/products" element={<AdminProducts />} />
+            <Route path="/admin/orders" element={<Orders />} />
+            <Route path="/admin/users" element={<Users />} />
+            <Route path="/admin/categories" element={<AdminCategory />} />
+            <Route path="/admin/category/create" element={<AddCategory />} />
+            <Route
+              path="/admin/category/update/:categoryUrl"
+              element={<UpdateCategory />}
+            />
+            <Route path="/admin/sliders" element={<Sliders />} />
+            <Route path="/admin/sliders/create" element={<AddSlider />} />
+            <Route path="/admin/slider/update/:id" element={<UpdateSlider />} />
+            <Route path="/admin/products/create" element={<AddProduct />} />
+            <Route
+              path="/admin/product/update/:productUrl"
+              element={<UpdateProduct />}
+            />
+            <Route
+              path="/admin/product/:productUrl"
+              element={<AdminProductDetail />}
+            />
+          </Route>
+        ) : (
+          <Route element={<NotFound />} />
+        )}
         {/* {error && <Route element={<NotFound />} />} */}
       </Routes>
       <ToastContainer hideProgressBar />
