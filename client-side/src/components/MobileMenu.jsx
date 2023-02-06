@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import { BiLeftArrowAlt } from "react-icons/bi";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { tablet } from "../responsive";
 
@@ -120,6 +120,15 @@ const CartDiv = styled.div`
 const MobileMenu = () => {
   const [search, setSearch] = useState();
   const { cartProducts } = useSelector((state) => state.cart);
+  const [searchInput, setSearchInput] = useState("");
+  const navigate = useNavigate();
+
+  console.log(searchInput);
+
+  const handleSearchClick = (e) => {
+    e.preventDefault();
+    navigate(`/search?text=${searchInput}`);
+  };
 
   const handleSearch = (props) => {
     if (props) {
@@ -180,7 +189,10 @@ const MobileMenu = () => {
           <Exit onClick={() => handleSearch()}>
             <BiLeftArrowAlt />
           </Exit>
-          <InputDiv placeholder="Input here..." />
+          <InputDiv
+            onChange={(e) => setSearchInput(e.target.value)}
+            placeholder="Input here..."
+          />
         </SearchBar>
       </SearchScreen>
     </>

@@ -1,27 +1,25 @@
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import TextField from "@mui/material/TextField";
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import styled from "styled-components";
 import Navbar from "../components/Navbar";
-import { get_Totals } from "../redux/features/cart/cartSlice";
-import { mobile } from "../responsive";
 
-const Order = () => {
-  const { cartProducts, cartTotalAmount } = useSelector((state) => state.cart);
-  const dispatch = useDispatch();
+const Billing = () => {
+  const { product, quantity } = useSelector(
+    (state) => state.cart?.buyNowProduct
+  );
 
-  useEffect(() => {
-    dispatch(get_Totals());
-  }, [cartProducts, dispatch]);
+  const subTotal = product?.discount
+    ? product?.discount * quantity
+    : product?.price * quantity;
+
   // const productsWeight = cartProducts.reduce(
   //   (acc, item) => acc + item.weight * item.cartQuantity,
   //   0
   // );
-  const deliveryCharge = 120;
 
   return (
     <>
@@ -35,89 +33,43 @@ const Order = () => {
         </div>
         <div className="order_MidSection">
           <div className="midTop">
-            {cartProducts?.map((item) => (
-              <div className="order_product_info">
-                <div className="orderImgDiv">
-                  <img src={item?.img?.url} alt="" />
-                </div>
-                <div className="cartInfoDiv">
-                  <h5>{item?.name}</h5>
-                  <div className="priceandquantity">
-                    <h3>{item?.discount ? item?.discount : item?.price} Tk</h3>
-                    <div className="cartQuantity">
-                      <span>Qty : {item?.cartQuantity}</span>
-                    </div>
+            <div className="order_product_info">
+              <div className="orderImgDiv">
+                <img src={product?.img?.url} alt="" />
+              </div>
+              <div className="cartInfoDiv">
+                <h5>{product?.name}</h5>
+                <div className="priceandquantity">
+                  <h3>
+                    {product?.discount ? product?.discount : product?.price} Tk
+                  </h3>
+                  <div className="cartQuantity">
+                    <span>Qty : {quantity}</span>
                   </div>
                 </div>
               </div>
-            ))}
+            </div>
           </div>
           <div className="midBottom">
             <h3>Shipping Address</h3>
             <form>
-              <TextField
-                variant="filled"
-                type="text"
-                label="First Name"
-                required
-              />
-              <TextField
-                variant="filled"
-                type="text"
-                label="Last Name"
-                required
-              />
-              <TextField variant="filled" type="email" label="Email" required />
-              <TextField
-                variant="filled"
-                type="number"
-                label="Phone"
-                required
-              />
-
-              <TextField
-                select
-                helperText="Please select your city"
-                defaultValue="Select"
-                variant="filled"
-                label="City"
-                required
-              />
-              <TextField
-                select
-                helperText="Please select your area"
-                defaultValue="Select"
-                variant="filled"
-                label="Area"
-                required
-              />
-
-              <TextField
-                multiline
-                variant="filled"
-                rows={4}
-                type="text"
-                label="Address"
-                required
-              />
+              <input type="text" placeholder="First Name" required />
+              <input type="text" placeholder="Last Name" required />
+              <input type="email" placeholder="Email" required />
+              <input type="text" placeholder="Address" required />
+              <input type="text" placeholder="City" required />
+              <input type="text" placeholder="Phone" required />
             </form>
           </div>
         </div>
         <div className="bottomSection">
-          <div className="total-div">
-            <div className="subtotal">
-              <h4>Subtotal : </h4>
-              <span style={{ fontWeight: "bold" }}>{cartTotalAmount} TK</span>
-            </div>
-            <div className="delivery-charge">
-              <small style={{ fontWeight: "bold" }}>Delivery Charge : </small>
-              <small style={{ fontWeight: "bold" }}>{deliveryCharge} TK</small>
-            </div>
+          <div className="bottomWrapper">
             <div className="total">
-              <h2 className="totalAmount">Total :</h2>
-              <p style={{ fontWeight: "bold" }}>
-                {cartTotalAmount + deliveryCharge} Tk
-              </p>
+              <h3>Subtotal : {subTotal} TK</h3>
+              <small>Delivery Charge : {}</small>
+              <h5 className="totalAmount">
+                Total : <span>{} Tk</span>
+              </h5>
             </div>
             <div className="placeButton">
               <button>Place Order</button>
@@ -152,17 +104,11 @@ const OrderContainer = styled.div`
     align-items: center;
   }
   .order_MidSection > .midTop {
-    width: 70%;
     margin: 10px;
-    padding: 10px;
     background-color: #fff;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
-    ${mobile({
-      width: "90%",
-      padding: "10px",
-    })}
   }
   .order_product_info {
     display: flex;
@@ -217,30 +163,19 @@ const OrderContainer = styled.div`
     color: #1686c7;
   }
   .order_MidSection {
-    margin-bottom: 15%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  }
+  .order_MidSection > .midBottom > h3 {
+    padding: 0 10px;
+    font-weight: 600;
   }
   .order_MidSection > .midBottom {
-    width: 70%;
     margin: 0px 10px;
     background-color: #fff;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
     gap: 10px;
-    padding: 20px 10px;
-    ${mobile({
-      width: "90%",
-      padding: "10px",
-    })}
-  }
-  .order_MidSection > .midBottom > h3 {
-    padding: 0 10px;
-    font-size: 22px;
-    font-weight: 600;
+    padding: 15px 10px 30px 10px;
   }
   .order_MidSection > .midBottom > form {
     display: flex;
@@ -258,31 +193,20 @@ const OrderContainer = styled.div`
     }
   }
   .bottomSection {
+  }
+  .bottomWrapper {
     display: flex;
-    justify-content: center;
+    margin-top: 80px;
+    justify-content: space-between;
     align-items: center;
     padding: 20px;
     position: fixed;
-    bottom: -10px;
+    bottom: 0px;
     left: 0;
     right: 0;
     background-color: #fff;
+    height: 40px;
   }
-  .total-div {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    width: 70%;
-    ${mobile({
-      width: "85%",
-    })}
-  }
-  .total-div > * {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
   .totalAmount {
     font-size: 16px;
   }
@@ -296,9 +220,8 @@ const OrderContainer = styled.div`
     background-color: #3bb54a;
     color: white;
     border: none;
-    width: 100%;
     cursor: pointer;
   }
 `;
 
-export default Order;
+export default Billing;

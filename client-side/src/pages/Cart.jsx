@@ -13,6 +13,7 @@ import {
   increase_Cart,
   remove_From_Cart,
 } from "../redux/features/cart/cartSlice";
+import { mobile } from "../responsive";
 
 const Cart = () => {
   const { cartProducts, cartTotalAmount } = useSelector((state) => state.cart);
@@ -44,70 +45,86 @@ const Cart = () => {
           </Link>
           <h3>My Cart</h3>
         </div>
-        {cartProducts?.map((product) => (
-          <div className="mid" key={product?._id}>
-            {/* <div className="check">
-              <input
-                type="checkbox"
-                onChange={() => handleCheckbox(product)}
-                name=""
-              />
-            </div> */}
-            <div className="cartImgDiv">
-              <Link className="img-link" to={`/product/${product.productUrl}`}>
-                <img src={product?.img?.url} alt="product-img" />
-              </Link>
-            </div>
-            <div className="cartInfoDiv">
-              <Link className="name-link" to={`/product/${product.productUrl}`}>
-                <h5>{product?.name}</h5>
-              </Link>
-              <div className="priceandquantity">
-                <h3>
-                  {product?.discount ? product?.discount : product?.price} Tk
-                </h3>
-                <div className="cartQuantity">
-                  <span
-                    className="iconMinus"
-                    onClick={() => handleDecreaseCart(product)}
-                  >
-                    <BiMinus />
-                  </span>
-                  <p>{product?.cartQuantity}</p>
-                  <span
-                    className="iconPlus"
-                    onClick={() => handleIncreaseCart(product)}
-                  >
-                    <BiPlus />
-                  </span>
-                </div>
-              </div>
-              <div className="remove-div">
-                <Button
-                  variant="contained"
-                  onClick={() => handleRemoveCart(product)}
-                  size="small"
-                >
-                  Remove
-                </Button>
-              </div>
-            </div>
-          </div>
-        ))}
-        <div className="bottom">
-          <div className="checkOut">
-            <div className="shippingAndTotal">
-              <h4>
-                Total : <span className="priceTotal">{cartTotalAmount} TK</span>
-              </h4>
-            </div>
-            <Link to="/order" className="order-link">
-              <Button variant="contained" size="small">
-                Check Out
-              </Button>
+        {cartProducts.length === 0 ? (
+          <div className="empty-cart">
+            <p>Your Cart is Empty Now</p>
+            <Link to="/" className="name-link">
+              <Button>Start Shopping</Button>
             </Link>
           </div>
-        </div>
+        ) : (
+          <div className="mid-container">
+            {cartProducts?.map((product) => (
+              <div className="mid" key={product?._id}>
+                <div className="cartImgDiv">
+                  <Link
+                    className="img-link"
+                    to={`/product/${product.productUrl}`}
+                  >
+                    <img src={product?.img?.url} alt="product-img" />
+                  </Link>
+                </div>
+                <div className="cartInfoDiv">
+                  <div className="name">
+                    <Link
+                      className="name-link"
+                      to={`/product/${product.productUrl}`}
+                    >
+                      <h5>{product?.name}</h5>
+                    </Link>
+                  </div>
+                  <div className="priceandquantity">
+                    <h3>
+                      {product?.discount ? product?.discount : product?.price}{" "}
+                      Tk
+                    </h3>
+                    <div className="cartQuantity">
+                      <span
+                        className="iconMinus"
+                        onClick={() => handleDecreaseCart(product)}
+                      >
+                        <BiMinus />
+                      </span>
+                      <p>{product?.cartQuantity}</p>
+                      <span
+                        className="iconPlus"
+                        onClick={() => handleIncreaseCart(product)}
+                      >
+                        <BiPlus />
+                      </span>
+                    </div>
+                  </div>
+                  <div className="remove-div">
+                    <Button
+                      variant="contained"
+                      onClick={() => handleRemoveCart(product)}
+                      size="small"
+                    >
+                      Remove
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            ))}
+            <>
+              <div className="bottom">
+                <div className="checkOut">
+                  <div className="shippingAndTotal">
+                    <h4>
+                      Total :{" "}
+                      <span className="priceTotal">{cartTotalAmount} TK</span>
+                    </h4>
+                  </div>
+                  <Link to="/order" className="order-link">
+                    <Button variant="contained" size="small">
+                      Check Out
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            </>
+          </div>
+        )}
       </CartContainer>
     </>
   );
@@ -130,15 +147,27 @@ const CartContainer = styled.div`
     align-items: center;
     color: black;
   }
+
+  .empty-cart {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 70vh;
+  }
+  .mid-container {
+    margin-bottom: 15%;
+  }
   .mid {
     display: flex;
     align-items: center;
     gap: 10px;
-    margin: 10px 30px;
+    margin: 10px 10%;
     border-bottom: 1px solid lightgray;
     padding-bottom: 10px;
-  }
-  .mid > .check {
+    ${mobile({
+      margin: "10px 30px",
+    })}
   }
 
   .mid > .cartImgDiv {
@@ -156,11 +185,18 @@ const CartContainer = styled.div`
     width: 100%;
     /* gap: 5px; */
   }
+  .name {
+    display: inline;
+    margin-bottom: 8px;
+  }
   .name-link {
     text-decoration: none;
     color: inherit;
-    margin-bottom: 7px;
   }
+  .name-link > h5 {
+    display: inline;
+  }
+
   .mid > .cartInfoDiv > .priceandquantity {
     display: flex;
     justify-content: space-between;
@@ -210,7 +246,8 @@ const CartContainer = styled.div`
   .bottom {
     display: flex;
     justify-content: flex-end;
-    margin: 20px;
+    margin: 10px;
+    padding: 10px;
     position: fixed;
     bottom: 0;
     left: 0;

@@ -54,13 +54,12 @@ const SearchResult = () => {
       <Container>
         <div className="wrapper">
           <div className="result-text">
-            <h3>
-              Showing result for <span>{searchText}</span>
-            </h3>
-            <p>
-              {filterProducts?.length} item found in showing result for{" "}
-              <span>{searchText}</span>
-            </p>
+            <div className="result-text-div">
+              <h3>
+                Showing result for <span>{searchText}</span>
+              </h3>
+              <p>{filterProducts?.length} item found</p>
+            </div>
           </div>
           <div className="productsList">
             {currentItems?.map((item) => {
@@ -106,6 +105,13 @@ const Container = styled.div`
     })}
   }
   .result-text {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .result-text-div {
+    width: 60%;
     display: flex;
     flex-direction: column;
     justify-content: center;

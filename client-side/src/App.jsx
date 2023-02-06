@@ -20,6 +20,7 @@ import UpdateSlider from "./admin/pages/UpdateSlider";
 import Users from "./admin/pages/Users";
 import Account from "./pages/Account";
 import AllProducts from "./pages/AllProducts";
+import Billing from "./pages/Billing";
 import Cart from "./pages/Cart";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -74,6 +75,7 @@ const App = () => {
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/order" element={<Order />} />
+        <Route path="/billing" element={<Billing />} />
         {/* Admin Route */}
         {user?.isAdmin ? (
           <Route element={<AdminLayout />}>

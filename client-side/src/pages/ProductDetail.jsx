@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import styled from "styled-components";
 import Footer from "../components/Footer";
@@ -11,6 +10,10 @@ import MobileMenu from "../components/MobileMenu";
 import Navbar from "../components/Navbar";
 import ProductCard from "../components/ProductCard";
 import Spinner from "../components/Spinner";
+import {
+  add_buy_now_product,
+  add_To_Cart,
+} from "../redux/features/cart/cartSlice";
 import { getSingleCategory } from "../redux/features/category/categorySlice";
 import { getSingleProduct } from "../redux/features/product/productSlice";
 import { mobile } from "../responsive";
@@ -22,12 +25,6 @@ const ProductDetail = () => {
   const { category } = useSelector((state) => state.category);
   const categoryUrl = product?._category?.categoryUrl;
   const dispatch = useDispatch();
-
-  let updatePrice = product?.price;
-
-  updatePrice = 20;
-
-  console.log(updatePrice);
 
   const similarProducts = category?.products?.filter(
     (item) => item?._id !== product?._id
@@ -48,14 +45,14 @@ const ProductDetail = () => {
       );
     }
   };
-  const notify = () => {
-    toast.success("Successfully added to cart", {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: true,
-      closeOnClick: true,
-      theme: "light",
-    });
+
+  const handleAddToCart = (e) => {
+    e.preventDefault();
+    dispatch(add_To_Cart({ ...product, cartQuantity: quantity }));
+  };
+
+  const handleBuyNow = (e) => {
+    dispatch(add_buy_now_product({ product, quantity }));
   };
 
   const stockAvailablity = () => {
@@ -78,7 +75,9 @@ const ProductDetail = () => {
             <div className="infoDiv">
               <h3>{product?.name}</h3>
               <p className="availabilty">Availabilty : {stockAvailablity()}</p>
-              <h4>{product?.price} Tk</h4>
+              <h4>
+                {product?.discount ? product?.discount : product?.price} Tk
+              </h4>
               <div className="priceChoosen">
                 <button
                   type="button"
@@ -113,13 +112,13 @@ const ProductDetail = () => {
                     cursor: product?.quantity === 0 && "not-allowed",
                     backgroundColor: product?.quantity === 0 && "#ee65439e",
                   }}
-                  onClick={notify}
+                  onClick={(e) => handleAddToCart(e)}
                   className="addToCart"
                   type="button"
                 >
                   Add to cart
                 </button>
-                <Link to="/order" className="link">
+                <Link to="/billing" className="link">
                   <button
                     disabled={product?.quantity === 0 && "disabled"}
                     style={{
@@ -128,6 +127,7 @@ const ProductDetail = () => {
                     }}
                     className="buyNow"
                     type="button"
+                    onClick={(e) => handleBuyNow(e)}
                   >
                     Buy Now
                   </button>
@@ -160,7 +160,6 @@ const ProductDetail = () => {
       </ProductDetailContainer>
       <MobileMenu />
       <Footer />
-      <ToastContainer />
       {loading && <Spinner />}
     </>
   );
