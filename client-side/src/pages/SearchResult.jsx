@@ -160,3 +160,12 @@ const Container = styled.div`
   }
 `;
 export default SearchResult;
+
+
+  /*
+
+  
+  
+  4000 / 1000 = 4 kg - 2 kg = 2kg * 15 + 90 = 120
+
+              */

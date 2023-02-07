@@ -249,6 +249,10 @@ const OptionLink = styled(Link)`
   text-decoration: none;
   color: gray;
   cursor: pointer;
+  &:hover {
+    background-color: #3bb77e;
+    color: white;
+  }
 `;
 
 const CartDiv = styled.div`
@@ -344,6 +348,9 @@ const Navbar = () => {
                 {userInfo ? (
                   <>
                     <OptionLink to="/account">{userInfo.name}</OptionLink>
+                    {userInfo.isAdmin && (
+                      <OptionLink to="/admin">My Admin</OptionLink>
+                    )}
                     <OptionLink onClick={handleLogout}>Logout</OptionLink>
                   </>
                 ) : (

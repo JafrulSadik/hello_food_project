@@ -1,27 +1,63 @@
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import TextField from "@mui/material/TextField";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import styled from "styled-components";
 import Navbar from "../components/Navbar";
+import { Districts, Divisions, Upazilas } from "../components/Utilities";
 import { get_Totals } from "../redux/features/cart/cartSlice";
 import { mobile } from "../responsive";
 
 const Order = () => {
   const { cartProducts, cartTotalAmount } = useSelector((state) => state.cart);
+  const [division, setDivision] = useState("");
+  const [district, setDistrict] = useState("");
+  const [area, setArea] = useState("");
+  const [deliveryCharge, setDeliveryCharge] = useState(0);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(get_Totals());
   }, [cartProducts, dispatch]);
-  // const productsWeight = cartProducts.reduce(
-  //   (acc, item) => acc + item.weight * item.cartQuantity,
-  //   0
-  // );
-  const deliveryCharge = 120;
+
+  const productsWeight = cartProducts.reduce(
+    (acc, item) => acc + item.weight * item.cartQuantity,
+    0
+  );
+
+  useEffect(() => {
+    if (district === "47") {
+      if (productsWeight <= 1000) {
+        setDeliveryCharge(60);
+      } else if (productsWeight <= 2000) {
+        setDeliveryCharge(90);
+      } else {
+        const charge = (productsWeight / 1000 - 2) * 15 + 90;
+        setDeliveryCharge(charge);
+      }
+    } else if (!district) {
+      setDeliveryCharge(0);
+    } else {
+      if (productsWeight <= 1000) {
+        setDeliveryCharge(120);
+      } else if (productsWeight <= 2000) {
+        setDeliveryCharge(150);
+      } else {
+        const charge = (productsWeight / 1000 - 2) * 25 + 150;
+        setDeliveryCharge(charge);
+      }
+    }
+  }, [district, productsWeight]);
+
+  const filteredDistricts = Districts?.filter(
+    (item) => item?.division_id === division
+  );
+
+  const filteredUpazilas = Upazilas?.filter(
+    (item) => item?.district_id === district
+  );
 
   return (
     <>
@@ -36,7 +72,7 @@ const Order = () => {
         <div className="order_MidSection">
           <div className="midTop">
             {cartProducts?.map((item) => (
-              <div className="order_product_info">
+              <div key={item?._id} className="order_product_info">
                 <div className="orderImgDiv">
                   <img src={item?.img?.url} alt="" />
                 </div>
@@ -55,49 +91,66 @@ const Order = () => {
           <div className="midBottom">
             <h3>Shipping Address</h3>
             <form>
-              <TextField
-                variant="filled"
-                type="text"
-                label="First Name"
+              <label>First Name*</label>
+              <input type="text" placeholder="Enter Your First Name" required />
+              <label>Last Name*</label>
+              <input type="text" placeholder="Enter Your Last Name" required />
+              <label>Email Address*</label>
+              <input type="email" placeholder="Enter Your Email" required />
+              <label>Phone Number*</label>
+              <input type="number" placeholder="Enter Your Phone No" required />
+              <label>Select Your Division*</label>
+              <select
+                name="division"
+                onChange={(e) => setDivision(e.target.value)}
                 required
-              />
-              <TextField
-                variant="filled"
-                type="text"
-                label="Last Name"
-                required
-              />
-              <TextField variant="filled" type="email" label="Email" required />
-              <TextField
-                variant="filled"
-                type="number"
-                label="Phone"
-                required
-              />
-
-              <TextField
-                select
-                helperText="Please select your city"
                 defaultValue="Select"
-                variant="filled"
-                label="City"
+              >
+                <option value="Select" disabled>
+                  Select
+                </option>
+                {Divisions?.map((item) => (
+                  <option key={item?.name} value={item?.id}>
+                    {item?.name}
+                  </option>
+                ))}
+              </select>
+              <label>Select Your District*</label>
+              <select
+                name="district"
+                onChange={(e) => setDistrict(e.target.value)}
                 required
-              />
-              <TextField
-                select
-                helperText="Please select your area"
                 defaultValue="Select"
-                variant="filled"
-                label="Area"
+              >
+                <option value="Select" disabled>
+                  Select
+                </option>
+                {filteredDistricts?.map((item) => (
+                  <option key={item?.name} value={item?.id}>
+                    {item?.name}
+                  </option>
+                ))}
+              </select>
+              <label>Select Your Area*</label>
+              <select
+                name="upazila"
+                onChange={(e) => setArea(e.target.value)}
+                defaultValue="Select"
                 required
-              />
-
-              <TextField
-                multiline
-                variant="filled"
-                rows={4}
+              >
+                <option value="Select" disabled>
+                  Select
+                </option>
+                {filteredUpazilas?.map((item) => (
+                  <option key={item?.name} value={item?.id}>
+                    {item?.name}
+                  </option>
+                ))}
+              </select>
+              <textarea
                 type="text"
-                label="Address"
+                placeholder="Enter Your Full Address"
+                rows="10"
                 required
               />
             </form>
@@ -248,13 +301,42 @@ const OrderContainer = styled.div`
     gap: 10px;
     padding: 0 10px;
   }
-  .order_MidSection > .midBottom > form > input {
-    font-size: 16px;
-    padding: 10px 10px;
+  .midBottom > form > input {
+    font-size: 18px;
+    padding: 14px;
     border-radius: 5px;
-    border: 1px solid gray;
+    background-color: #f4f8f9;
+    border: none;
     &:focus {
-      outline: 1px solid cyan;
+      outline: 1px solid #bddde6;
+    }
+  }
+  .midBottom > form > select {
+    font-size: 18px;
+    padding: 14px;
+    border-radius: 5px;
+    background-color: #f4f8f9;
+    border: none;
+    &:focus {
+      outline: 1px solid #bddde6;
+    }
+  }
+  .midBottom > form > select > option {
+    font-size: 20px;
+    background-color: #f4f8f9;
+    border: none;
+    &:focus {
+      outline: 1px solid #bddde6;
+    }
+  }
+  .midBottom > form > textarea {
+    font-size: 18px;
+    padding: 14px;
+    border-radius: 5px;
+    background-color: #f4f8f9;
+    border: none;
+    &:focus {
+      outline: 1px solid #bddde6;
     }
   }
   .bottomSection {
@@ -266,7 +348,8 @@ const OrderContainer = styled.div`
     bottom: -10px;
     left: 0;
     right: 0;
-    background-color: #fff;
+    z-index: 9;
+    background-color: white;
   }
   .total-div {
     display: flex;
