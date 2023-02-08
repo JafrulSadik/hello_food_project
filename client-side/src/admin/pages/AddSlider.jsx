@@ -106,7 +106,7 @@ const Container = styled.div`
     align-items: center;
   }
   .box > .form .imgDiv {
-    border: 1px solid gray;
+    border: 1px solid #bddde6;
     padding: 10px;
     width: 90%;
     margin: 10px 10px;
@@ -136,12 +136,15 @@ const Container = styled.div`
     display: block;
     font-size: 18px;
     font-weight: 500;
-    padding: 10px;
+    padding: 14px;
     margin: 10px;
     width: 90%;
-    border: 1px solid #777;
+    background-color: #f4f8f9;
+    border: none;
+    &:focus {
+      outline: 1px solid #bddde6;
+    }
     border-radius: 3px;
-    outline: none;
   }
   .imgDiv > input {
     display: block;
@@ -150,9 +153,12 @@ const Container = styled.div`
     padding: 10px;
     margin: 10px;
     width: 90%;
-    border: 1px solid #777;
+    background-color: #f4f8f9;
+    border: none;
+    &:focus {
+      outline: 1px solid #bddde6;
+    }
     border-radius: 3px;
-    outline: none;
   }
   .SliderName {
     width: 90%;

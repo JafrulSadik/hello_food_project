@@ -55,6 +55,8 @@ const ProductCard = ({ item }) => {
   );
 };
 const Container = styled.div`
+  display: flex;
+  justify-content: center;
   .link {
     text-decoration: none;
   }
@@ -85,25 +87,6 @@ const CardWrapper = styled.div`
     borderRadius: "5px",
     marginBottom: "0",
   })}
-
-  .new {
-    position: absolute;
-    left: 10px;
-    top: 8px;
-    background-color: #3bb77e;
-    padding: 5px 12px;
-    border-radius: 20px;
-    font-size: 14px;
-    color: white;
-    font-size: 12px;
-
-    ${mobile({
-      padding: "5px 12px",
-      borderRadius: "20px",
-      fontSize: "10px",
-      color: "white",
-    })}
-  }
 
   .title {
     font-size: 13px;

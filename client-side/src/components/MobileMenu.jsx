@@ -5,7 +5,7 @@ import {
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BiLeftArrowAlt } from "react-icons/bi";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
@@ -74,8 +74,44 @@ const SearchScreen = styled.div`
   z-index: 11;
 `;
 
-const SearchBar = styled.div`
+const SearchArea = styled.div`
   width: 85%;
+  .search-result {
+    position: absolute;
+    z-index: 999999;
+    width: 78%;
+    top: 55px;
+    left: 14%;
+    right: 0;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.089), 0 3px 6px rgba(0, 0, 0, 0.11);
+  }
+  .link-div {
+    padding: 12px 15px;
+    /* border-bottom: 1px solid lightgray; */
+    display: flex;
+    align-items: center;
+  }
+
+  .link-div > img {
+    display: flex;
+    align-items: center;
+    width: 40px;
+    /* border: 1px solid red; */
+    margin-right: 10px;
+  }
+  .temp-result-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: gray;
+    /* border: 1px solid blue; */
+  }
+`;
+
+const SearchBar = styled.div`
+  width: 100%;
   height: 40px;
   display: flex;
   align-items: center;
@@ -88,7 +124,7 @@ const Exit = styled.div`
   color: #3bb77d;
 `;
 
-const InputDiv = styled.input`
+const Input = styled.input`
   width: 100%;
   border: none;
   padding-left: 5px;
@@ -120,15 +156,26 @@ const CartDiv = styled.div`
 const MobileMenu = () => {
   const [search, setSearch] = useState();
   const { cartProducts } = useSelector((state) => state.cart);
+  const { products } = useSelector((state) => state.product);
   const [searchInput, setSearchInput] = useState("");
+  const [searchProducts, setSearchProducts] = useState([]);
   const navigate = useNavigate();
-
-  console.log(searchInput);
 
   const handleSearchClick = (e) => {
     e.preventDefault();
     navigate(`/search?text=${searchInput}`);
   };
+
+  useEffect(() => {
+    const filteredProducts = products?.filter((product) =>
+      product?.name?.toLowerCase().includes(searchInput)
+    );
+    setSearchProducts(filteredProducts);
+    if (searchInput === "") {
+      setSearchProducts([]);
+    }
+    //eslint-disable-next-line
+  }, [searchInput]);
 
   const handleSearch = (props) => {
     if (props) {
@@ -185,15 +232,40 @@ const MobileMenu = () => {
       </Wrapper>
 
       <SearchScreen style={search}>
-        <SearchBar>
-          <Exit onClick={() => handleSearch()}>
-            <BiLeftArrowAlt />
-          </Exit>
-          <InputDiv
-            onChange={(e) => setSearchInput(e.target.value)}
-            placeholder="Input here..."
-          />
-        </SearchBar>
+        <SearchArea>
+          <SearchBar>
+            <Exit onClick={() => handleSearch()}>
+              <BiLeftArrowAlt />
+            </Exit>
+            <Input
+              onChange={(e) => setSearchInput(e.target.value)}
+              placeholder="Input here..."
+            />
+          </SearchBar>
+          <div className="search-div">
+            {searchProducts && (
+              <div className="search-result">
+                {searchProducts?.map((item) => {
+                  const modifiedName =
+                    item?.name?.length > 50
+                      ? item?.name?.trim().substr(0, 42) + "..."
+                      : item?.name;
+                  return (
+                    <div className="link-div">
+                      <img src={item?.img?.url} alt="" />
+                      <Link
+                        className="temp-result-link"
+                        to={`/product/${item?.productUrl}`}
+                      >
+                        {modifiedName}
+                      </Link>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        </SearchArea>
       </SearchScreen>
     </>
   );

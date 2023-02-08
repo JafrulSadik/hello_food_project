@@ -193,7 +193,7 @@ const Container = styled.div`
     overflow: hidden;
   }
   .imgDiv {
-    border: 1px solid gray;
+    border: 1px solid #bddde6;
     padding: 10px;
     width: 90%;
     margin: 10px 10px;
@@ -223,12 +223,15 @@ const Container = styled.div`
       display: block;
       font-size: 18px;
       font-weight: 500;
-      padding: 10px;
+      padding: 14px;
       margin: 10px;
       width: 90%;
-      border: 1px solid #777;
+      background-color: #f4f8f9;
+      border: none;
+      &:focus {
+        outline: 1px solid #bddde6;
+      }
       border-radius: 3px;
-      outline: none;
     }
     select {
       width: 92.5%;
@@ -239,6 +242,20 @@ const Container = styled.div`
       width: 93%;
       .ql-container {
         height: 250px;
+        background-color: #f4f8f9;
+        border: none;
+        &:focus {
+          outline: 1px solid #bddde6;
+        }
+        border-radius: 3px;
+      }
+      .ql-toolbar {
+        border-radius: 3px;
+        background-color: #f4f8f9;
+        border: none;
+        &:focus {
+          outline: 1px solid #bddde6;
+        }
       }
       .ql-editor > p {
         font-size: 18px;

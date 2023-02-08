@@ -8,6 +8,7 @@ import styled from "styled-components";
 import logo from "../images/hello_food.png";
 import { logout } from "../redux/features/auth/authSlice";
 import { get_Cart_Products } from "../redux/features/cart/cartSlice";
+import { getAllProducts } from "../redux/features/product/productSlice";
 
 import { tablet } from "../responsive";
 import Spinner from "./Spinner";
@@ -273,8 +274,10 @@ const CartDiv = styled.div`
 const Navbar = () => {
   const [active, setActive] = useState({ display: "none" });
   const [searchInput, setSearchInput] = useState("");
+  const [searchProducts, setSearchProducts] = useState([]);
   const { userInfo, pending } = useSelector((state) => state.auth);
   const { cartProducts } = useSelector((state) => state.cart);
+  const { products } = useSelector((state) => state.product);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -282,6 +285,18 @@ const Navbar = () => {
     dispatch(get_Cart_Products());
     //eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    dispatch(getAllProducts());
+    const filteredProducts = products?.filter((product) =>
+      product?.name?.toLowerCase().includes(searchInput)
+    );
+    setSearchProducts(filteredProducts);
+    if (searchInput === "") {
+      setSearchProducts([]);
+    }
+    //eslint-disable-next-line
+  }, [searchInput]);
 
   const handleAccountClick = (e) => {
     e.preventDefault();
@@ -304,85 +319,153 @@ const Navbar = () => {
   };
 
   return (
-    <Wrapper>
-      <Logo>
-        <LogoLink to="/">
-          <LogoImage src={logo} />
-        </LogoLink>
-      </Logo>
+    <MainWrapper>
+      <Wrapper>
+        <Logo>
+          <LogoLink to="/">
+            <LogoImage src={logo} />
+          </LogoLink>
+        </Logo>
 
-      <Form>
-        <InputDiv>
-          <Icon>
-            <BiSearch></BiSearch>
-          </Icon>
-          <SearchInput
-            onChange={(e) => setSearchInput(e.target.value)}
-          ></SearchInput>
-          <NavButton onClick={(e) => handleSearch(e)}>Search</NavButton>
-        </InputDiv>
-      </Form>
-
-      <NavDiv>
-        <LinkPc to="/cart">
-          <CartDiv>
-            <FaShoppingCart style={{ fontSize: "18px" }}></FaShoppingCart>
-            <div className="quantityDiv">
-              <p>{cartProducts?.length}</p>
+        <Form>
+          <InputDiv>
+            <Icon>
+              <BiSearch></BiSearch>
+            </Icon>
+            <SearchInput
+              onChange={(e) => setSearchInput(e.target.value)}
+            ></SearchInput>
+            <div className="search-div">
+              {searchProducts && (
+                <div className="search-result">
+                  {searchProducts?.map((item) => {
+                    const modifiedName =
+                      item?.name?.length > 50
+                        ? item?.name?.trim().substr(0, 42) + "..."
+                        : item?.name;
+                    return (
+                      <div className="link-div">
+                        <img src={item?.img?.url} alt="" />
+                        <Link
+                          className="temp-result-link"
+                          to={`/product/${item?.productUrl}`}
+                        >
+                          {modifiedName}
+                        </Link>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
-          </CartDiv>
-          <Text>Cart</Text>
-        </LinkPc>
-        <MyAccount onClick={(e) => handleAccountClick(e)}>
-          <AccountBtn>
-            <Span>
-              <CgProfile />
-            </Span>
-            {}
-            <Text>{userInfo ? userInfo?.name : "My Account"}</Text>
-          </AccountBtn>
+            <NavButton onClick={(e) => handleSearch(e)}>Search</NavButton>
+          </InputDiv>
+        </Form>
 
-          <SubMenu style={active} onClick={(e) => handleAccountClick(e)}>
-            <ListOption>
-              <Option>
-                {userInfo ? (
-                  <>
-                    <OptionLink to="/account">{userInfo.name}</OptionLink>
-                    {userInfo.isAdmin && (
-                      <OptionLink to="/admin">My Admin</OptionLink>
-                    )}
-                    <OptionLink onClick={handleLogout}>Logout</OptionLink>
-                  </>
-                ) : (
-                  <>
-                    <OptionLink to="/login">Login</OptionLink>
-                    <OptionLink to="/register">Register</OptionLink>
-                  </>
-                )}
-              </Option>
-            </ListOption>
-          </SubMenu>
-        </MyAccount>
+        <NavDiv>
+          <LinkPc to="/cart">
+            <CartDiv>
+              <FaShoppingCart style={{ fontSize: "18px" }}></FaShoppingCart>
+              <div className="quantityDiv">
+                <p>{cartProducts?.length}</p>
+              </div>
+            </CartDiv>
+            <Text>Cart</Text>
+          </LinkPc>
+          <MyAccount onClick={(e) => handleAccountClick(e)}>
+            <AccountBtn>
+              <Span>
+                <CgProfile />
+              </Span>
+              {}
+              <Text>{userInfo ? userInfo?.name : "My Account"}</Text>
+            </AccountBtn>
 
-        {userInfo ? (
-          <LinkLogin to="/">
-            <Span>
-              <CgLogOut />
-            </Span>
-            <Text onClick={handleLogout}>Logout</Text>
-          </LinkLogin>
-        ) : (
-          <LinkLogin to="/login">
-            <Span>
-              <CgLogIn />
-            </Span>
-            <Text>Login</Text>
-          </LinkLogin>
-        )}
-      </NavDiv>
-      {pending && <Spinner />}
-    </Wrapper>
+            <SubMenu style={active} onClick={(e) => handleAccountClick(e)}>
+              <ListOption>
+                <Option>
+                  {userInfo ? (
+                    <>
+                      <OptionLink to="/account">{userInfo.name}</OptionLink>
+                      {userInfo.isAdmin && (
+                        <OptionLink to="/admin">My Admin</OptionLink>
+                      )}
+                      <OptionLink onClick={handleLogout}>Logout</OptionLink>
+                    </>
+                  ) : (
+                    <>
+                      <OptionLink to="/login">Login</OptionLink>
+                      <OptionLink to="/register">Register</OptionLink>
+                    </>
+                  )}
+                </Option>
+              </ListOption>
+            </SubMenu>
+          </MyAccount>
+
+          {userInfo ? (
+            <LinkLogin to="/">
+              <Span>
+                <CgLogOut />
+              </Span>
+              <Text onClick={handleLogout}>Logout</Text>
+            </LinkLogin>
+          ) : (
+            <LinkLogin to="/login">
+              <Span>
+                <CgLogIn />
+              </Span>
+              <Text>Login</Text>
+            </LinkLogin>
+          )}
+        </NavDiv>
+        {pending && <Spinner />}
+      </Wrapper>
+    </MainWrapper>
   );
 };
 
+const MainWrapper = styled.div`
+  .search-div {
+  }
+  .search-result {
+    position: absolute;
+    z-index: 999999;
+    width: 45%;
+    top: 74px;
+    left: 21.5%;
+    right: 25%;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.089), 0 3px 6px rgba(0, 0, 0, 0.11);
+  }
+  .link-div {
+    padding: 12px 15px;
+    /* border-bottom: 1px solid lightgray; */
+    display: flex;
+    align-items: center;
+  }
+
+  .link-div > img {
+    display: flex;
+    align-items: center;
+    width: 40px;
+    /* border: 1px solid red; */
+    margin-right: 10px;
+  }
+  .temp-result-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: gray;
+    /* border: 1px solid blue; */
+  }
+`;
+
 export default Navbar;
+
+// {searchProducts?.map((item) => {
+//   return (
+//     <Link className="temp-result-link">{item?.name}</Link>
+//   );
+// })}

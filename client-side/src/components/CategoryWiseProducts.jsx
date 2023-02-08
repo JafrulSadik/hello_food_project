@@ -89,17 +89,13 @@ const Container = styled.div`
     }
   }
   .wrapper {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-    flex-wrap: wrap;
-    flex-grow: 1;
-    gap: 5px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
 
     ${mobile({
-      justifyContent: "space-evenly",
-      gap: "15px 0px",
+      gridTemplateColumns: "repeat(2, 1fr)",
+      gap: "20px",
+      margin: "4%",
     })}
   }
 `;

@@ -12,9 +12,14 @@ import { mobile } from "../responsive";
 
 const Order = () => {
   const { cartProducts, cartTotalAmount } = useSelector((state) => state.cart);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLasttName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [division, setDivision] = useState("");
   const [district, setDistrict] = useState("");
   const [area, setArea] = useState("");
+  const [address, setAddress] = useState("");
   const [deliveryCharge, setDeliveryCharge] = useState(0);
   const dispatch = useDispatch();
 
@@ -22,13 +27,35 @@ const Order = () => {
     dispatch(get_Totals());
   }, [cartProducts, dispatch]);
 
+  console.log(
+    "products",
+    cartProducts,
+    "firstName",
+    firstName,
+    "lastName",
+    lastName,
+    "email",
+    email,
+    "phone",
+    phone,
+    "division",
+    division.split(",")[0],
+    "district",
+    district.split(",")[0],
+    "area",
+    area,
+    "address",
+    address
+  );
+
   const productsWeight = cartProducts.reduce(
     (acc, item) => acc + item.weight * item.cartQuantity,
     0
   );
 
   useEffect(() => {
-    if (district === "47") {
+    const districtName = district.split(",")[0];
+    if (districtName === "Dhaka") {
       if (productsWeight <= 1000) {
         setDeliveryCharge(60);
       } else if (productsWeight <= 2000) {
@@ -51,13 +78,15 @@ const Order = () => {
     }
   }, [district, productsWeight]);
 
-  const filteredDistricts = Districts?.filter(
-    (item) => item?.division_id === division
-  );
+  const filteredDistricts = Districts?.filter((item) => {
+    const divisionId = division.split(",")[1];
+    return item?.division_id === divisionId;
+  });
 
-  const filteredUpazilas = Upazilas?.filter(
-    (item) => item?.district_id === district
-  );
+  const filteredUpazilas = Upazilas?.filter((item) => {
+    const districtId = district.split(",")[1];
+    return item?.district_id === districtId;
+  });
 
   return (
     <>
@@ -92,13 +121,33 @@ const Order = () => {
             <h3>Shipping Address</h3>
             <form>
               <label>First Name*</label>
-              <input type="text" placeholder="Enter Your First Name" required />
+              <input
+                type="text"
+                onChange={(e) => setFirstName(e.target.value)}
+                placeholder="Enter Your First Name"
+                required
+              />
               <label>Last Name*</label>
-              <input type="text" placeholder="Enter Your Last Name" required />
+              <input
+                type="text"
+                onChange={(e) => setLasttName(e.target.value)}
+                placeholder="Enter Your Last Name"
+                required
+              />
               <label>Email Address*</label>
-              <input type="email" placeholder="Enter Your Email" required />
+              <input
+                type="email"
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter Your Email"
+                required
+              />
               <label>Phone Number*</label>
-              <input type="number" placeholder="Enter Your Phone No" required />
+              <input
+                type="number"
+                onChange={(e) => setPhone(e.target.value)}
+                placeholder="Enter Your Phone No"
+                required
+              />
               <label>Select Your Division*</label>
               <select
                 name="division"
@@ -110,7 +159,7 @@ const Order = () => {
                   Select
                 </option>
                 {Divisions?.map((item) => (
-                  <option key={item?.name} value={item?.id}>
+                  <option key={item?.name} value={[item.name, item.id]}>
                     {item?.name}
                   </option>
                 ))}
@@ -126,7 +175,7 @@ const Order = () => {
                   Select
                 </option>
                 {filteredDistricts?.map((item) => (
-                  <option key={item?.name} value={item?.id}>
+                  <option key={item?.name} value={[item.name, item.id]}>
                     {item?.name}
                   </option>
                 ))}
@@ -142,13 +191,14 @@ const Order = () => {
                   Select
                 </option>
                 {filteredUpazilas?.map((item) => (
-                  <option key={item?.name} value={item?.id}>
+                  <option key={item?.name} value={item.name}>
                     {item?.name}
                   </option>
                 ))}
               </select>
               <textarea
                 type="text"
+                onChange={(e) => setAddress(e.target.value)}
                 placeholder="Enter Your Full Address"
                 rows="10"
                 required
