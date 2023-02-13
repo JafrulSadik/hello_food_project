@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import styled from "styled-components";
 import Navbar from "../components/Navbar";
@@ -20,6 +21,7 @@ const Order = () => {
   const [district, setDistrict] = useState("");
   const [area, setArea] = useState("");
   const [address, setAddress] = useState("");
+  const [buttonDisable, setButtonDisable] = useState(true);
   const [deliveryCharge, setDeliveryCharge] = useState(0);
   const dispatch = useDispatch();
 
@@ -87,6 +89,29 @@ const Order = () => {
     const districtId = district.split(",")[1];
     return item?.district_id === districtId;
   });
+
+  useEffect(() => {
+    if (
+      firstName &&
+      lastName &&
+      email &&
+      phone &&
+      division &&
+      district &&
+      area &&
+      address
+    ) {
+      setButtonDisable(false);
+    } else {
+      setButtonDisable(true);
+    }
+  }, [firstName, lastName, email, phone, division, district, area, address]);
+
+  console.log(buttonDisable);
+  const handlePlaceOrder = (e) => {
+    e.preventDefault();
+    toast.success("success");
+  };
 
   return (
     <>
@@ -205,6 +230,13 @@ const Order = () => {
               />
             </form>
           </div>
+          <div className="payment-area">
+            <h3>Payment Detail</h3>
+            <div className="delivery-option">
+              <input type="radio" defaultChecked />
+              <label>Cash On Delivery</label>
+            </div>
+          </div>
         </div>
         <div className="bottomSection">
           <div className="total-div">
@@ -223,7 +255,13 @@ const Order = () => {
               </p>
             </div>
             <div className="placeButton">
-              <button>Place Order</button>
+              <button
+                disabled={buttonDisable}
+                className={buttonDisable ? "disable" : "enable"}
+                onClick={(e) => handlePlaceOrder(e)}
+              >
+                Place Order
+              </button>
             </div>
           </div>
         </div>
@@ -389,6 +427,32 @@ const OrderContainer = styled.div`
       outline: 1px solid #bddde6;
     }
   }
+
+  .payment-area {
+    width: 70%;
+    margin: 10px 10px;
+    background-color: #fff;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px 10px;
+    ${mobile({
+      width: "90%",
+      padding: "10px",
+    })}
+  }
+
+  .payment-area > h3 {
+    padding: 0 10px;
+  }
+
+  .delivery-option {
+    padding: 0 10px;
+    display: flex;
+    gap: 10px;
+  }
+
   .bottomSection {
     display: flex;
     justify-content: center;
@@ -430,6 +494,13 @@ const OrderContainer = styled.div`
     color: white;
     border: none;
     width: 100%;
+    cursor: pointer;
+  }
+  .placeButton > .disable {
+    cursor: not-allowed;
+    background-color: #66b471a0;
+  }
+  .placeButton > .enable {
     cursor: pointer;
   }
 `;

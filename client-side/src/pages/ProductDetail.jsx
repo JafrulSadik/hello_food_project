@@ -11,6 +11,7 @@ import Navbar from "../components/Navbar";
 import ProductCard from "../components/ProductCard";
 import Spinner from "../components/Spinner";
 import {
+  addToCart,
   add_buy_now_product,
   add_To_Cart,
 } from "../redux/features/cart/cartSlice";
@@ -23,6 +24,7 @@ const ProductDetail = () => {
   const { productUrl } = useParams();
   const { product, loading } = useSelector((state) => state.product);
   const { category } = useSelector((state) => state.category);
+  const { userInfo } = useSelector((state) => state.auth);
   const categoryUrl = product?._category?.categoryUrl;
   const dispatch = useDispatch();
 
@@ -48,7 +50,17 @@ const ProductDetail = () => {
 
   const handleAddToCart = (e) => {
     e.preventDefault();
-    dispatch(add_To_Cart({ ...product, cartQuantity: quantity }));
+    if (userInfo) {
+      dispatch(
+        addToCart({
+          id: userInfo?._id,
+          product,
+          cartQuantity: quantity,
+        })
+      );
+    } else {
+      dispatch(add_To_Cart({ product, cartQuantity: quantity }));
+    }
   };
 
   const handleBuyNow = (e) => {

@@ -9,26 +9,36 @@ import MobileMenu from "../components/MobileMenu";
 import Navbar from "../components/Navbar";
 import Slider from "../components/Slider";
 import Spinner from "../components/Spinner";
+import { get_Cart_Products } from "../redux/features/cart/cartSlice";
 import { getAllCategories } from "../redux/features/category/categorySlice";
 
 const Home = () => {
   const { categories, loading } = useSelector((state) => state.category);
+  const { userInfo } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getAllCategories());
     // eslint-disable-next-line
   }, []);
+  useEffect(() => {
+    if (!userInfo) {
+      dispatch(get_Cart_Products());
+    }
+    //eslint-disable-next-line
+  }, [userInfo]);
   return (
     <HomeContainer>
       <Navbar />
-      <Slider />
-      <MobileMenu />
-      <Categories />
-      <AllProductsComponent />
-      {categories?.map((category) => (
-        <CategoryWiseProducts key={category?._id} category={category} />
-      ))}
+      <div className="container">
+        <Slider />
+        <MobileMenu />
+        <Categories />
+        <AllProductsComponent />
+        {categories?.map((category) => (
+          <CategoryWiseProducts key={category?._id} category={category} />
+        ))}
+      </div>
       <Footer />
       {loading && <Spinner />}
     </HomeContainer>
@@ -37,6 +47,9 @@ const Home = () => {
 
 const HomeContainer = styled.div`
   background-color: #fcf8f8;
+  .container {
+    min-height: 100vh;
+  }
 `;
 
 export default Home;

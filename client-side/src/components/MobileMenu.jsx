@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { BiLeftArrowAlt } from "react-icons/bi";
 import { useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { tablet } from "../responsive";
 
@@ -159,12 +159,12 @@ const MobileMenu = () => {
   const { products } = useSelector((state) => state.product);
   const [searchInput, setSearchInput] = useState("");
   const [searchProducts, setSearchProducts] = useState([]);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  const handleSearchClick = (e) => {
-    e.preventDefault();
-    navigate(`/search?text=${searchInput}`);
-  };
+  // const handleSearchClick = (e) => {
+  //   e.preventDefault();
+  //   navigate(`/search?text=${searchInput}`);
+  // };
 
   useEffect(() => {
     const filteredProducts = products?.filter((product) =>

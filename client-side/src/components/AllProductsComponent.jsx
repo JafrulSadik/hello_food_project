@@ -1,19 +1,13 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { getAllProducts } from "../redux/features/product/productSlice";
 import { mobile } from "../responsive";
 import ProductCard from "./ProductCard";
+import { useSelector } from "react-redux";
 
 const AllProductsComponent = () => {
   const { products } = useSelector((state) => state.product);
-  const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(getAllProducts());
-    // eslint-disable-next-line
-  }, []);
   return (
     <Container>
       <div className="header">
@@ -89,11 +83,11 @@ const Container = styled.div`
   }
   .wrapper {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    grid-gap: 10px;
 
     ${mobile({
-      gridTemplateColumns: "repeat(2, 1fr)",
-      gap: "20px",
+      gridTemplateColumns: "repeat(auto-fit, minmax(135px, 1fr))",
       margin: "4%",
     })}
   }

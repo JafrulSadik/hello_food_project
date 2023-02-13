@@ -2,6 +2,7 @@ import { faFacebookF } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { AiOutlineYoutube } from "react-icons/ai";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import logo from "../images/hello_food.png";
 import { mobile } from "../responsive";
@@ -19,12 +20,16 @@ const Footer = () => {
               <span>Follow Us</span>
             </h4>
             <div className="icons">
-              <a href="/">
+              <a
+                href="https://facebook.com/hellofood.com.bd"
+                target="_blank"
+                rel="noreferrer"
+              >
                 <FontAwesomeIcon className="facebook" icon={faFacebookF} />
               </a>
-              <a href="/">
+              <Link href="/">
                 <AiOutlineYoutube className="youtube" />
-              </a>
+              </Link>
             </div>
           </div>
         </div>
@@ -34,13 +39,13 @@ const Footer = () => {
           </h3>
           <ul>
             <li>
-              <a href="/">About Us</a>
+              <Link href="/">About Us</Link>
             </li>
             <li>
-              <a href="/">Privacy Policy</a>
+              <Link to="/privacy-policy">Privacy Policy</Link>
             </li>
             <li>
-              <a href="/">Terms & Condition</a>
+              <Link href="/">Terms & Condition</Link>
             </li>
           </ul>
         </div>

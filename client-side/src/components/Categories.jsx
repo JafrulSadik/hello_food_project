@@ -41,13 +41,11 @@ const Card = styled(Link)`
   height: 160px;
   width: 240px;
   flex-basis: 150px;
-  background-color: #${(props) => props.bg};
+  background-color: white;
   justify-content: center;
   align-items: center;
   border-radius: 10px;
-  /* background-color: #fff; */
   cursor: pointer;
-  border: 2px solid #f5f5f5;
   text-decoration: none;
   box-shadow: 0 0 15px #aca7a715;
   color: #01936c;
@@ -65,12 +63,14 @@ const Card = styled(Link)`
 `;
 const ImageDiv = styled.div`
   height: 100px;
+
   display: flex;
   justify-content: center;
   align-items: center;
+  /* background-color: red; */
 
   ${mobile({
-    height: "40px",
+    height: "45px",
     width: "",
   })}
 `;
@@ -85,9 +85,10 @@ const Image = styled.img`
 `;
 const TextDiv = styled.div`
   text-align: center;
+  /* background-color: pink; */
   ${mobile({
-    height: "",
-    width: "",
+    height: "20px",
+    width: "100%",
   })}
 `;
 
@@ -117,7 +118,6 @@ const Categories = () => {
         {categories.map((category) => {
           return (
             <Card
-              bg="ECFFEC"
               to={`/categories/${category?.categoryUrl}`}
               key={category?._id}
             >

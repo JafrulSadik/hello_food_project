@@ -98,6 +98,7 @@ const Prodcuts = () => {
 };
 
 const Container = styled.div`
+  min-height: 70vh;
   .wrapper {
     margin: 50px 50px;
     ${mobile({
@@ -138,17 +139,13 @@ const Container = styled.div`
     })}
   }
   .productsList {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-    flex-wrap: wrap;
-    flex-grow: 1;
-    gap: 5px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    grid-gap: 10px;
 
     ${mobile({
-      justifyContent: "space-evenly",
-      gap: "15px 0px",
+      gridTemplateColumns: "repeat(auto-fit, minmax(135px, 1fr))",
+      margin: "4%",
     })}
   }
   .pagination {

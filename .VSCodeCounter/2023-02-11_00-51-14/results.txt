@@ -1,0 +1,63 @@
+Date : 2023-02-11 00:51:14
+Directory : d:\Web Development\Projects\hello-food\server-side
+Total : 32 files,  7984 codes, 56 comments, 298 blanks, all 8338 lines
+
+Languages
++------------+------------+------------+------------+------------+------------+
+| language   | files      | code       | comment    | blank      | total      |
++------------+------------+------------+------------+------------+------------+
+| JSON       |          2 |      6,845 |          0 |          2 |      6,847 |
+| JavaScript |         30 |      1,139 |         56 |        296 |      1,491 |
++------------+------------+------------+------------+------------+------------+
+
+Directories
++-----------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                              | files      | code       | comment    | blank      | total      |
++-----------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                 |         32 |      7,984 |         56 |        298 |      8,338 |
+| . (Files)                                                                         |          4 |      6,911 |          0 |         18 |      6,929 |
+| controllers                                                                       |          7 |        730 |         33 |        168 |        931 |
+| middleware                                                                        |          2 |         29 |          0 |          8 |         37 |
+| models                                                                            |          8 |        211 |          0 |         35 |        246 |
+| routes                                                                            |         10 |         70 |         20 |         59 |        149 |
+| utils                                                                             |          1 |         33 |          3 |         10 |         46 |
++-----------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++-----------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| filename                                                                          | language   | code       | comment    | blank      | total      |
++-----------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| d:\Web Development\Projects\hello-food\server-side\controllers\auth.js            | JavaScript |         60 |          1 |         14 |         75 |
+| d:\Web Development\Projects\hello-food\server-side\controllers\cart.js            | JavaScript |         38 |          0 |         13 |         51 |
+| d:\Web Development\Projects\hello-food\server-side\controllers\category.js        | JavaScript |        173 |         10 |         39 |        222 |
+| d:\Web Development\Projects\hello-food\server-side\controllers\product.js         | JavaScript |        241 |         13 |         42 |        296 |
+| d:\Web Development\Projects\hello-food\server-side\controllers\slider.js          | JavaScript |        157 |          9 |         36 |        202 |
+| d:\Web Development\Projects\hello-food\server-side\controllers\tokenValidation.js | JavaScript |         19 |          0 |          4 |         23 |
+| d:\Web Development\Projects\hello-food\server-side\controllers\user.js            | JavaScript |         42 |          0 |         20 |         62 |
+| d:\Web Development\Projects\hello-food\server-side\error.js                       | JavaScript |          7 |          0 |          2 |          9 |
+| d:\Web Development\Projects\hello-food\server-side\middleware\verifyToken.js      | JavaScript |         14 |          0 |          4 |         18 |
+| d:\Web Development\Projects\hello-food\server-side\middleware\verifyTokenAdmin.js | JavaScript |         15 |          0 |          4 |         19 |
+| d:\Web Development\Projects\hello-food\server-side\models\Cart.js                 | JavaScript |         15 |          0 |          4 |         19 |
+| d:\Web Development\Projects\hello-food\server-side\models\Categories.js           | JavaScript |         15 |          0 |          5 |         20 |
+| d:\Web Development\Projects\hello-food\server-side\models\Categories1.js          | JavaScript |         15 |          0 |          5 |         20 |
+| d:\Web Development\Projects\hello-food\server-side\models\Category.js             | JavaScript |         27 |          0 |          4 |         31 |
+| d:\Web Development\Projects\hello-food\server-side\models\Order.js                | JavaScript |         27 |          0 |          5 |         32 |
+| d:\Web Development\Projects\hello-food\server-side\models\Product.js              | JavaScript |         47 |          0 |          3 |         50 |
+| d:\Web Development\Projects\hello-food\server-side\models\Slider.js               | JavaScript |         21 |          0 |          4 |         25 |
+| d:\Web Development\Projects\hello-food\server-side\models\User.js                 | JavaScript |         44 |          0 |          5 |         49 |
+| d:\Web Development\Projects\hello-food\server-side\package-lock.json              | JSON       |      6,817 |          0 |          1 |      6,818 |
+| d:\Web Development\Projects\hello-food\server-side\package.json                   | JSON       |         28 |          0 |          1 |         29 |
+| d:\Web Development\Projects\hello-food\server-side\routes\auth.js                 | JavaScript |          6 |          3 |          6 |         15 |
+| d:\Web Development\Projects\hello-food\server-side\routes\authRoute.js            | JavaScript |          7 |          4 |          7 |         18 |
+| d:\Web Development\Projects\hello-food\server-side\routes\cartRoute.js            | JavaScript |          7 |          0 |          7 |         14 |
+| d:\Web Development\Projects\hello-food\server-side\routes\categoryRoute.js        | JavaScript |         17 |          0 |          8 |         25 |
+| d:\Web Development\Projects\hello-food\server-side\routes\order.js                | JavaScript |          0 |          0 |          1 |          1 |
+| d:\Web Development\Projects\hello-food\server-side\routes\product.js              | JavaScript |          0 |          0 |          1 |          1 |
+| d:\Web Development\Projects\hello-food\server-side\routes\productRoute.js         | JavaScript |         11 |          5 |          9 |         25 |
+| d:\Web Development\Projects\hello-food\server-side\routes\sliderRoute.js          | JavaScript |         10 |          5 |         10 |         25 |
+| d:\Web Development\Projects\hello-food\server-side\routes\userRoute.js            | JavaScript |          8 |          3 |          6 |         17 |
+| d:\Web Development\Projects\hello-food\server-side\routes\users.js                | JavaScript |          4 |          0 |          4 |          8 |
+| d:\Web Development\Projects\hello-food\server-side\server.js                      | JavaScript |         59 |          0 |         14 |         73 |
+| d:\Web Development\Projects\hello-food\server-side\utils\fileUpload.js            | JavaScript |         33 |          3 |         10 |         46 |
+| Total                                                                             |            |      7,984 |         56 |        298 |      8,338 |
++-----------------------------------------------------------------------------------+------------+------------+------------+------------+------------+

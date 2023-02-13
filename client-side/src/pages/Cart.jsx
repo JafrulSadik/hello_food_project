@@ -7,16 +7,24 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Navbar from "../components/Navbar";
+import Spinner from "../components/Spinner";
 import {
+  decreaseCartQuantity,
   decrease_Cart,
   get_Totals,
+  increaseCartQuantity,
   increase_Cart,
+  removeProductFromCart,
   remove_From_Cart,
 } from "../redux/features/cart/cartSlice";
 import { mobile } from "../responsive";
 
 const Cart = () => {
-  const { cartProducts, cartTotalAmount } = useSelector((state) => state.cart);
+  const { cartProducts, cartTotalAmount, loading } = useSelector(
+    (state) => state.cart
+  );
+  const { userInfo } = useSelector((state) => state.auth);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -24,15 +32,36 @@ const Cart = () => {
   }, [cartProducts, dispatch]);
 
   const handleDecreaseCart = (product) => {
-    dispatch(decrease_Cart(product));
+    const productId = product?._id;
+    const userId = userInfo?._id;
+    if (userInfo) {
+      dispatch(decreaseCartQuantity({ productId, userId }));
+    } else {
+      dispatch(decrease_Cart(product));
+    }
   };
 
   const handleIncreaseCart = (product) => {
-    dispatch(increase_Cart(product));
+    const productId = product?._id;
+    const userId = userInfo?._id;
+    if (userInfo) {
+      dispatch(increaseCartQuantity({ productId, userId }));
+    } else {
+      dispatch(increase_Cart(product));
+    }
   };
 
   const handleRemoveCart = (product) => {
-    dispatch(remove_From_Cart(product));
+    if (userInfo) {
+      dispatch(
+        removeProductFromCart({
+          userId: userInfo?._id,
+          productId: product?._id,
+        })
+      );
+    } else {
+      dispatch(remove_From_Cart(product));
+    }
   };
 
   return (
@@ -45,7 +74,7 @@ const Cart = () => {
           </Link>
           <h3>My Cart</h3>
         </div>
-        {cartProducts.length === 0 ? (
+        {cartProducts?.length === 0 ? (
           <div className="empty-cart">
             <p>Your Cart is Empty Now</p>
             <Link to="/" className="name-link">
@@ -54,58 +83,61 @@ const Cart = () => {
           </div>
         ) : (
           <div className="mid-container">
-            {cartProducts?.map((product) => (
-              <div className="mid" key={product?._id}>
-                <div className="cartImgDiv">
-                  <Link
-                    className="img-link"
-                    to={`/product/${product.productUrl}`}
-                  >
-                    <img src={product?.img?.url} alt="product-img" />
-                  </Link>
-                </div>
-                <div className="cartInfoDiv">
-                  <div className="name">
+            {cartProducts?.map((cartProduct) => {
+              const { product } = cartProduct;
+              return (
+                <div className="mid" key={product?._id}>
+                  <div className="cartImgDiv">
                     <Link
-                      className="name-link"
-                      to={`/product/${product.productUrl}`}
+                      className="img-link"
+                      to={`/product/${product?.productUrl}`}
                     >
-                      <h5>{product?.name}</h5>
+                      <img src={product?.img?.url} alt="product-img" />
                     </Link>
                   </div>
-                  <div className="priceandquantity">
-                    <h3>
-                      {product?.discount ? product?.discount : product?.price}{" "}
-                      Tk
-                    </h3>
-                    <div className="cartQuantity">
-                      <span
-                        className="iconMinus"
-                        onClick={() => handleDecreaseCart(product)}
+                  <div className="cartInfoDiv">
+                    <div className="name">
+                      <Link
+                        className="name-link"
+                        to={`/product/${product?.productUrl}`}
                       >
-                        <BiMinus />
-                      </span>
-                      <p>{product?.cartQuantity}</p>
-                      <span
-                        className="iconPlus"
-                        onClick={() => handleIncreaseCart(product)}
+                        <h5>{product?.name}</h5>
+                      </Link>
+                    </div>
+                    <div className="priceandquantity">
+                      <h3>
+                        {product?.discount ? product?.discount : product?.price}{" "}
+                        Tk
+                      </h3>
+                      <div className="cartQuantity">
+                        <span
+                          className="iconMinus"
+                          onClick={() => handleDecreaseCart(product)}
+                        >
+                          <BiMinus />
+                        </span>
+                        <p>{cartProduct?.cartQuantity}</p>
+                        <span
+                          className="iconPlus"
+                          onClick={() => handleIncreaseCart(product)}
+                        >
+                          <BiPlus />
+                        </span>
+                      </div>
+                    </div>
+                    <div className="remove-div">
+                      <Button
+                        variant="contained"
+                        onClick={() => handleRemoveCart(product)}
+                        size="small"
                       >
-                        <BiPlus />
-                      </span>
+                        Remove
+                      </Button>
                     </div>
                   </div>
-                  <div className="remove-div">
-                    <Button
-                      variant="contained"
-                      onClick={() => handleRemoveCart(product)}
-                      size="small"
-                    >
-                      Remove
-                    </Button>
-                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
             <>
               <div className="bottom">
                 <div className="checkOut">
@@ -126,6 +158,7 @@ const Cart = () => {
           </div>
         )}
       </CartContainer>
+      {loading && <Spinner />}
     </>
   );
 };

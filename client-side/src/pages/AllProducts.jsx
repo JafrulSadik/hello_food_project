@@ -85,6 +85,7 @@ const AllProducts = () => {
 };
 
 const Container = styled.div`
+  min-height: 100vh;
   .wrapper {
     margin: 50px 50px;
     ${mobile({
@@ -121,11 +122,11 @@ const Container = styled.div`
   }
   .productsList {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    grid-gap: 10px;
 
     ${mobile({
-      gridTemplateColumns: "repeat(2, 1fr)",
-      gap: "20px",
+      gridTemplateColumns: "repeat(auto-fit, minmax(135px, 1fr))",
       margin: "4%",
     })}
   }

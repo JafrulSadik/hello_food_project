@@ -1,19 +1,30 @@
 import { FaShoppingCart } from "react-icons/fa";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { add_To_Cart } from "../redux/features/cart/cartSlice";
+import { addToCart, add_To_Cart } from "../redux/features/cart/cartSlice";
 import { mobile } from "../responsive";
 
 const ProductCard = ({ item }) => {
   const dispatch = useDispatch();
+  const { userInfo } = useSelector((state) => state.auth);
   const { name } = item;
   const modifiedName =
     name?.length > 50 ? name?.trim().substr(0, 42) + "..." : name;
 
   const handleAddToCart = (e) => {
     e.preventDefault();
-    dispatch(add_To_Cart({ ...item, cartQuantity: 1 }));
+    if (userInfo) {
+      dispatch(
+        addToCart({
+          id: userInfo?._id,
+          productId: item?._id,
+          product: item,
+        })
+      );
+    } else {
+      dispatch(add_To_Cart({ product: item, cartQuantity: 1 }));
+    }
   };
 
   const discountedAmount = item?.price - item?.discount;

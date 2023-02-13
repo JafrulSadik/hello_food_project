@@ -73,6 +73,7 @@ export const authSlice = createSlice({
         state.pending = true;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
+        sessionStorage.removeItem("cart");
         localStorage.setItem("profile", JSON.stringify({ ...action.payload }));
         state.userInfo = action.payload;
         state.pending = false;

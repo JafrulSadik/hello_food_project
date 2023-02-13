@@ -7,7 +7,10 @@ import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import logo from "../images/hello_food.png";
 import { logout } from "../redux/features/auth/authSlice";
-import { get_Cart_Products } from "../redux/features/cart/cartSlice";
+import {
+  getCartProducts,
+  get_Cart_Products,
+} from "../redux/features/cart/cartSlice";
 import { getAllProducts } from "../redux/features/product/productSlice";
 
 import { tablet } from "../responsive";
@@ -24,7 +27,7 @@ const Wrapper = styled.div`
   align-items: center;
   padding: 0px 10%;
   background-color: white;
-  height: 100px;
+  height: 85px;
   box-shadow: 0 -1px 10px rgba(59, 59, 59, 0.111);
   text-align: center;
   z-index: 10;
@@ -47,8 +50,8 @@ const Logo = styled.div`
 `;
 
 const LogoImage = styled.img`
-  height: 60px;
-  width: 100px;
+  height: 50px;
+  width: 90px;
 
   ${tablet({
     height: "40px",
@@ -74,7 +77,7 @@ const InputDiv = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 46px;
+  height: 40px;
   border: 1px solid #3bb77e;
   border-right: none;
   background-color: white;
@@ -102,7 +105,7 @@ const SearchInput = styled.input`
 `;
 const NavButton = styled.button`
   width: 140px;
-  height: 47px;
+  height: 40px;
   background-color: #01936c;
   color: white;
   border: none;
@@ -275,19 +278,28 @@ const Navbar = () => {
   const [active, setActive] = useState({ display: "none" });
   const [searchInput, setSearchInput] = useState("");
   const [searchProducts, setSearchProducts] = useState([]);
-  const { userInfo, pending } = useSelector((state) => state.auth);
   const { cartProducts } = useSelector((state) => state.cart);
+  const { userInfo, pending } = useSelector((state) => state.auth);
   const { products } = useSelector((state) => state.product);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
-    dispatch(get_Cart_Products());
-    //eslint-disable-next-line
+    dispatch(getAllProducts());
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
-    dispatch(getAllProducts());
+    if (userInfo?.name) {
+      dispatch(getCartProducts(userInfo?._id));
+    } else {
+      dispatch(get_Cart_Products());
+    }
+    //eslint-disable-next-line
+  }, [userInfo]);
+
+
+  useEffect(() => {
     const filteredProducts = products?.filter((product) =>
       product?.name?.toLowerCase().includes(searchInput)
     );

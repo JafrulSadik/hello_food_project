@@ -90,11 +90,11 @@ const Container = styled.div`
   }
   .wrapper {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    grid-gap: 10px;
 
     ${mobile({
-      gridTemplateColumns: "repeat(2, 1fr)",
-      gap: "20px",
+      gridTemplateColumns: "repeat(auto-fit, minmax(135px, 1fr))",
       margin: "4%",
     })}
   }
