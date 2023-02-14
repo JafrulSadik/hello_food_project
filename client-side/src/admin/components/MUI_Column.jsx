@@ -327,6 +327,11 @@ export const recentOrdersColumns = [
 export const ordersColumns = [
   {
     field: "id",
+    headerName: "ID",
+    hide: "true",
+  },
+  {
+    field: "slNo",
     headerName: "Sl No",
     headerAlign: "center",
     align: "center",

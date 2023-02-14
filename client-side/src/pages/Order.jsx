@@ -9,10 +9,12 @@ import styled from "styled-components";
 import Navbar from "../components/Navbar";
 import { Districts, Divisions, Upazilas } from "../components/Utilities";
 import { get_Totals } from "../redux/features/cart/cartSlice";
+import { createOrder } from "../redux/features/order/orderSlice";
 import { mobile } from "../responsive";
 
 const Order = () => {
   const { cartProducts, cartTotalAmount } = useSelector((state) => state.cart);
+  const { userInfo } = useSelector((state) => state.auth);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLasttName] = useState("");
   const [email, setEmail] = useState("");
@@ -20,7 +22,7 @@ const Order = () => {
   const [division, setDivision] = useState("");
   const [district, setDistrict] = useState("");
   const [area, setArea] = useState("");
-  const [address, setAddress] = useState("");
+  const [detailAddress, setAddress] = useState("");
   const [buttonDisable, setButtonDisable] = useState(true);
   const [deliveryCharge, setDeliveryCharge] = useState(0);
   const dispatch = useDispatch();
@@ -29,29 +31,47 @@ const Order = () => {
     dispatch(get_Totals());
   }, [cartProducts, dispatch]);
 
+  const totalPrice = cartTotalAmount + deliveryCharge;
+  const address = {
+    division: division.split(",")[0],
+    district: district.split(",")[0],
+    area: area,
+    detailAddress: detailAddress,
+  };
+
   console.log(
-    "products",
-    cartProducts,
-    "firstName",
-    firstName,
-    "lastName",
-    lastName,
+    "userId",
+    userInfo?._id,
+    "name",
+    firstName + " " + lastName,
     "email",
     email,
     "phone",
     phone,
-    "division",
-    division.split(",")[0],
-    "district",
-    district.split(",")[0],
-    "area",
-    area,
+    "products",
+    cartProducts,
     "address",
-    address
+    address,
+    "deliveryCharge",
+    deliveryCharge,
+    "totalPrice",
+    totalPrice
   );
 
+  const orderData = {
+    userId: userInfo?._id,
+    name: firstName + " " + lastName,
+    email: email,
+    phone: phone,
+    products: cartProducts,
+    address: address,
+    deliveryCharge: deliveryCharge,
+    totalPrice: totalPrice,
+    paymentMethod: "COD",
+  };
+
   const productsWeight = cartProducts.reduce(
-    (acc, item) => acc + item.weight * item.cartQuantity,
+    (acc, item) => acc + item?.product?.weight * item.cartQuantity,
     0
   );
 
@@ -99,17 +119,26 @@ const Order = () => {
       division &&
       district &&
       area &&
-      address
+      detailAddress
     ) {
       setButtonDisable(false);
     } else {
       setButtonDisable(true);
     }
-  }, [firstName, lastName, email, phone, division, district, area, address]);
+  }, [
+    firstName,
+    lastName,
+    email,
+    phone,
+    division,
+    district,
+    area,
+    detailAddress,
+  ]);
 
-  console.log(buttonDisable);
   const handlePlaceOrder = (e) => {
     e.preventDefault();
+    dispatch(createOrder(orderData));
     toast.success("success");
   };
 
@@ -126,14 +155,19 @@ const Order = () => {
         <div className="order_MidSection">
           <div className="midTop">
             {cartProducts?.map((item) => (
-              <div key={item?._id} className="order_product_info">
+              <div key={item?.product._id} className="order_product_info">
                 <div className="orderImgDiv">
-                  <img src={item?.img?.url} alt="" />
+                  <img src={item?.product?.img?.url} alt="" />
                 </div>
                 <div className="cartInfoDiv">
-                  <h5>{item?.name}</h5>
+                  <h5>{item?.product?.name}</h5>
                   <div className="priceandquantity">
-                    <h3>{item?.discount ? item?.discount : item?.price} Tk</h3>
+                    <h3>
+                      {item?.product?.discount
+                        ? item?.product?.discount
+                        : item?.product?.price}{" "}
+                      Tk
+                    </h3>
                     <div className="cartQuantity">
                       <span>Qty : {item?.cartQuantity}</span>
                     </div>
@@ -250,9 +284,7 @@ const Order = () => {
             </div>
             <div className="total">
               <h2 className="totalAmount">Total :</h2>
-              <p style={{ fontWeight: "bold" }}>
-                {cartTotalAmount + deliveryCharge} Tk
-              </p>
+              <p style={{ fontWeight: "bold" }}>{totalPrice} Tk</p>
             </div>
             <div className="placeButton">
               <button

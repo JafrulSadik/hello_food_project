@@ -4,9 +4,9 @@ import { API } from "../../../requestMethod";
 //create-new-order
 export const createOrder = createAsyncThunk(
   "order/createOrder",
-  async (orderProduct, { rejectWithValue }) => {
+  async (orderData, { rejectWithValue }) => {
     try {
-      const res = await API.post("/order", orderProduct);
+      const res = await API.post("/order/newOrder", orderData);
       return res.data;
     } catch (error) {
       return rejectWithValue(error.res.data);
@@ -17,9 +17,10 @@ export const createOrder = createAsyncThunk(
 //get-user-order-products
 export const getOrderProducts = createAsyncThunk(
   "order/getOrderProducts",
-  async ({ rejectWithValue }) => {
+  async (product, { rejectWithValue }) => {
     try {
-      const res = API.get("order");
+      const res = await API.get("/order/allOrders", product);
+      console.log(res.data);
       return res.data;
     } catch (error) {
       return rejectWithValue(error.res.data);
@@ -31,9 +32,6 @@ export const cartSlice = createSlice({
   name: "cart",
   initialState: {
     orderProducts: [],
-    buyNowProduct: {},
-    orderTotalQuantity: 0,
-    orderTotalAmount: 0,
     loading: false,
     error: null,
   },
@@ -53,13 +51,13 @@ export const cartSlice = createSlice({
         state.error = true;
         state.loading = false;
       })
-      //get ordre products
+      //get order products
       .addCase(getOrderProducts.pending, (state) => {
         state.loading = true;
       })
       .addCase(getOrderProducts.fulfilled, (state, action) => {
-        state.pending = false;
-        state.cartProducts = action.payload;
+        state.loading = false;
+        state.orderProducts = action.payload;
         state.error = false;
       })
       .addCase(getOrderProducts.rejected, (state) => {

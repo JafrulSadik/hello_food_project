@@ -298,7 +298,6 @@ const Navbar = () => {
     //eslint-disable-next-line
   }, [userInfo]);
 
-
   useEffect(() => {
     const filteredProducts = products?.filter((product) =>
       product?.name?.toLowerCase().includes(searchInput)

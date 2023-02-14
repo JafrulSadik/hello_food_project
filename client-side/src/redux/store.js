@@ -3,6 +3,7 @@ import authSlice from "./features/auth/authSlice";
 import userSlice from "./features/auth/userSlice";
 import cartSlice from "./features/cart/cartSlice";
 import categorySlice from "./features/category/categorySlice";
+import orderSlice from "./features/order/orderSlice";
 import productSlice from "./features/product/productSlice";
 import sliderSlice from "./features/slider/sliderSlice";
 
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   category: categorySlice,
   slider: sliderSlice,
   cart: cartSlice,
+  order: orderSlice,
 });
 
 // For Hiding dev tools

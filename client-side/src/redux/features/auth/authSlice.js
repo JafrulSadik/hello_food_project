@@ -33,7 +33,7 @@ export const loginUser = createAsyncThunk(
 
 // For Logout
 
-export const logout = createAsyncThunk("users/logout", async () => {
+export const logout = createAsyncThunk("users/logout", async (navigate) => {
   const res = await API.get("/logout");
   toast.success("Logout successfully");
   return res.data;
@@ -87,7 +87,7 @@ export const authSlice = createSlice({
       .addCase(logout.pending, (state) => {
         state.pending = true;
       })
-      .addCase(logout.fulfilled, (state) => {
+      .addCase(logout.fulfilled, (state, action) => {
         state.userInfo = null;
         state.success = true;
         state.pending = false;
