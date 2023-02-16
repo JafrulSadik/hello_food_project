@@ -39,6 +39,10 @@ const AllProducts = () => {
   };
   //   End Pagination
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [itemOffset]);
+
   return (
     <div style={{ backgroundColor: "#fcf8f8" }}>
       <Navbar />
@@ -94,6 +98,7 @@ const Container = styled.div`
   }
   .name {
     margin: 20px 50px;
+    text-align: center;
     ${mobile({
       margin: "10px 10px",
       padding: "6px",
@@ -102,9 +107,8 @@ const Container = styled.div`
   .name > span {
     font-size: 26px;
     font-weight: 600;
-    border-bottom: 2px solid green;
     ${mobile({
-      fontSize: "13px",
+      fontSize: "20px",
     })}
   }
   .sort > span {

@@ -111,7 +111,7 @@ const App = () => {
         )}
         {/* {error && <Route element={<NotFound />} />} */}
       </Routes>
-      <ToastContainer hideProgressBar />
+      <ToastContainer hideProgressBar autoClose={1000} />
     </AppContainer>
   );
 };

@@ -1,11 +1,13 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { mobile } from "../responsive";
 import ProductCard from "./ProductCard";
 
 const CategoryWiseProducts = ({ category }) => {
   const { products } = category;
+  const location = useLocation();
+
   return (
     <Container>
       <div className="header">
@@ -19,9 +21,13 @@ const CategoryWiseProducts = ({ category }) => {
         </div>
       </div>
       <div className="wrapper">
-        {products.map((item, index) => (
-          <ProductCard item={item} key={index} />
-        ))}
+        {location?.pathname === "/"
+          ? products
+              .map((item, index) => <ProductCard item={item} key={index} />)
+              .slice(0, 10)
+          : products.map((item, index) => (
+              <ProductCard item={item} key={index} />
+            ))}
       </div>
     </Container>
   );

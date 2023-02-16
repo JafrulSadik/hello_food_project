@@ -11,7 +11,7 @@ export const addToCart = createAsyncThunk(
     const { cartQuantity } = data;
     try {
       await API.patch("/cart/addToCart", { userId, productId, cartQuantity });
-
+      toast.success("Product is added to Cart");
       // return { ...res.data, cartQuantity: cartProduct.cartQuantity };
       return data;
     } catch (error) {
@@ -39,6 +39,7 @@ export const removeProductFromCart = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       await API.patch(`/cart/removeFromCart`, data);
+      toast.success("Product is removed from cart");
       return data.productId;
     } catch (error) {
       return rejectWithValue(error.res.data);
@@ -49,7 +50,6 @@ export const removeProductFromCart = createAsyncThunk(
 export const increaseCartQuantity = createAsyncThunk(
   "cart/increaseCartQuantity",
   async (data, { rejectWithValue }) => {
-    console.log(data);
     try {
       await API.patch(`/cart/increageQuantity`, data);
       return data.productId;
@@ -87,7 +87,6 @@ export const cartSlice = createSlice({
       state.cartProducts = localProducts ? localProducts : [];
     },
     add_To_Cart: (state, action) => {
-      console.log(action.payload);
       if (action.payload?.product?.quantity === 0) {
         toast.error("Product is out of stock");
       } else {
@@ -98,7 +97,7 @@ export const cartSlice = createSlice({
           toast.info("Product Already in the Cart");
         } else {
           state.cartProducts.push(action.payload);
-          toast.success("Product added in the Cart");
+          toast.success("Product is added to Cart");
           sessionStorage.setItem("cart", JSON.stringify(state.cartProducts));
         }
       }
@@ -126,6 +125,7 @@ export const cartSlice = createSlice({
         (item) => item.product._id !== action.payload._id
       );
       state.cartProducts = filteredCartProducts;
+      toast.success("Product is added to Cart");
       sessionStorage.setItem("cart", JSON.stringify(state.cartProducts));
     },
     get_Totals: (state) => {

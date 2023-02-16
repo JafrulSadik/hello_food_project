@@ -18,8 +18,7 @@ const Orders = () => {
     // eslint-disable-next-line
   }, []);
 
-  const rows = orderProducts.map((item, index) => {
-    console.log(item);
+  const rows = orderProducts?.map((item, index) => {
     const dateFromDB = item?.createdAt;
     const formattedDate = moment(dateFromDB).format("DD/MM/YY");
     return {

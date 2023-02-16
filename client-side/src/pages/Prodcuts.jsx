@@ -27,7 +27,8 @@ const Prodcuts = () => {
   const [currentItems, setCurrentItems] = useState([]);
   const [pageCount, setPageCount] = useState(0);
   const [itemOffset, setItemOffset] = useState(0);
-  const itemsPerPage = 5;
+  const itemsPerPage = 10;
+
 
   useEffect(() => {
     const endOffset = itemOffset + itemsPerPage;
@@ -41,6 +42,10 @@ const Prodcuts = () => {
     setItemOffset(newOffset);
   };
   //   End Pagination
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [itemOffset]);
 
   return (
     <div style={{ backgroundColor: "#fcf8f8" }}>
@@ -70,7 +75,7 @@ const Prodcuts = () => {
             <ReactPaginate
               nextLabel="Next"
               onPageChange={handlePageClick}
-              pageRangeDisplayed={3}
+              pageRangeDisplayed={5}
               marginPagesDisplayed={2}
               pageCount={pageCount}
               previousLabel="Prev"

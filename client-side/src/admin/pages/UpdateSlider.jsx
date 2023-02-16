@@ -23,7 +23,6 @@ const UpdateSlider = () => {
     const fetchData = async () => {
       try {
         const response = await API.get(`/slider/${id}`);
-        console.log(response.data);
         setSlider(response.data);
         setSliderName(response.data.name);
         setSliderImage(response.data?.img?.url);

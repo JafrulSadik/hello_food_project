@@ -179,7 +179,7 @@ const ProductDetail = () => {
 
 const ProductDetailContainer = styled.div`
   .wrapper {
-    margin: 50px 100px;
+    margin: 5%;
     ${mobile({
       margin: "20px 10px",
     })}
@@ -187,12 +187,14 @@ const ProductDetailContainer = styled.div`
   .topSection {
     display: flex;
     justify-content: space-around;
+    margin: 5% 15%;
     /* height: 500px; */
     background-color: #fff;
     ${mobile({
       flexDirection: "column",
       alignItems: "flex-start",
       justifyContent: "flex-start",
+      margin: "0",
     })}
   }
   .topSection .imageDiv {
@@ -263,7 +265,7 @@ const ProductDetailContainer = styled.div`
   }
   .addAndBuy button {
     padding: 10px;
-    width: 40%;
+    width: 100%;
     border: none;
     border-radius: 30px;
     color: white;

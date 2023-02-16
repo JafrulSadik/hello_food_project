@@ -167,9 +167,9 @@ const MobileMenu = () => {
   // };
 
   useEffect(() => {
-    const filteredProducts = products?.filter((product) =>
-      product?.name?.toLowerCase().includes(searchInput)
-    );
+    const filteredProducts = products
+      ?.filter((product) => product?.name?.toLowerCase().includes(searchInput))
+      .slice(0, 8);
     setSearchProducts(filteredProducts);
     if (searchInput === "") {
       setSearchProducts([]);
@@ -251,7 +251,7 @@ const MobileMenu = () => {
                       ? item?.name?.trim().substr(0, 42) + "..."
                       : item?.name;
                   return (
-                    <div className="link-div">
+                    <div className="link-div" key={item?._id}>
                       <img src={item?.img?.url} alt="" />
                       <Link
                         className="temp-result-link"

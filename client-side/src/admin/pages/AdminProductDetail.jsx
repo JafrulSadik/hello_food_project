@@ -23,8 +23,6 @@ const AdminProductDetail = () => {
     // eslint-disable-next-line
   }, []);
 
-  // console.log(product._id);
-
   const handleDelete = () => {
     dispatch(deleteProduct(product._id));
     navigate("/admin/products");

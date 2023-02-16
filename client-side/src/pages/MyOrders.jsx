@@ -6,11 +6,12 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import MobileMenu from "../components/MobileMenu";
 import Navbar from "../components/Navbar";
+import Spinner from "../components/Spinner";
 import { getOrderByUser } from "../redux/features/order/orderSlice";
 
 const MyOrders = () => {
   const { userInfo } = useSelector((state) => state.auth);
-  const { orderProducts } = useSelector((state) => state.order);
+  const { orderProducts, loading } = useSelector((state) => state.order);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -31,7 +32,6 @@ const MyOrders = () => {
           <h3>My Orders</h3>
         </div>
         {orderProducts.map((item) => {
-          console.log(item);
           return (
             <div className="product" key={item?._id}>
               <div className="top">
@@ -42,9 +42,8 @@ const MyOrders = () => {
               </div>
               {item?.products?.map((product1) => {
                 const { product } = product1;
-                console.log(product);
                 return (
-                  <div className="mid" key={product1?._id}>
+                  <div className="mid" key={product?._id}>
                     <div className="imgDiv">
                       <img src={product?.img?.url} alt="" />
                     </div>
@@ -73,6 +72,7 @@ const MyOrders = () => {
         })}
       </MyOrdersContainer>
       <MobileMenu />
+      {loading && <Spinner />}
     </>
   );
 };

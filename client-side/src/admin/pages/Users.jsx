@@ -32,7 +32,6 @@ const Users = () => {
   };
 
   const row = users.map((user, index) => {
-    // console.log(user);
     return {
       id: user._id,
       slNo: index + 1,

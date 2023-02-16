@@ -191,7 +191,7 @@ const CartContainer = styled.div`
     height: 70vh;
   }
   .mid-container {
-    margin-bottom: 15%;
+    margin-bottom: 36%;
   }
   .mid {
     display: flex;

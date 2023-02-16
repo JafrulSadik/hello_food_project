@@ -67,8 +67,8 @@ const Footer = () => {
 const Container = styled.div`
   height: 100%;
   width: 100%;
-  /* background-color: #0d0d0d; */
-  background-image: linear-gradient(45deg, #1a6719, #0d520f);
+  background-color: #1b1f23;
+  /* background-image: linear-gradient(45deg, #1a6719, #0d520f); */
   color: white;
   ${mobile({
     marginTop: "20px",

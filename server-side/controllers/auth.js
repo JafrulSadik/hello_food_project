@@ -19,7 +19,6 @@ const signup = async (req, res, next) =>{
 
         const {password, ...others} = resValue._doc;
 
-        console.log(others);
 
         res.status(200).send(others);
 

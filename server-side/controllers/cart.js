@@ -115,7 +115,6 @@ const increaseQuantity = async (req, res, next) => {
     let productItem = cart.products[itemIndex];
     productItem.cartQuantity += 1;
     cart.products[itemIndex] = productItem;
-    console.log(productItem);
     cart = await cart.save();
     return res.status(200).json("Increases the quantity done.");
   }
