@@ -28,7 +28,7 @@ const OrderSchema = new mongoose.Schema(
       type: Object,
       required: true,
     },
-    deliveryCrg: { type: Number },
+    deliveryCharge: { type: Number },
     deliveryStatus: { type: String, default: "Processing" },
     trackLink: {
       type: String,

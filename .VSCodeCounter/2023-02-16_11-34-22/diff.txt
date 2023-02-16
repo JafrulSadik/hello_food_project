@@ -1,0 +1,145 @@
+Date : 2023-02-16 11:34:22
+Directory : d:\Web Development\Projects\hello-food\client-side\src
+Total : 94 files,  5127 codes, 223 comments, 184 blanks, all 5534 lines
+
+Languages
++----------------+------------+------------+------------+------------+------------+
+| language       | files      | code       | comment    | blank      | total      |
++----------------+------------+------------+------------+------------+------------+
+| JavaScript JSX |         49 |     11,951 |        190 |        398 |     12,539 |
+| JavaScript     |         43 |         21 |         33 |       -212 |       -158 |
+| JSON           |          2 |     -6,845 |          0 |         -2 |     -6,847 |
++----------------+------------+------------+------------+------------+------------+
+
+Directories
++-------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                            | files      | code       | comment    | blank      | total      |
++-------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                               |         94 |      5,127 |        223 |        184 |      5,534 |
+| . (Files)                                                                                       |          5 |        484 |          5 |         17 |        506 |
+| ..                                                                                              |         32 |     -7,984 |        -56 |       -298 |     -8,338 |
+| ..\..                                                                                           |         32 |     -7,984 |        -56 |       -298 |     -8,338 |
+| ..\..\server-side                                                                               |         32 |     -7,984 |        -56 |       -298 |     -8,338 |
+| ..\..\server-side (Files)                                                                       |          4 |     -6,911 |          0 |        -18 |     -6,929 |
+| ..\..\server-side\controllers                                                                   |          7 |       -730 |        -33 |       -168 |       -931 |
+| ..\..\server-side\middleware                                                                    |          2 |        -29 |          0 |         -8 |        -37 |
+| ..\..\server-side\models                                                                        |          8 |       -211 |          0 |        -35 |       -246 |
+| ..\..\server-side\routes                                                                        |         10 |        -70 |        -20 |        -59 |       -149 |
+| ..\..\server-side\utils                                                                         |          1 |        -33 |         -3 |        -10 |        -46 |
+| admin                                                                                           |         20 |      3,438 |         49 |        168 |      3,655 |
+| admin (Files)                                                                                   |          1 |         37 |          0 |          2 |         39 |
+| admin\components                                                                                |          5 |        959 |         30 |         43 |      1,032 |
+| admin\pages                                                                                     |         14 |      2,442 |         19 |        123 |      2,584 |
+| components                                                                                      |         13 |      5,670 |        100 |        104 |      5,874 |
+| pages                                                                                           |         16 |      2,627 |         43 |        113 |      2,783 |
+| redux                                                                                           |          8 |        892 |         82 |         80 |      1,054 |
+| redux (Files)                                                                                   |          1 |         18 |         30 |         10 |         58 |
+| redux\features                                                                                  |          7 |        874 |         52 |         70 |        996 |
+| redux\features\auth                                                                             |          2 |        156 |          9 |         17 |        182 |
+| redux\features\cart                                                                             |          1 |        238 |         11 |         12 |        261 |
+| redux\features\category                                                                         |          1 |        141 |          9 |         16 |        166 |
+| redux\features\order                                                                            |          1 |         87 |          6 |          5 |         98 |
+| redux\features\product                                                                          |          1 |        139 |         11 |          9 |        159 |
+| redux\features\slider                                                                           |          1 |        113 |          6 |         11 |        130 |
++-------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++-------------------------------------------------------------------------------------------------+----------------+------------+------------+------------+------------+
+| filename                                                                                        | language       | code       | comment    | blank      | total      |
++-------------------------------------------------------------------------------------------------+----------------+------------+------------+------------+------------+
+| d:\Web Development\Projects\hello-food\client-side\src\App.jsx                                  | JavaScript JSX |        114 |          5 |          6 |        125 |
+| d:\Web Development\Projects\hello-food\client-side\src\admin\AdminData.js                       | JavaScript     |         37 |          0 |          2 |         39 |
+| d:\Web Development\Projects\hello-food\client-side\src\admin\components\AdminHeader.jsx         | JavaScript JSX |         53 |          0 |          6 |         59 |
+| d:\Web Development\Projects\hello-food\client-side\src\admin\components\MUI_Column.jsx          | JavaScript JSX |        545 |         26 |         13 |        584 |
+| d:\Web Development\Projects\hello-food\client-side\src\admin\components\RecentOrders.jsx        | JavaScript JSX |         45 |          0 |          5 |         50 |
+| d:\Web Development\Projects\hello-food\client-side\src\admin\components\Sidebar.jsx             | JavaScript JSX |        148 |          1 |          8 |        157 |
+| d:\Web Development\Projects\hello-food\client-side\src\admin\components\Summary.jsx             | JavaScript JSX |        168 |          3 |         11 |        182 |
+| d:\Web Development\Projects\hello-food\client-side\src\admin\pages\AddCategory.jsx              | JavaScript JSX |        173 |          0 |          7 |        180 |
+| d:\Web Development\Projects\hello-food\client-side\src\admin\pages\AddProduct.jsx               | JavaScript JSX |        301 |          1 |         11 |        313 |
+| d:\Web Development\Projects\hello-food\client-side\src\admin\pages\AddSlider.jsx                | JavaScript JSX |        173 |          0 |          7 |        180 |
+| d:\Web Development\Projects\hello-food\client-side\src\admin\pages\AdminCategory.jsx            | JavaScript JSX |        138 |          2 |          9 |        149 |
+| d:\Web Development\Projects\hello-food\client-side\src\admin\pages\AdminProductDetail.jsx       | JavaScript JSX |        192 |          2 |          9 |        203 |
+| d:\Web Development\Projects\hello-food\client-side\src\admin\pages\AdminProducts.jsx            | JavaScript JSX |        154 |          1 |          8 |        163 |
+| d:\Web Development\Projects\hello-food\client-side\src\admin\pages\Dashboard.jsx                | JavaScript JSX |         26 |          0 |          3 |         29 |
+| d:\Web Development\Projects\hello-food\client-side\src\admin\pages\OrderDetail.jsx              | JavaScript JSX |        227 |          1 |          9 |        237 |
+| d:\Web Development\Projects\hello-food\client-side\src\admin\pages\Orders.jsx                   | JavaScript JSX |        109 |          1 |          6 |        116 |
+| d:\Web Development\Projects\hello-food\client-side\src\admin\pages\Sliders.jsx                  | JavaScript JSX |        135 |          2 |          9 |        146 |
+| d:\Web Development\Projects\hello-food\client-side\src\admin\pages\UpdateCategory.jsx           | JavaScript JSX |        195 |          2 |          9 |        206 |
+| d:\Web Development\Projects\hello-food\client-side\src\admin\pages\UpdateProduct.jsx            | JavaScript JSX |        336 |          4 |         19 |        359 |
+| d:\Web Development\Projects\hello-food\client-side\src\admin\pages\UpdateSlider.jsx             | JavaScript JSX |        195 |          1 |          8 |        204 |
+| d:\Web Development\Projects\hello-food\client-side\src\admin\pages\Users.jsx                    | JavaScript JSX |         88 |          2 |          9 |         99 |
+| d:\Web Development\Projects\hello-food\client-side\src\components\AccountHeader.jsx             | JavaScript JSX |         62 |          0 |          4 |         66 |
+| d:\Web Development\Projects\hello-food\client-side\src\components\AllProductsComponent.jsx      | JavaScript JSX |         92 |          0 |          5 |         97 |
+| d:\Web Development\Projects\hello-food\client-side\src\components\Categories.jsx                | JavaScript JSX |        131 |          1 |          7 |        139 |
+| d:\Web Development\Projects\hello-food\client-side\src\components\CategoryWiseProducts.jsx      | JavaScript JSX |        100 |          0 |          3 |        103 |
+| d:\Web Development\Projects\hello-food\client-side\src\components\Footer.jsx                    | JavaScript JSX |        198 |          0 |          4 |        202 |
+| d:\Web Development\Projects\hello-food\client-side\src\components\MobileMenu.jsx                | JavaScript JSX |        247 |          6 |         22 |        275 |
+| d:\Web Development\Projects\hello-food\client-side\src\components\Navbar.jsx                    | JavaScript JSX |        441 |         10 |         32 |        483 |
+| d:\Web Development\Projects\hello-food\client-side\src\components\ProductCard.jsx               | JavaScript JSX |        219 |          0 |          7 |        226 |
+| d:\Web Development\Projects\hello-food\client-side\src\components\Slider.jsx                    | JavaScript JSX |         80 |          2 |          6 |         88 |
+| d:\Web Development\Projects\hello-food\client-side\src\components\Spinner.jsx                   | JavaScript JSX |         58 |         61 |          8 |        127 |
+| d:\Web Development\Projects\hello-food\client-side\src\components\TrashCode.js                  | JavaScript     |          0 |         18 |          0 |         18 |
+| d:\Web Development\Projects\hello-food\client-side\src\components\Utilities.jsx                 | JavaScript JSX |      4,042 |          2 |          5 |      4,049 |
+| d:\Web Development\Projects\hello-food\client-side\src\components\new.jsx                       | JavaScript JSX |          0 |          0 |          1 |          1 |
+| d:\Web Development\Projects\hello-food\client-side\src\data.js                                  | JavaScript     |        328 |          0 |          3 |        331 |
+| d:\Web Development\Projects\hello-food\client-side\src\index.js                                 | JavaScript     |         14 |          0 |          2 |         16 |
+| d:\Web Development\Projects\hello-food\client-side\src\pages\Account.jsx                        | JavaScript JSX |         90 |          0 |          3 |         93 |
+| d:\Web Development\Projects\hello-food\client-side\src\pages\AllProducts.jsx                    | JavaScript JSX |        145 |          3 |          9 |        157 |
+| d:\Web Development\Projects\hello-food\client-side\src\pages\Billing.jsx                        | JavaScript JSX |        217 |          4 |          7 |        228 |
+| d:\Web Development\Projects\hello-food\client-side\src\pages\Cart.jsx                           | JavaScript JSX |        304 |          0 |         10 |        314 |
+| d:\Web Development\Projects\hello-food\client-side\src\pages\Home.jsx                           | JavaScript JSX |         42 |          2 |          6 |         50 |
+| d:\Web Development\Projects\hello-food\client-side\src\pages\Login.jsx                          | JavaScript JSX |        173 |         10 |          6 |        189 |
+| d:\Web Development\Projects\hello-food\client-side\src\pages\MyOrders.jsx                       | JavaScript JSX |        139 |          1 |          5 |        145 |
+| d:\Web Development\Projects\hello-food\client-side\src\pages\MyReturns.jsx                      | JavaScript JSX |         70 |          0 |          3 |         73 |
+| d:\Web Development\Projects\hello-food\client-side\src\pages\NotFound.jsx                       | JavaScript JSX |         15 |          0 |          3 |         18 |
+| d:\Web Development\Projects\hello-food\client-side\src\pages\Order.jsx                          | JavaScript JSX |        511 |          0 |         14 |        525 |
+| d:\Web Development\Projects\hello-food\client-side\src\pages\OrderSuccess.jsx                   | JavaScript JSX |         42 |          0 |          4 |         46 |
+| d:\Web Development\Projects\hello-food\client-side\src\pages\PrivacyPolicy.jsx                  | JavaScript JSX |         35 |          0 |          4 |         39 |
+| d:\Web Development\Projects\hello-food\client-side\src\pages\Prodcuts.jsx                       | JavaScript JSX |        155 |         11 |          9 |        175 |
+| d:\Web Development\Projects\hello-food\client-side\src\pages\ProductDetail.jsx                  | JavaScript JSX |        330 |          1 |         10 |        341 |
+| d:\Web Development\Projects\hello-food\client-side\src\pages\Register.jsx                       | JavaScript JSX |        210 |          1 |          7 |        218 |
+| d:\Web Development\Projects\hello-food\client-side\src\pages\SearchResult.jsx                   | JavaScript JSX |        149 |         10 |         13 |        172 |
+| d:\Web Development\Projects\hello-food\client-side\src\redux\features\auth\authSlice.js         | JavaScript     |         93 |          5 |         10 |        108 |
+| d:\Web Development\Projects\hello-food\client-side\src\redux\features\auth\userSlice.js         | JavaScript     |         63 |          4 |          7 |         74 |
+| d:\Web Development\Projects\hello-food\client-side\src\redux\features\cart\cartSlice.js         | JavaScript     |        238 |         11 |         12 |        261 |
+| d:\Web Development\Projects\hello-food\client-side\src\redux\features\category\categorySlice.js | JavaScript     |        141 |          9 |         16 |        166 |
+| d:\Web Development\Projects\hello-food\client-side\src\redux\features\order\orderSlice.js       | JavaScript     |         87 |          6 |          5 |         98 |
+| d:\Web Development\Projects\hello-food\client-side\src\redux\features\product\productSlice.jsx  | JavaScript JSX |        139 |         11 |          9 |        159 |
+| d:\Web Development\Projects\hello-food\client-side\src\redux\features\slider\sliderSlice.js     | JavaScript     |        113 |          6 |         11 |        130 |
+| d:\Web Development\Projects\hello-food\client-side\src\redux\store.js                           | JavaScript     |         18 |         30 |         10 |         58 |
+| d:\Web Development\Projects\hello-food\client-side\src\requestMethod.js                         | JavaScript     |          6 |          0 |          3 |          9 |
+| d:\Web Development\Projects\hello-food\client-side\src\responsive.js                            | JavaScript     |         22 |          0 |          3 |         25 |
+| d:\Web Development\Projects\hello-food\server-side\controllers\auth.js                          | JavaScript     |        -60 |         -1 |        -14 |        -75 |
+| d:\Web Development\Projects\hello-food\server-side\controllers\cart.js                          | JavaScript     |        -38 |          0 |        -13 |        -51 |
+| d:\Web Development\Projects\hello-food\server-side\controllers\category.js                      | JavaScript     |       -173 |        -10 |        -39 |       -222 |
+| d:\Web Development\Projects\hello-food\server-side\controllers\product.js                       | JavaScript     |       -241 |        -13 |        -42 |       -296 |
+| d:\Web Development\Projects\hello-food\server-side\controllers\slider.js                        | JavaScript     |       -157 |         -9 |        -36 |       -202 |
+| d:\Web Development\Projects\hello-food\server-side\controllers\tokenValidation.js               | JavaScript     |        -19 |          0 |         -4 |        -23 |
+| d:\Web Development\Projects\hello-food\server-side\controllers\user.js                          | JavaScript     |        -42 |          0 |        -20 |        -62 |
+| d:\Web Development\Projects\hello-food\server-side\error.js                                     | JavaScript     |         -7 |          0 |         -2 |         -9 |
+| d:\Web Development\Projects\hello-food\server-side\middleware\verifyToken.js                    | JavaScript     |        -14 |          0 |         -4 |        -18 |
+| d:\Web Development\Projects\hello-food\server-side\middleware\verifyTokenAdmin.js               | JavaScript     |        -15 |          0 |         -4 |        -19 |
+| d:\Web Development\Projects\hello-food\server-side\models\Cart.js                               | JavaScript     |        -15 |          0 |         -4 |        -19 |
+| d:\Web Development\Projects\hello-food\server-side\models\Categories.js                         | JavaScript     |        -15 |          0 |         -5 |        -20 |
+| d:\Web Development\Projects\hello-food\server-side\models\Categories1.js                        | JavaScript     |        -15 |          0 |         -5 |        -20 |
+| d:\Web Development\Projects\hello-food\server-side\models\Category.js                           | JavaScript     |        -27 |          0 |         -4 |        -31 |
+| d:\Web Development\Projects\hello-food\server-side\models\Order.js                              | JavaScript     |        -27 |          0 |         -5 |        -32 |
+| d:\Web Development\Projects\hello-food\server-side\models\Product.js                            | JavaScript     |        -47 |          0 |         -3 |        -50 |
+| d:\Web Development\Projects\hello-food\server-side\models\Slider.js                             | JavaScript     |        -21 |          0 |         -4 |        -25 |
+| d:\Web Development\Projects\hello-food\server-side\models\User.js                               | JavaScript     |        -44 |          0 |         -5 |        -49 |
+| d:\Web Development\Projects\hello-food\server-side\package-lock.json                            | JSON           |     -6,817 |          0 |         -1 |     -6,818 |
+| d:\Web Development\Projects\hello-food\server-side\package.json                                 | JSON           |        -28 |          0 |         -1 |        -29 |
+| d:\Web Development\Projects\hello-food\server-side\routes\auth.js                               | JavaScript     |         -6 |         -3 |         -6 |        -15 |
+| d:\Web Development\Projects\hello-food\server-side\routes\authRoute.js                          | JavaScript     |         -7 |         -4 |         -7 |        -18 |
+| d:\Web Development\Projects\hello-food\server-side\routes\cartRoute.js                          | JavaScript     |         -7 |          0 |         -7 |        -14 |
+| d:\Web Development\Projects\hello-food\server-side\routes\categoryRoute.js                      | JavaScript     |        -17 |          0 |         -8 |        -25 |
+| d:\Web Development\Projects\hello-food\server-side\routes\order.js                              | JavaScript     |          0 |          0 |         -1 |         -1 |
+| d:\Web Development\Projects\hello-food\server-side\routes\product.js                            | JavaScript     |          0 |          0 |         -1 |         -1 |
+| d:\Web Development\Projects\hello-food\server-side\routes\productRoute.js                       | JavaScript     |        -11 |         -5 |         -9 |        -25 |
+| d:\Web Development\Projects\hello-food\server-side\routes\sliderRoute.js                        | JavaScript     |        -10 |         -5 |        -10 |        -25 |
+| d:\Web Development\Projects\hello-food\server-side\routes\userRoute.js                          | JavaScript     |         -8 |         -3 |         -6 |        -17 |
+| d:\Web Development\Projects\hello-food\server-side\routes\users.js                              | JavaScript     |         -4 |          0 |         -4 |         -8 |
+| d:\Web Development\Projects\hello-food\server-side\server.js                                    | JavaScript     |        -59 |          0 |        -14 |        -73 |
+| d:\Web Development\Projects\hello-food\server-side\utils\fileUpload.js                          | JavaScript     |        -33 |         -3 |        -10 |        -46 |
+| Total                                                                                           |                |      5,127 |        223 |        184 |      5,534 |
++-------------------------------------------------------------------------------------------------+----------------+------------+------------+------------+------------+

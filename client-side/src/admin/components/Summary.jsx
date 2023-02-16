@@ -7,13 +7,17 @@ import {
   MdOutlineProductionQuantityLimits,
 } from "react-icons/md";
 import { TbCurrencyTaka, TbTruckDelivery } from "react-icons/tb";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+import { getOrderProducts } from "../../redux/features/order/orderSlice";
 import { API } from "../../requestMethod";
 
 const Summary = () => {
   const [products, setProducts] = useState([]);
   const [users, setUsers] = useState([]);
   const [categories, setCategories] = useState([]);
+  const { orderProducts } = useSelector((state) => state.order);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const getAllProducts = async () => {
@@ -37,6 +41,11 @@ const Summary = () => {
     getAllProducts();
     getAllUsers();
     getAllCategories();
+    // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
+    dispatch(getOrderProducts());
     // eslint-disable-next-line
   }, []);
 
@@ -74,7 +83,7 @@ const Summary = () => {
             <MdOutlineEditCalendar />
           </div>
           <div className="text-div">
-            Total Orders <span>0</span>
+            Total Orders <span>{orderProducts?.length}</span>
           </div>
         </InfoBox>
         <InfoBox color="#03a5fc">

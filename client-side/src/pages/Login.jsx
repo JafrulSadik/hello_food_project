@@ -1,5 +1,3 @@
-import { faFacebookF, faGoogle } from "@fortawesome/free-brands-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, Navigate } from "react-router-dom";
@@ -58,16 +56,16 @@ const Login = () => {
                   SignUp
                 </Link>{" "}
               </p>
-              <p>Or Login Using</p>
+              {/* <p>Or Login Using</p> */}
             </div>
-            <div className="icons">
+            {/* <div className="icons">
               <a href="/">
                 <FontAwesomeIcon className="facebook" icon={faFacebookF} />
               </a>
               <a href="/">
                 <FontAwesomeIcon className="google" icon={faGoogle} />
               </a>
-            </div>
+            </div> */}
           </form>
         </div>
       </Container>

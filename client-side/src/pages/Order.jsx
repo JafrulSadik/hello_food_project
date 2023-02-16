@@ -2,11 +2,11 @@ import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
+import { Link, useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import styled from "styled-components";
 import Navbar from "../components/Navbar";
+import Spinner from "../components/Spinner";
 import { Districts, Divisions, Upazilas } from "../components/Utilities";
 import { get_Totals } from "../redux/features/cart/cartSlice";
 import { createOrder } from "../redux/features/order/orderSlice";
@@ -15,6 +15,7 @@ import { mobile } from "../responsive";
 const Order = () => {
   const { cartProducts, cartTotalAmount } = useSelector((state) => state.cart);
   const { userInfo } = useSelector((state) => state.auth);
+  const { loading } = useSelector((state) => state.order);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLasttName] = useState("");
   const [email, setEmail] = useState("");
@@ -26,6 +27,7 @@ const Order = () => {
   const [buttonDisable, setButtonDisable] = useState(true);
   const [deliveryCharge, setDeliveryCharge] = useState(0);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(get_Totals());
@@ -38,25 +40,6 @@ const Order = () => {
     area: area,
     detailAddress: detailAddress,
   };
-
-  console.log(
-    "userId",
-    userInfo?._id,
-    "name",
-    firstName + " " + lastName,
-    "email",
-    email,
-    "phone",
-    phone,
-    "products",
-    cartProducts,
-    "address",
-    address,
-    "deliveryCharge",
-    deliveryCharge,
-    "totalPrice",
-    totalPrice
-  );
 
   const orderData = {
     userId: userInfo?._id,
@@ -139,7 +122,7 @@ const Order = () => {
   const handlePlaceOrder = (e) => {
     e.preventDefault();
     dispatch(createOrder(orderData));
-    toast.success("success");
+    navigate("/order/success");
   };
 
   return (
@@ -298,6 +281,7 @@ const Order = () => {
           </div>
         </div>
       </OrderContainer>
+      {loading && <Spinner />}
     </>
   );
 };

@@ -340,66 +340,86 @@ export const ordersColumns = [
     headerClassName: "super-app-theme--header",
   },
   {
-    field: "orderNo",
-    headerName: "Order No.",
+    field: "date",
+    headerName: "Date",
     headerAlign: "center",
     align: "center",
-    minWidth: 70,
-    flex: 2,
-    sortable: true,
-    headerClassName: "super-app-theme--header",
-  },
-  {
-    field: "productName",
-    headerName: "Product Name",
-    headerAlign: "center",
-    // align: "center",
-    minWidth: 250,
-    flex: 4,
-    sortable: true,
-    headerClassName: "super-app-theme--header",
-  },
-  {
-    field: "category",
-    headerName: "Category",
-    headerAlign: "center",
-    align: "center",
-    minWidth: 150,
-    flex: 2,
-    sortable: true,
-    headerClassName: "super-app-theme--header",
-  },
-  {
-    field: "quantity",
-    headerName: "Quantity",
-    sortable: true,
-    headerAlign: "center",
-    align: "center",
-    type: "number",
     minWidth: 80,
     flex: 1,
+    sortable: true,
     headerClassName: "super-app-theme--header",
+  },
+  {
+    field: "orderNo",
+    headerName: "Order No",
+    headerAlign: "center",
+    align: "center",
+    minWidth: 200,
+    flex: 2,
+    sortable: true,
+    headerClassName: "super-app-theme--header",
+    renderCell: (params) => {
+      const orderId = params?.row?.id;
+      return (
+        <Link className="orderNo" to={`/admin/orders/${orderId}`}>
+          <p>{orderId}</p>
+        </Link>
+      );
+    },
   },
   {
     field: "price",
-    headerName: "Price",
+    headerName: "Total Price",
     sortable: true,
     headerAlign: "center",
     align: "center",
     type: "number",
-    flex: 1.5,
-    minWidth: 120,
+    flex: 1,
+    minWidth: 100,
     headerClassName: "super-app-theme--header",
   },
   {
-    field: "status",
-    headerName: "Status",
+    field: "payment",
+    headerName: "Payment Method",
+    sortable: true,
+    headerAlign: "center",
+    align: "center",
+    flex: 1,
+    minWidth: 100,
+    headerClassName: "super-app-theme--header",
+  },
+  {
+    field: "deliveryStatus",
+    headerName: "Delivery Status",
     headerAlign: "center",
     align: "center",
     sortable: true,
     flex: 1.5,
     minWidth: 100,
     headerClassName: "super-app-theme--header",
+  },
+  {
+    field: "action",
+    headerName: "Action",
+    sortable: true,
+    headerAlign: "center",
+    align: "center",
+    flex: 1,
+    headerClassName: "super-app-theme--header",
+    minWidth: 140,
+    renderCell: (params) => {
+      const id = params?.row?.id;
+      return (
+        <div>
+          <Link className="view" to={`/admin/orders/${id}`}>
+            <button>View</button>
+          </Link>
+          <Link className="edit">
+            <button>Edit</button>
+          </Link>
+        </div>
+      );
+    },
   },
 ];
 
@@ -504,11 +524,11 @@ export const SlidersColumn = [
     field: "sliderName",
     headerName: "Slider Name",
     headerAlign: "center",
-    // align: "center",
+    align: "center",
     minWidth: 200,
     sortable: true,
     headerClassName: "super-app-theme--header",
-    flex: 8,
+    flex: 4,
     renderCell: (params) => {
       return (
         <div className="sliderName">
@@ -524,9 +544,9 @@ export const SlidersColumn = [
     sortable: true,
     headerAlign: "center",
     align: "center",
-    flex: 3,
+    flex: 2.5,
     headerClassName: "super-app-theme--header",
-    minWidth: 100,
+    minWidth: 120,
     renderCell: (params) => {
       const sliderId = params.row.id;
       const confirmDelete = params.row.delete;

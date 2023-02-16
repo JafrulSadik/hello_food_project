@@ -320,8 +320,8 @@ const Navbar = () => {
 
   const handleLogout = (e) => {
     e.preventDefault();
-    dispatch(logout());
-    navigate("/");
+    dispatch(logout(navigate));
+    // navigate("/");
   };
 
   const handleSearch = (e) => {

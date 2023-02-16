@@ -28,7 +28,7 @@ const newOrder = async (req, res, next) => {
       totalPrice: totalPrice,
       paymentMethod: paymentMethod,
     });
-    const response = newOrder.save();
+    const response = await newOrder.save();
     res.status(200).json(response?._id);
   } catch (err) {
     return next(err);

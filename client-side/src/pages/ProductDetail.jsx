@@ -64,7 +64,7 @@ const ProductDetail = () => {
   };
 
   const handleBuyNow = (e) => {
-    dispatch(add_buy_now_product({ product, quantity }));
+    dispatch(add_buy_now_product({ product, cartQuantity: quantity }));
   };
 
   const stockAvailablity = () => {

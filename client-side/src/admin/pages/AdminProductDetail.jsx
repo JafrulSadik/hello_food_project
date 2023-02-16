@@ -126,7 +126,7 @@ const AdminProductDetail = () => {
 };
 
 const Container = styled.div`
-  margin-bottom: 200px;
+  margin-bottom: 100px;
   h3 {
     margin: 20px;
     font-size: 25px;

@@ -1,111 +1,144 @@
-import React from 'react';
-import styled from 'styled-components';
-import Navbar from '../components/Navbar';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleLeft } from '@fortawesome/free-solid-svg-icons'
-import { Link } from 'react-router-dom';
+import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
+import MobileMenu from "../components/MobileMenu";
+import Navbar from "../components/Navbar";
+import { getOrderByUser } from "../redux/features/order/orderSlice";
 
 const MyOrders = () => {
-    return (
-        <>
-        <Navbar />
-        <MyOrdersContainer>
-            <div className="header">
-                <Link to='/account'><FontAwesomeIcon icon={faAngleLeft} className='iconLeft' /></Link>
-                <h3>My Orders</h3>
-            </div>
-            <div className="product">
-                <div className="top">
-                    <h4>Order No : 635254548582</h4>
-                    <p><small>Placed on 03 Oct 2022</small></p>
-                </div>
-                <div className="mid">
+  const { userInfo } = useSelector((state) => state.auth);
+  const { orderProducts } = useSelector((state) => state.order);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (userInfo) {
+      dispatch(getOrderByUser(userInfo?._id));
+    }
+    // eslint-disable-next-line
+  }, [userInfo]);
+
+  return (
+    <>
+      <Navbar />
+      <MyOrdersContainer>
+        <div className="header">
+          <Link to="/account">
+            <FontAwesomeIcon icon={faAngleLeft} className="iconLeft" />
+          </Link>
+          <h3>My Orders</h3>
+        </div>
+        {orderProducts.map((item) => {
+          console.log(item);
+          return (
+            <div className="product" key={item?._id}>
+              <div className="top">
+                <h4>Order No : {item?._id}</h4>
+                <p>
+                  <small>Placed on 03 Oct 2022</small>
+                </p>
+              </div>
+              {item?.products?.map((product1) => {
+                const { product } = product1;
+                console.log(product);
+                return (
+                  <div className="mid" key={product1?._id}>
                     <div className="imgDiv">
-                        <img src="https://i.ibb.co/K6dxfyc/Himalay-pink-salt-gura.jpg" alt="" />
+                      <img src={product?.img?.url} alt="" />
                     </div>
                     <div className="infoDiv">
-                        <h5>Himalayan Natural Pink Salt Rock Salt 1 kg</h5>
-                        <h4>320 TK</h4>
-                        <div className="itemAndStatus">
-                                <span>1 Item</span>
-                                <span className='status'>Processing</span>
-                        </div>
-                        <div className="infoBottom">
-                            <span><small>1 Item, Total:</small></span>
-                            <span className='price'>320 TK</span>
-                        </div>
+                      <h5>{product?.name}</h5>
+                      <h4>
+                        {product?.discount ? product?.discount : product?.price}{" "}
+                        TK
+                      </h4>
+                      <div className="itemAndStatus">
+                        <span>{product1?.cartQuantity} Item</span>
+                        <span className="status">Processing</span>
+                      </div>
+                      <div className="infoBottom">
+                        <span>
+                          <small>Total:</small>
+                        </span>
+                        <span className="price">320 TK</span>
+                      </div>
                     </div>
-                </div>
+                  </div>
+                );
+              })}
             </div>
-        </MyOrdersContainer>
-        </>
-    );
+          );
+        })}
+      </MyOrdersContainer>
+      <MobileMenu />
+    </>
+  );
 };
 
 const MyOrdersContainer = styled.div`
-.header {
+  .header {
     padding: 10px;
     display: flex;
     align-items: center;
     gap: 20px;
     border-bottom: 1px solid lightgray;
-}
-.header h3 {
+  }
+  .header h3 {
     font-weight: 500;
-}
-.header .iconLeft {
-   font-size: 22px;
-   display: flex;
-   align-items: center;
-   color: black;
-}
-.product {
+  }
+  .header > .iconLeft {
+    font-size: 22px;
+    display: flex;
+    align-items: center;
+    color: black;
+  }
+  .product {
     margin: 20px 10px;
     color: #474444fa;
     border-bottom: 0.5px solid lightgray;
-}
-.top {
-}
-.top > h4 {
+  }
+  .top {
+  }
+  .top > h4 {
     font-weight: 600;
-}
-.mid {
+  }
+  .mid {
     display: flex;
     gap: 30px;
     margin: 10px 0;
-}
-.mid > .imgDiv {
-
-}
-.mid > .imgDiv > img {
+  }
+  .mid > .imgDiv {
+  }
+  .mid > .imgDiv > img {
     width: 70px;
     height: 70px;
-}
-.mid > .infoDiv > .itemAndStatus {
+  }
+  .mid > .infoDiv > .itemAndStatus {
     display: flex;
     justify-content: space-between;
     align-items: center;
-}
-.status {
+  }
+  .status {
     background-color: #36a736;
     color: white;
     padding: 4px 10px;
     font-weight: 400;
     font-size: 12px;
     border-radius: 30px;
-}
-.infoBottom {
+  }
+  .infoBottom {
     display: flex;
     justify-content: flex-end;
     margin: 10px;
-}
-.infoBottom > span {
+  }
+  .infoBottom > span {
     margin-right: 5px;
-}
-.infoBottom > .price {
+  }
+  .infoBottom > .price {
     color: green;
     font-weight: 700;
-}
-    
-`
+  }
+`;
 export default MyOrders;

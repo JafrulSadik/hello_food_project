@@ -12,6 +12,7 @@ import AdminCategory from "./admin/pages/AdminCategory";
 import AdminProductDetail from "./admin/pages/AdminProductDetail";
 import AdminProducts from "./admin/pages/AdminProducts";
 import Dashboard from "./admin/pages/Dashboard";
+import OrderDetail from "./admin/pages/OrderDetail";
 import Orders from "./admin/pages/Orders";
 import Sliders from "./admin/pages/Sliders";
 import UpdateCategory from "./admin/pages/UpdateCategory";
@@ -28,6 +29,7 @@ import MyOrders from "./pages/MyOrders";
 import MyReturns from "./pages/MyReturns";
 import NotFound from "./pages/NotFound";
 import Order from "./pages/Order";
+import OrderSuccess from "./pages/OrderSuccess";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Prodcuts from "./pages/Prodcuts";
 import ProductDetail from "./pages/ProductDetail";
@@ -76,12 +78,14 @@ const App = () => {
         <Route path="/cart" element={<Cart />} />
         <Route path="/order" element={<Order />} />
         <Route path="/billing" element={<Billing />} />
+        <Route path="/order/success" element={<OrderSuccess />} />
         {/* Admin Route */}
         {user?.isAdmin ? (
           <Route element={<AdminLayout />}>
             <Route path="/admin" element={<Dashboard />} />
             <Route path="/admin/products" element={<AdminProducts />} />
             <Route path="/admin/orders" element={<Orders />} />
+            <Route path="/admin/orders/:orderId" element={<OrderDetail />} />
             <Route path="/admin/users" element={<Users />} />
             <Route path="/admin/categories" element={<AdminCategory />} />
             <Route path="/admin/category/create" element={<AddCategory />} />

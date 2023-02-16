@@ -6,6 +6,7 @@ import { BiMinus, BiPlus } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import MobileMenu from "../components/MobileMenu";
 import Navbar from "../components/Navbar";
 import Spinner from "../components/Spinner";
 import {
@@ -158,6 +159,7 @@ const Cart = () => {
           </div>
         )}
       </CartContainer>
+      <MobileMenu />
       {loading && <Spinner />}
     </>
   );
@@ -279,10 +281,11 @@ const CartContainer = styled.div`
   .bottom {
     display: flex;
     justify-content: flex-end;
-    margin: 10px;
     padding: 10px;
     position: fixed;
-    bottom: 0;
+    bottom: 60px;
+    background-color: white;
+    border-bottom: 1px solid lightgray;
     left: 0;
     right: 0;
   }

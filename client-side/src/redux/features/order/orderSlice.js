@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { toast } from "react-toastify";
 import { API } from "../../../requestMethod";
 
 //create-new-order
@@ -7,6 +8,7 @@ export const createOrder = createAsyncThunk(
   async (orderData, { rejectWithValue }) => {
     try {
       const res = await API.post("/order/newOrder", orderData);
+      toast.success("Order Placed Successfully");
       return res.data;
     } catch (error) {
       return rejectWithValue(error.res.data);
@@ -14,13 +16,24 @@ export const createOrder = createAsyncThunk(
   }
 );
 
-//get-user-order-products
+//get-all-order
 export const getOrderProducts = createAsyncThunk(
   "order/getOrderProducts",
   async (product, { rejectWithValue }) => {
     try {
       const res = await API.get("/order/allOrders", product);
-      console.log(res.data);
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(error.res.data);
+    }
+  }
+);
+// Get Single Oder
+export const getOrderByUser = createAsyncThunk(
+  "order/getOrderByUser",
+  async (userId, { rejectWithValue }) => {
+    try {
+      const res = await API.get(`/order/${userId}`);
       return res.data;
     } catch (error) {
       return rejectWithValue(error.res.data);
@@ -28,10 +41,11 @@ export const getOrderProducts = createAsyncThunk(
   }
 );
 
-export const cartSlice = createSlice({
-  name: "cart",
+export const orderSlice = createSlice({
+  name: "order",
   initialState: {
     orderProducts: [],
+    orderId: "",
     loading: false,
     error: null,
   },
@@ -44,7 +58,7 @@ export const cartSlice = createSlice({
       })
       .addCase(createOrder.fulfilled, (state, action) => {
         state.pending = false;
-        state.cartProducts = action.payload;
+        state.orderId = action.payload;
         state.error = false;
       })
       .addCase(createOrder.rejected, (state) => {
@@ -63,19 +77,21 @@ export const cartSlice = createSlice({
       .addCase(getOrderProducts.rejected, (state) => {
         state.error = true;
         state.loading = false;
+      })
+      //get Order by User
+      .addCase(getOrderByUser.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getOrderByUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.orderProducts = action.payload;
+        state.error = false;
+      })
+      .addCase(getOrderByUser.rejected, (state) => {
+        state.error = true;
+        state.loading = false;
       });
   },
 });
 
-export const {
-  add_To_Cart,
-  get_Cart_Products,
-  decrease_Cart,
-  increase_Cart,
-  remove_From_Cart,
-  get_Totals,
-  add_buy_now_product,
-  update_cart,
-} = cartSlice.actions;
-
-export default cartSlice.reducer;
+export default orderSlice.reducer;

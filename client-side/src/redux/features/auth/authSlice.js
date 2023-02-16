@@ -36,6 +36,7 @@ export const loginUser = createAsyncThunk(
 export const logout = createAsyncThunk("users/logout", async (navigate) => {
   const res = await API.get("/logout");
   toast.success("Logout successfully");
+  navigate("/");
   return res.data;
 });
 
@@ -78,6 +79,7 @@ export const authSlice = createSlice({
         state.userInfo = action.payload;
         state.pending = false;
         state.success = true;
+        state.error = "";
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.pending = false;
