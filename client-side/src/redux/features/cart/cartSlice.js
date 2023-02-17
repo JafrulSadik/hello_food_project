@@ -91,7 +91,7 @@ export const cartSlice = createSlice({
         toast.error("Product is out of stock");
       } else {
         const existingIndex = state?.cartProducts?.findIndex(
-          (item) => item.product._id === action.payload._id
+          (item) => item.product._id === action.payload?.product?._id
         );
         if (existingIndex >= 0) {
           toast.info("Product Already in the Cart");
@@ -166,7 +166,7 @@ export const cartSlice = createSlice({
         state.cartProducts.push({ product, cartQuantity });
         state.error = false;
       })
-      .addCase(addToCart.rejected, (state, action) => {
+      .addCase(addToCart.rejected, (state) => {
         state.error = true;
         toast.error("Product already in the cart");
         state.loading = false;

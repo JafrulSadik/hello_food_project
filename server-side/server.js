@@ -68,6 +68,10 @@ app.use((err, req, res, next) => {
   });
 });
 
+app.get("/", (req, res) => {
+  res.send("Home Page");
+});
+
 app.listen(PORT, (req, res) => {
   connect();
   console.log(`Server is listening on port ${PORT}`);
