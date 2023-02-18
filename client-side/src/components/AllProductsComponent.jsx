@@ -1,12 +1,13 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { mobile } from "../responsive";
 import ProductCard from "./ProductCard";
-import { useSelector } from "react-redux";
+import Spinner from "./Spinner";
 
 const AllProductsComponent = () => {
-  const { products } = useSelector((state) => state.product);
+  const { products, loading } = useSelector((state) => state.product);
 
   return (
     <Container>
@@ -25,6 +26,7 @@ const AllProductsComponent = () => {
           .map((item) => <ProductCard item={item} key={item._id} />)
           .slice(0, 10)}
       </div>
+      {loading && <Spinner />}
     </Container>
   );
 };

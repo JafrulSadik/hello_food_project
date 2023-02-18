@@ -9,6 +9,7 @@ import {
 import { TbCurrencyTaka, TbTruckDelivery } from "react-icons/tb";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+import Spinner from "../../components/Spinner";
 import { getOrderProducts } from "../../redux/features/order/orderSlice";
 import { API } from "../../requestMethod";
 
@@ -16,7 +17,7 @@ const Summary = () => {
   const [products, setProducts] = useState([]);
   const [users, setUsers] = useState([]);
   const [categories, setCategories] = useState([]);
-  const { orderProducts } = useSelector((state) => state.order);
+  const { orderProducts, loading } = useSelector((state) => state.order);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -127,6 +128,7 @@ const Summary = () => {
           </div>
         </InfoBox>
       </div>
+      {loading && <Spinner />}
     </Container>
   );
 };

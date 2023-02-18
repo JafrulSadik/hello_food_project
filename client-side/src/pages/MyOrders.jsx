@@ -32,6 +32,7 @@ const MyOrders = () => {
           <h3>My Orders</h3>
         </div>
         {orderProducts.map((item) => {
+          console.log(item);
           return (
             <div className="product" key={item?._id}>
               <div className="top">
@@ -41,6 +42,7 @@ const MyOrders = () => {
                 </p>
               </div>
               {item?.products?.map((product1) => {
+                console.log(product1);
                 const { product } = product1;
                 return (
                   <div className="mid" key={product?._id}>
@@ -55,13 +57,13 @@ const MyOrders = () => {
                       </h4>
                       <div className="itemAndStatus">
                         <span>{product1?.cartQuantity} Item</span>
-                        <span className="status">Processing</span>
+                        <span className="status">{item?.deliveryStatus}</span>
                       </div>
                       <div className="infoBottom">
                         <span>
                           <small>Total:</small>
                         </span>
-                        <span className="price">320 TK</span>
+                        <span className="price">{item?.totalPrice} TK</span>
                       </div>
                     </div>
                   </div>
@@ -95,7 +97,7 @@ const MyOrdersContainer = styled.div`
     color: black;
   }
   .product {
-    margin: 20px 10px;
+    margin: 20px 5%;
     color: #474444fa;
     border-bottom: 0.5px solid lightgray;
   }
@@ -115,7 +117,11 @@ const MyOrdersContainer = styled.div`
     width: 70px;
     height: 70px;
   }
+  .mid > .infoDiv {
+    width: 100%;
+  }
   .mid > .infoDiv > .itemAndStatus {
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;

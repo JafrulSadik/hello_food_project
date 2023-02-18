@@ -17,12 +17,12 @@ const SearchResult = () => {
   const [filterProducts, setFilterProducts] = useState();
 
   const text = useLocation();
-  const searchText = text?.search.split("=")[1].toLowerCase();
+  const searchText = text?.search.split("=")[1]?.toLowerCase();
 
   useEffect(() => {
     dispatch(getAllProducts());
     const filteredProducts = products?.filter((product) =>
-      product?.name?.toLowerCase().includes(searchText)
+      product?.name?.toLowerCase()?.includes(searchText)
     );
     setFilterProducts(filteredProducts);
 
@@ -123,17 +123,13 @@ const Container = styled.div`
     border: 1px solid #8080801a;
   }
   .productsList {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-    flex-wrap: wrap;
-    flex-grow: 1;
-    gap: 5px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    grid-gap: 10px;
 
     ${mobile({
-      justifyContent: "space-evenly",
-      gap: "15px 0px",
+      gridTemplateColumns: "repeat(auto-fit, minmax(135px, 1fr))",
+      margin: "4%",
     })}
   }
   .pagination {
@@ -161,8 +157,7 @@ const Container = styled.div`
 `;
 export default SearchResult;
 
-
-  /*
+/*
 
   
   

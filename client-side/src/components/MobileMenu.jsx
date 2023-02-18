@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { BiLeftArrowAlt } from "react-icons/bi";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { tablet } from "../responsive";
 
@@ -76,6 +76,9 @@ const SearchScreen = styled.div`
 
 const SearchArea = styled.div`
   width: 85%;
+  .search-div > .display-products {
+    display: none;
+  }
   .search-result {
     position: absolute;
     z-index: 999999;
@@ -98,7 +101,6 @@ const SearchArea = styled.div`
     display: flex;
     align-items: center;
     width: 40px;
-    /* border: 1px solid red; */
     margin-right: 10px;
   }
   .temp-result-link {
@@ -106,7 +108,6 @@ const SearchArea = styled.div`
     align-items: center;
     text-decoration: none;
     color: gray;
-    /* border: 1px solid blue; */
   }
 `;
 
@@ -115,6 +116,7 @@ const SearchBar = styled.div`
   height: 40px;
   display: flex;
   align-items: center;
+  position: relative;
 `;
 
 const Exit = styled.div`
@@ -138,6 +140,13 @@ const Input = styled.input`
   font-size: 12px;
 `;
 
+const ButtonDiv = styled.div`
+  position: absolute;
+  color: #3bb77d;
+  right: 8px;
+  cursor: pointer;
+`;
+
 const CartDiv = styled.div`
   position: relative;
   .quantityDiv {
@@ -159,16 +168,18 @@ const MobileMenu = () => {
   const { products } = useSelector((state) => state.product);
   const [searchInput, setSearchInput] = useState("");
   const [searchProducts, setSearchProducts] = useState([]);
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
-  // const handleSearchClick = (e) => {
-  //   e.preventDefault();
-  //   navigate(`/search?text=${searchInput}`);
-  // };
+  const handleSearchClick = (e) => {
+    e.preventDefault();
+    navigate(`/search?text=${searchInput}`);
+  };
 
   useEffect(() => {
     const filteredProducts = products
-      ?.filter((product) => product?.name?.toLowerCase().includes(searchInput))
+      ?.filter((product) =>
+        product?.name?.toLowerCase().includes(searchInput?.toLowerCase())
+      )
       .slice(0, 8);
     setSearchProducts(filteredProducts);
     if (searchInput === "") {
@@ -241,10 +252,13 @@ const MobileMenu = () => {
               onChange={(e) => setSearchInput(e.target.value)}
               placeholder="Input here..."
             />
+            <ButtonDiv onClick={handleSearchClick}>
+              <FontAwesomeIcon icon={faMagnifyingGlass} />
+            </ButtonDiv>
           </SearchBar>
           <div className="search-div">
             {searchProducts && (
-              <div className="search-result">
+              <div className={`search-result`}>
                 {searchProducts?.map((item) => {
                   const modifiedName =
                     item?.name?.length > 50

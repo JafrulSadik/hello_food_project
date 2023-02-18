@@ -12,12 +12,12 @@ import { createOrder } from "../redux/features/order/orderSlice";
 import { mobile } from "../responsive";
 
 const Billing = () => {
-  const { product, cartQuantity } = useSelector(
+  const { product, cartQuantity, loading } = useSelector(
     (state) => state.cart?.buyNowProduct
   );
   const { buyNowProduct } = useSelector((state) => state.cart);
   const { userInfo } = useSelector((state) => state.auth);
-  const { loading } = useSelector((state) => state.order);
+  const orderLoading = useSelector((state) => state.order?.loading);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLasttName] = useState("");
   const [email, setEmail] = useState("");
@@ -144,7 +144,7 @@ const Billing = () => {
               <div className="cartInfoDiv">
                 <h5>{product?.name}</h5>
                 <div className="priceandquantity">
-                  <h3>
+                  <h3 style={{ color: "#3bb54a" }}>
                     {product?.discount ? product?.discount : product?.price} Tk
                   </h3>
                   <div className="cartQuantity">
@@ -254,15 +254,17 @@ const Billing = () => {
           <div className="total-div">
             <div className="subtotal">
               <h4>Subtotal : </h4>
-              <span style={{ fontWeight: "bold" }}>{subTotal} TK</span>
+              <span>{subTotal} TK</span>
             </div>
             <div className="delivery-charge">
-              <small style={{ fontWeight: "bold" }}>Delivery Charge : </small>
-              <small style={{ fontWeight: "bold" }}>{deliveryCharge} TK</small>
+              <small style={{ fontWeight: "500" }}>Delivery Charge : </small>
+              <small style={{ fontWeight: "500" }}>{deliveryCharge} TK</small>
             </div>
             <div className="total">
               <h2 className="totalAmount">Total :</h2>
-              <p style={{ fontWeight: "bold" }}>{totalPrice} Tk</p>
+              <p style={{ fontWeight: "bold", color: "#3bb54a" }}>
+                {totalPrice} Tk
+              </p>
             </div>
             <div className="placeButton">
               <button
@@ -277,6 +279,7 @@ const Billing = () => {
         </div>
       </OrderContainer>
       {loading && <Spinner />}
+      {orderLoading && <Spinner />}
     </>
   );
 };
@@ -489,6 +492,10 @@ const OrderContainer = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+  }
+
+  .total-div > .subtotal > * {
+    font-weight: 500;
   }
 
   .totalAmount {

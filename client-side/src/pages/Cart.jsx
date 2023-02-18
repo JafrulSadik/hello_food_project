@@ -106,7 +106,7 @@ const Cart = () => {
                       </Link>
                     </div>
                     <div className="priceandquantity">
-                      <h3>
+                      <h3 style={{ color: "#3bb54a" }}>
                         {product?.discount ? product?.discount : product?.price}{" "}
                         Tk
                       </h3>
@@ -145,7 +145,9 @@ const Cart = () => {
                   <div className="shippingAndTotal">
                     <h4>
                       Total :{" "}
-                      <span className="priceTotal">{cartTotalAmount} TK</span>
+                      <span style={{ color: "#3bb54a" }} className="priceTotal">
+                        {cartTotalAmount} TK
+                      </span>
                     </h4>
                   </div>
                   <Link to="/order" className="order-link">

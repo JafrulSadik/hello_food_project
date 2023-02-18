@@ -26,11 +26,7 @@ const addProduct = async (req, res, next) => {
 
     const regex = /[^a-zA-Z0-9 ]/g;
 
-    let productUrl = name
-      .toLowerCase()
-      .replaceAll(regex, "")
-      .replaceAll(" ", "-")
-      .trim();
+    let productUrl = name.toLowerCase().replace(regex, "").replace(/ /g, "-");
 
     //Check duplicate product name
     let dupProductName = await Product.findOne({ productUrl });
@@ -115,12 +111,17 @@ const updateProduct = async (req, res, next) => {
       imgUrl,
       quantity,
       price,
-      discount,
       description,
       productCode,
       id,
       weight,
     } = req.body;
+
+    let discount = req.body.discount;
+
+    if (discount === "NaN") {
+      discount = "";
+    }
 
     if (!name || !category || !price || !productCode) {
       if (req.file) {
@@ -133,11 +134,7 @@ const updateProduct = async (req, res, next) => {
 
     const regex = /[^a-zA-Z0-9 ]/g;
 
-    let productUrl = name
-      .toLowerCase()
-      .replaceAll(regex, "")
-      .replaceAll(" ", "-")
-      .trim();
+    let productUrl = name.toLowerCase().replace(regex, "").replace(/ /g, "-");
 
     const dupProductName = await Product.findOne({
       _id: { $ne: id },

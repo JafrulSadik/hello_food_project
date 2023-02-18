@@ -13,9 +13,11 @@ import { createOrder } from "../redux/features/order/orderSlice";
 import { mobile } from "../responsive";
 
 const Order = () => {
-  const { cartProducts, cartTotalAmount } = useSelector((state) => state.cart);
+  const { cartProducts, cartTotalAmount, loading } = useSelector(
+    (state) => state.cart
+  );
+  const orderLoading = useSelector((state) => state.order?.loading);
   const { userInfo } = useSelector((state) => state.auth);
-  const { loading } = useSelector((state) => state.order);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLasttName] = useState("");
   const [email, setEmail] = useState("");
@@ -145,7 +147,7 @@ const Order = () => {
                 <div className="cartInfoDiv">
                   <h5>{item?.product?.name}</h5>
                   <div className="priceandquantity">
-                    <h3>
+                    <h3 style={{ color: "#3bb54a" }}>
                       {item?.product?.discount
                         ? item?.product?.discount
                         : item?.product?.price}{" "}
@@ -267,7 +269,9 @@ const Order = () => {
             </div>
             <div className="total">
               <h2 className="totalAmount">Total :</h2>
-              <p style={{ fontWeight: "bold" }}>{totalPrice} Tk</p>
+              <p style={{ fontWeight: "bold", color: "#3bb54a" }}>
+                {totalPrice} Tk
+              </p>
             </div>
             <div className="placeButton">
               <button
@@ -282,6 +286,7 @@ const Order = () => {
         </div>
       </OrderContainer>
       {loading && <Spinner />}
+      {orderLoading && <Spinner />}
     </>
   );
 };

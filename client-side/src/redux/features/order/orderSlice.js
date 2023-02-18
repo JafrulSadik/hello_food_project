@@ -28,6 +28,19 @@ export const getOrderProducts = createAsyncThunk(
     }
   }
 );
+export const updateOrder = createAsyncThunk(
+  "order/updateOrder",
+  async (data, { rejectWithValue }) => {
+    try {
+      const { orderId, navigate, ...others } = data;
+      const res = await API.patch(`/order/${orderId}`, others);
+      navigate("/admin/orders");
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(error.res.data);
+    }
+  }
+);
 // Get Single Oder
 export const getOrderByUser = createAsyncThunk(
   "order/getOrderByUser",
@@ -57,7 +70,7 @@ export const orderSlice = createSlice({
         state.loading = true;
       })
       .addCase(createOrder.fulfilled, (state, action) => {
-        state.pending = false;
+        state.loading = false;
         state.orderId = action.payload;
         state.error = false;
       })
@@ -88,6 +101,19 @@ export const orderSlice = createSlice({
         state.error = false;
       })
       .addCase(getOrderByUser.rejected, (state) => {
+        state.error = true;
+        state.loading = false;
+      })
+      //Update Order
+      .addCase(updateOrder.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateOrder.fulfilled, (state) => {
+        state.loading = false;
+        toast.success("Order is Updated Successfully");
+        state.error = false;
+      })
+      .addCase(updateOrder.rejected, (state) => {
         state.error = true;
         state.loading = false;
       });

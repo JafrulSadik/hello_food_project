@@ -20,7 +20,7 @@ const rootReducer = combineReducers({
 // For Hiding dev tools
 // {devTools: false}
 
-export default configureStore({ reducer: rootReducer });
+export default configureStore({ reducer: rootReducer }, { devTools: false });
 
 // For persistor
 

@@ -1,5 +1,7 @@
 const Order = require("../models/Order");
 const createError = require("../error");
+const Cart = require("../models/Cart");
+const { findByIdAndUpdate } = require("../models/Order");
 
 const newOrder = async (req, res, next) => {
   try {
@@ -29,6 +31,9 @@ const newOrder = async (req, res, next) => {
       paymentMethod: paymentMethod,
     });
     const response = await newOrder.save();
+
+    await Cart.findOneAndDelete({ userId });
+
     res.status(200).json(response?._id);
   } catch (err) {
     return next(err);
@@ -37,7 +42,7 @@ const newOrder = async (req, res, next) => {
 
 const allOrders = async (req, res, next) => {
   try {
-    const orders = await Order.find();
+    const orders = await Order.find().sort({ timestamp: -1 });
     res.status(200).json(orders);
   } catch (error) {
     next(error);
@@ -57,8 +62,41 @@ const userOrders = async (req, res, next) => {
   }
 };
 
+const updateOrder = async (req, res, next) => {
+  try {
+    const orderId = req.params.orderId;
+    const deliveryStatus = req.body.deliveryStatus;
+    if (!orderId) {
+      next(createError(404, "User not found!"));
+    }
+
+    if (deliveryStatus === "Canceled" && refund) {
+      await Order.findByIdAndUpdate(orderId, {
+        deliveryStatus: deliveryStatus,
+        refund,
+      });
+
+      return res.status(200).json("Order has been updated successfully");
+    }
+
+    await Order.findByIdAndUpdate(orderId, {
+      deliveryStatus: deliveryStatus,
+    });
+
+    // if(deliveryStatus === "Successfull"){
+    //   const product = Product
+    // }
+
+    // const orders = await Order.find({ userId: userId });
+    res.status(200).json("Order has been updated successfully");
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   newOrder,
   userOrders,
   allOrders,
+  updateOrder,
 };

@@ -31,9 +31,12 @@ cloudinary.config({
 app.use(
   cors({
     credentials: true,
-    origin: "http://localhost:3000",
+    origin: "https://hellofood.com.bd",
   })
 );
+
+// "https://hellofood.com.bd"
+// "http://localhost:3000"
 
 app.use(cookieParser());
 

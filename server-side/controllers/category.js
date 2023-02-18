@@ -19,11 +19,7 @@ const createCategory = async (req, res, next) => {
 
     const regex = /[^a-zA-Z0-9 ]/g;
 
-    let categoryUrl = name
-      .toLowerCase()
-      .replaceAll(regex, "")
-      .replaceAll(" ", "-")
-      .trim();
+    let categoryUrl = name.toLowerCase().replace(regex, "").replace(/ /g, "-");
 
     //Check duplicate product name
     let dupCategoryName = await Category.findOne({ categoryUrl });
@@ -88,11 +84,7 @@ const updateCategory = async (req, res, next) => {
 
     const regex = /[^a-zA-Z0-9 ]/g;
 
-    let categoryUrl = name
-      .toLowerCase()
-      .replaceAll(regex, "")
-      .replaceAll(" ", "-")
-      .trim();
+    let categoryUrl = name.toLowerCase().replace(regex, "").replace(/ /g, "-");
 
     const dupCategoryName = await Category.findOne({
       _id: { $ne: id },

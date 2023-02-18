@@ -18,11 +18,7 @@ const createSlider = async (req, res, next) => {
 
     const regex = /[^a-zA-Z0-9 ]/g;
 
-    let sliderUrl = name
-      .toLowerCase()
-      .replaceAll(regex, "")
-      .replaceAll(" ", "-")
-      .trim();
+    let sliderUrl = name.toLowerCase().replace(regex, "").replace(/ /g, "-");
 
     //Check duplicate product name
     let dupSliderName = await Slider.findOne({ sliderUrl });
@@ -88,11 +84,7 @@ const updateSlider = async (req, res, next) => {
 
     const regex = /[^a-zA-Z0-9 ]/g;
 
-    let sliderUrl = name
-      .toLowerCase()
-      .replaceAll(regex, "")
-      .replaceAll(" ", "-")
-      .trim();
+    let sliderUrl = name.toLowerCase().replace(regex, "").replace(/ /g, "-");
 
     const dupSliderName = await Slider.findOne({ _id: { $ne: id }, sliderUrl });
 

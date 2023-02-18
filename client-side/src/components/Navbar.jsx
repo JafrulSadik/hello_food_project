@@ -300,7 +300,7 @@ const Navbar = () => {
 
   useEffect(() => {
     const filteredProducts = products?.filter((product) =>
-      product?.name?.toLowerCase().includes(searchInput)
+      product?.name?.toLowerCase().includes(searchInput?.toLowerCase())
     );
     setSearchProducts(filteredProducts);
     if (searchInput === "") {
@@ -348,14 +348,14 @@ const Navbar = () => {
             ></SearchInput>
             <div className="search-div">
               {searchProducts && (
-                <div className="search-result">
+                <div className={`search-result`}>
                   {searchProducts?.map((item) => {
                     const modifiedName =
                       item?.name?.length > 50
                         ? item?.name?.trim().substr(0, 42) + "..."
                         : item?.name;
                     return (
-                      <div className="link-div">
+                      <div className="link-div" key={item?._id}>
                         <img src={item?.img?.url} alt="" />
                         <Link
                           className="temp-result-link"
@@ -449,6 +449,9 @@ const MainWrapper = styled.div`
     background-color: white;
     border-radius: 5px;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.089), 0 3px 6px rgba(0, 0, 0, 0.11);
+  }
+  .display-products {
+    display: none;
   }
   .link-div {
     padding: 12px 15px;

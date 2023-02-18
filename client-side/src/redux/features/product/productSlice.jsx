@@ -134,6 +134,7 @@ export const productSlice = createSlice({
         state.loading = false;
       })
       .addCase(updateProduct.rejected, (state) => {
+        state.loading = false;
         state.error = true;
       })
       //Delete Product

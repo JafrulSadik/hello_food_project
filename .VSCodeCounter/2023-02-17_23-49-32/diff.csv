@@ -1,0 +1,25 @@
+"filename", "language", "JavaScript", "JavaScript JSX", "comment", "blank", "total"
+"d:\Web Development\Projects\hello-food\client-side\src\App.jsx", "JavaScript JSX", 0, 5, 0, 0, 5
+"d:\Web Development\Projects\hello-food\client-side\src\admin\components\Summary.jsx", "JavaScript JSX", 0, 2, 0, 0, 2
+"d:\Web Development\Projects\hello-food\client-side\src\admin\pages\AdminProductDetail.jsx", "JavaScript JSX", 0, 0, -1, -1, -2
+"d:\Web Development\Projects\hello-food\client-side\src\admin\pages\Orders.jsx", "JavaScript JSX", 0, -1, 0, 0, -1
+"d:\Web Development\Projects\hello-food\client-side\src\admin\pages\UpdateOrder.jsx", "JavaScript JSX", 0, 279, 1, 10, 290
+"d:\Web Development\Projects\hello-food\client-side\src\admin\pages\UpdateSlider.jsx", "JavaScript JSX", 0, -1, 0, 0, -1
+"d:\Web Development\Projects\hello-food\client-side\src\admin\pages\Users.jsx", "JavaScript JSX", 0, 0, -1, 0, -1
+"d:\Web Development\Projects\hello-food\client-side\src\components\AllProductsComponent.jsx", "JavaScript JSX", 0, 2, 0, 0, 2
+"d:\Web Development\Projects\hello-food\client-side\src\components\CategoryWiseProducts.jsx", "JavaScript JSX", 0, 5, 0, 1, 6
+"d:\Web Development\Projects\hello-food\client-side\src\components\MobileMenu.jsx", "JavaScript JSX", 0, 26, -5, 1, 22
+"d:\Web Development\Projects\hello-food\client-side\src\components\Navbar.jsx", "JavaScript JSX", 0, 10, 0, 0, 10
+"d:\Web Development\Projects\hello-food\client-side\src\pages\AllProducts.jsx", "JavaScript JSX", 0, 3, 0, 1, 4
+"d:\Web Development\Projects\hello-food\client-side\src\pages\Billing.jsx", "JavaScript JSX", 0, 295, -4, 8, 299
+"d:\Web Development\Projects\hello-food\client-side\src\pages\Cart.jsx", "JavaScript JSX", 0, 2, 0, 0, 2
+"d:\Web Development\Projects\hello-food\client-side\src\pages\Home.jsx", "JavaScript JSX", 0, -2, 0, 0, -2
+"d:\Web Development\Projects\hello-food\client-side\src\pages\MyOrders.jsx", "JavaScript JSX", 0, 1, 0, 0, 1
+"d:\Web Development\Projects\hello-food\client-side\src\pages\Order.jsx", "JavaScript JSX", 0, 5, 0, 0, 5
+"d:\Web Development\Projects\hello-food\client-side\src\pages\Prodcuts.jsx", "JavaScript JSX", 0, 3, 0, 2, 5
+"d:\Web Development\Projects\hello-food\client-side\src\pages\ProductDetail.jsx", "JavaScript JSX", 0, 2, 0, 0, 2
+"d:\Web Development\Projects\hello-food\client-side\src\redux\features\cart\cartSlice.js", "JavaScript", 1, 0, 0, -1, 0
+"d:\Web Development\Projects\hello-food\client-side\src\redux\features\category\categorySlice.js", "JavaScript", -1, 0, 0, 0, -1
+"d:\Web Development\Projects\hello-food\client-side\src\redux\features\order\orderSlice.js", "JavaScript", 25, 0, 1, 0, 26
+"d:\Web Development\Projects\hello-food\client-side\src\requestMethod.js", "JavaScript", 0, 0, 1, 0, 1
+"Total", "-", 25, 636, -8, 21, 674

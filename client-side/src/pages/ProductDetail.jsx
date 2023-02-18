@@ -87,7 +87,7 @@ const ProductDetail = () => {
             <div className="infoDiv">
               <h3>{product?.name}</h3>
               <p className="availabilty">Availabilty : {stockAvailablity()}</p>
-              <h4>
+              <h4 style={{ color: "#3bb54a" }}>
                 {product?.discount ? product?.discount : product?.price} Tk
               </h4>
               <div className="priceChoosen">
@@ -163,9 +163,11 @@ const ProductDetail = () => {
               <span>You may also like</span>
             </h2>
             <div className="similarProducts">
-              {similarProducts?.map((item) => {
-                return <ProductCard item={item} key={item._id} />;
-              })}
+              {similarProducts
+                ?.map((item) => {
+                  return <ProductCard item={item} key={item._id} />;
+                })
+                .slice(0, 10)}
             </div>
           </section>
         </div>
@@ -325,17 +327,13 @@ const ProductDetailContainer = styled.div`
     border-bottom: 2px solid green;
   }
   .bottomSection > .similarProducts {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-    flex-wrap: wrap;
-    flex-grow: 1;
-    gap: 5px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    grid-gap: 10px;
 
     ${mobile({
-      justifyContent: "space-evenly",
-      gap: "15px 0px",
+      gridTemplateColumns: "repeat(auto-fit, minmax(135px, 1fr))",
+      margin: "4%",
     })}
   }
 `;

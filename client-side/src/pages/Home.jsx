@@ -8,11 +8,10 @@ import Footer from "../components/Footer";
 import MobileMenu from "../components/MobileMenu";
 import Navbar from "../components/Navbar";
 import Slider from "../components/Slider";
-import Spinner from "../components/Spinner";
 import { getAllCategories } from "../redux/features/category/categorySlice";
 
 const Home = () => {
-  const { categories, loading } = useSelector((state) => state.category);
+  const { categories } = useSelector((state) => state.category);
   // const { userInfo } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
@@ -34,7 +33,6 @@ const Home = () => {
         ))}
       </div>
       <Footer />
-      {loading && <Spinner />}
     </HomeContainer>
   );
 };

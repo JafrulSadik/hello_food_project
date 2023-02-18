@@ -16,6 +16,7 @@ import OrderDetail from "./admin/pages/OrderDetail";
 import Orders from "./admin/pages/Orders";
 import Sliders from "./admin/pages/Sliders";
 import UpdateCategory from "./admin/pages/UpdateCategory";
+import UpdateOrder from "./admin/pages/UpdateOrder";
 import UpdateProduct from "./admin/pages/UpdateProduct";
 import UpdateSlider from "./admin/pages/UpdateSlider";
 import Users from "./admin/pages/Users";
@@ -86,6 +87,10 @@ const App = () => {
             <Route path="/admin/products" element={<AdminProducts />} />
             <Route path="/admin/orders" element={<Orders />} />
             <Route path="/admin/orders/:orderId" element={<OrderDetail />} />
+            <Route
+              path="/admin/orders/update/:orderId"
+              element={<UpdateOrder />}
+            />
             <Route path="/admin/users" element={<Users />} />
             <Route path="/admin/categories" element={<AdminCategory />} />
             <Route path="/admin/category/create" element={<AddCategory />} />

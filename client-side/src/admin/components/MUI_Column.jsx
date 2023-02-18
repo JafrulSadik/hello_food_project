@@ -414,7 +414,7 @@ export const ordersColumns = [
           <Link className="view" to={`/admin/orders/${id}`}>
             <button>View</button>
           </Link>
-          <Link className="edit">
+          <Link className="edit" to={`/admin/orders/update/${id}`}>
             <button>Edit</button>
           </Link>
         </div>
